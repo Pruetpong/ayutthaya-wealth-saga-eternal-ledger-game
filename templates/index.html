@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ayutthaya Wealth Saga: The Eternal Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ==================== CSS VARIABLES: AYUTTHAYA DARK ACADEMIA ==================== */
+        :root {
+            --bg-deep: #0c0a06;
+            --bg-panel: #161209;
+            --bg-card: #1e1710;
+            --bg-card2: #261e13;
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, .35);
+            --gold-faint: rgba(201, 162, 39, .12);
+            --gold-glow: rgba(201, 162, 39, .5);
+            --wisdom: #7c3aed;
+            --wisdom-dim: rgba(124, 58, 237, .35);
+            --emerald: #10b981;
+            --red: #ef4444;
+            --text-main: #e5d9c0;
+            --text-muted: #8a7a5a;
+            --text-dim: #4a3f2a;
+            --locked: rgba(100, 85, 60, .3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(201, 162, 39, .04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, .04) 0%, transparent 50%);
+        }
+
+        .font-tech {
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-panel);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-dim);
+            border-radius: 2px;
+        }
+
+        /* ==================== PANELS ==================== */
+        .panel {
+            background: rgba(22, 18, 9, .9);
+            border: 1px solid var(--gold-dim);
+            box-shadow: 0 0 20px rgba(0, 0, 0, .6), inset 0 0 30px rgba(201, 162, 39, .02);
+            backdrop-filter: blur(6px);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: .35;
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn-gold {
+            background: rgba(201, 162, 39, .1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Chakra Petch', sans-serif;
+            cursor: pointer;
+            transition: all .25s;
+        }
+
+        .btn-gold:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--bg-deep);
+            box-shadow: 0 0 18px var(--gold-glow);
+        }
+
+        .btn-gold:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #b8891f, #c9a227);
+            color: var(--bg-deep);
+            border: none;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .25s;
+            box-shadow: 0 3px 12px rgba(201, 162, 39, .3);
+        }
+
+        .btn-action:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 162, 39, .5);
+        }
+
+        .btn-action:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-emerald {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border: none;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .25s;
+            box-shadow: 0 3px 12px rgba(16, 185, 129, .25);
+        }
+
+        .btn-emerald:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, .45);
+        }
+
+        .btn-emerald:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes pulse-gold {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px var(--gold-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 20px var(--gold-glow);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scale-in {
+            from {
+                opacity: 0;
+                transform: scale(.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes xp-float {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-60px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes ledger-open {
+            from {
+                opacity: 0;
+                transform: perspective(800px) rotateY(-15deg) scale(.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: perspective(800px) rotateY(0) scale(1);
+            }
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .slide-in {
+            animation: slide-in .3s ease;
+        }
+
+        .fade-in {
+            animation: fade-in .4s ease;
+        }
+
+        .scale-in {
+            animation: scale-in .35s cubic-bezier(.175, .885, .32, 1.275);
+        }
+
+        .pulse-gold {
+            animation: pulse-gold 2s infinite;
+        }
+
+        .xp-popup {
+            position: fixed;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gold);
+            text-shadow: 0 0 12px var(--gold-glow);
+            pointer-events: none;
+            z-index: 9999;
+            animation: xp-float 1.6s ease-out forwards;
+        }
+
+        /* ==================== LOADER ==================== */
+        .loader-ring {
+            border: 3px solid rgba(201, 162, 39, .15);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin .9s linear infinite;
+        }
+
+        /* ==================== INTRO ==================== */
+        .intro-slide-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.9;
+            text-align: center;
+            color: rgba(229, 217, 192, .85);
+            max-width: 600px;
+        }
+
+        /* ==================== HUD STATS ==================== */
+        .stat-chip {
+            background: rgba(22, 18, 9, .85);
+            border: 1px solid var(--gold-dim);
+            border-radius: 6px;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        /* Wisdom bar */
+        .wisdom-bar-bg {
+            height: 6px;
+            background: rgba(124, 58, 237, .15);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .wisdom-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 3px;
+            transition: width .8s ease;
+        }
+
+        /* Ledger slots mini */
+        .ledger-slot-mini {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid var(--gold-dim);
+            background: var(--bg-card);
+            transition: all .3s;
+        }
+
+        .ledger-slot-mini.filled {
+            background: var(--gold);
+            border-color: var(--gold);
+            box-shadow: 0 0 6px rgba(201, 162, 39, .5);
+        }
+
+        /* ==================== FIN COMP BARS ==================== */
+        .fincomp-bar {
+            background: rgba(201, 162, 39, .08);
+            border-radius: 3px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .fincomp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #b8891f, #c9a227);
+            border-radius: 3px;
+            transition: width .8s ease;
+        }
+
+        /* ==================== QUEST MAP TREE ==================== */
+        #quest-map-wrapper {
+            position: relative;
+            min-height: 640px;
+            width: 100%;
+        }
+
+        #quest-tree-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #quest-map {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(7, auto);
+            gap: 12px 8px;
+            padding: 16px 8px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        /* Quest Nodes */
+        .quest-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+            padding: 12px 8px 10px;
+            border-radius: 10px;
+            border: 1.5px solid var(--gold-dim);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: all .3s;
+            width: 100%;
+            height: 100%; 
+            min-height: 110px;
+            position: relative;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .quest-node:hover:not(.node-locked) {
+            border-color: var(--gold);
+            background: var(--bg-card2);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(201, 162, 39, .2);
+        }
+
+        .quest-node.node-locked {
+            opacity: .45;
+            cursor: not-allowed;
+            border-color: var(--text-dim);
+        }
+
+        .quest-node.node-available {
+            border-color: rgba(201, 162, 39, .6);
+            animation: pulse-gold 2.5s infinite;
+        }
+
+        .quest-node.node-active {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, .08);
+            box-shadow: 0 0 20px rgba(201, 162, 39, .3);
+        }
+
+        .quest-node.node-completed {
+            border-color: rgba(16, 185, 129, .5);
+            background: rgba(16, 185, 129, .06);
+        }
+
+        .quest-node.node-final {
+            border-color: var(--wisdom-dim);
+            background: rgba(124, 58, 237, .06);
+        }
+
+        .quest-node.node-final.node-available {
+            animation: none;
+            box-shadow: 0 0 24px rgba(124, 58, 237, .4);
+            border-color: #7c3aed;
+        }
+
+        .node-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .node-npc {
+            font-size: .85rem;
+            color: var(--text-muted);
+            font-family: 'Sarabun', sans-serif;
+            margin-top: 2px;
+        }
+
+        .node-quest {
+            font-size: .85rem;
+            color: var(--text-main);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .node-lock-icon {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            font-size: .7rem;
+            color: var(--text-dim);
+        }
+
+        .node-check {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: var(--emerald);
+            font-size: .8rem;
+        }
+
+        .node-active-dot {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: pulse-gold 1.5s infinite;
+        }
+
+        .node-wisdom-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--wisdom);
+            color: white;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .85rem;
+            padding: 1px 5px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        /* ==================== NPC TERMINAL MODAL ==================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(12, 10, 6, .88);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .terminal-modal {
+            width: 100%;
+            max-width: 680px;
+            height: 90vh;
+            max-height: 700px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: scale-in .35s ease;
+        }
+
+        .terminal-tab {
+            flex: 1;
+            padding: 10px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all .25s;
+            border-bottom: 2px solid transparent;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+
+        .terminal-tab:hover {
+            color: var(--text-main);
+        }
+
+        .terminal-tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+            background: rgba(201, 162, 39, .05);
+        }
+
+        .terminal-tab i {
+            font-size: .95rem;
+        }
+
+        /* Chat bubbles */
+        .chat-npc {
+            background: rgba(30, 23, 16, .9);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 8px;
+            padding: 10px 12px;
+            font-size: .9rem;
+            line-height: 1.65;
+        }
+
+        .chat-user {
+            background: rgba(201, 162, 39, .08);
+            border-right: 3px solid rgba(201, 162, 39, .5);
+            border-radius: 8px 0 8px 8px;
+            padding: 10px 12px;
+            font-size: .9rem;
+            line-height: 1.65;
+            text-align: right;
+        }
+
+        .markdown-body p {
+            margin-bottom: .5em;
+        }
+
+        .markdown-body strong {
+            color: var(--gold);
+        }
+
+        .markdown-body ul {
+            list-style: disc;
+            padding-left: 1.4em;
+            margin-bottom: .5em;
+        }
+
+        /* Fragment tracker */
+        .frag-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold-dim);
+            background: var(--bg-card);
+            transition: all .3s;
+        }
+
+        .frag-dot.collected {
+            background: var(--emerald);
+            border-color: var(--emerald);
+            box-shadow: 0 0 8px rgba(16, 185, 129, .5);
+        }
+
+        /* Typing indicator */
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: inline-block;
+            animation: typing-bounce .9s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: .15s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: .30s;
+        }
+
+        @keyframes typing-bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: .4;
+            }
+
+            40% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        /* ==================== LEDGER SLIDE-OVER ==================== */
+        .ledger-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 699;
+            background: rgba(12, 10, 6, .6);
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+
+        .ledger-overlay.open {
+            display: block;
+        }
+
+        .ledger-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 700;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(14, 11, 7, .98);
+            border-left: 1px solid var(--gold-dim);
+            box-shadow: -8px 0 40px rgba(0, 0, 0, .7);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .ledger-panel.open {
+            transform: translateX(0);
+        }
+
+        .ledger-page-card {
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--text-dim);
+            background: var(--bg-card);
+            transition: all .25s;
+        }
+
+        .ledger-page-card.filled {
+            border-color: rgba(201, 162, 39, .35);
+            background: rgba(201, 162, 39, .04);
+        }
+
+        .ledger-page-card.final-page {
+            border-color: rgba(124, 58, 237, .4);
+            background: rgba(124, 58, 237, .04);
+        }
+
+        .ledger-page-card.final-page.filled {
+            border-color: var(--wisdom);
+            box-shadow: 0 0 16px rgba(124, 58, 237, .3);
+        }
+
+        /* ==================== QUEST LOG MODAL ==================== */
+        .quest-log-item {
+            border-radius: 8px;
+            padding: 10px 12px;
+            border: 1px solid var(--text-dim);
+            background: var(--bg-card);
+            margin-bottom: 8px;
+            transition: all .2s;
+        }
+
+        .quest-log-item.available {
+            border-color: rgba(201, 162, 39, .4);
+            background: rgba(201, 162, 39, .04);
+        }
+
+        .quest-log-item.active {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, .06);
+        }
+
+        .quest-log-item.completed {
+            border-color: rgba(16, 185, 129, .4);
+            background: rgba(16, 185, 129, .04);
+        }
+
+        .quest-log-item.final-quest {
+            border-color: rgba(124, 58, 237, .4);
+        }
+
+        /* ==================== TEACHER REPORT MODAL ==================== */
+        .report-row {
+            border-radius: 6px;
+            padding: 10px 12px;
+            border: 1px solid var(--text-dim);
+            background: var(--bg-card);
+            margin-bottom: 6px;
+        }
+
+        .report-row.covered {
+            border-color: rgba(16, 185, 129, .4);
+            background: rgba(16, 185, 129, .04);
+        }
+
+        /* ==================== ACHIEVEMENT TOAST ==================== */
+        #achievement-toast {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9990;
+            display: none;
+            animation: slide-in .3s ease;
+        }
+
+        /* ==================== MOBILE ==================== */
+        @media (max-width: 767px) {
+            .modal-backdrop {
+                padding: 0;
+                align-items: flex-end;
+            }
+
+            .terminal-modal {
+                max-width: 100%;
+                height: 100dvh;
+                max-height: 100dvh;
+                border-radius: 16px 16px 0 0;
+                padding-top: env(safe-area-inset-top, 0);
+            }
+
+            .ledger-panel {
+                max-width: 100%;
+            }
+
+            #quest-map {
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 8px;
+                padding: 8px 0;
+                align-items: stretch;
+            }
+
+            .quest-node {
+                min-width: 100%;
+                min-height: 90px;
+                padding: 10px 8px;
+            }
+
+            .node-icon {
+                font-size: 1.4rem;
+            }
+
+            .node-npc {
+                font-size: .65rem;
+            }
+
+            .node-quest {
+                font-size: .7rem;
+            }
+
+            #achievement-toast {
+                top: auto;
+                bottom: 72px;
+                right: 12px;
+                left: 12px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quest-node {
+                max-width: 58px;
+                min-height: 72px;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- ===== LOADING SCREEN ===== -->
+    <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[10000]"
+        style="background:var(--bg-deep)">
+        <div class="loader-ring mb-5" style="width:48px;height:48px;"></div>
+        <h2 class="font-tech text-xl tracking-widest" style="color:var(--gold)">THE ETERNAL LEDGER</h2>
+        <p class="text-sm mt-2" style="color:var(--text-muted)" id="loading-text">กำลังเปิดห้องสมุดข้ามกาลเวลา...</p>
+    </div>
+
+    <!-- ===== INTRO SCREEN ===== -->
+    <div id="screen-intro" class="fixed inset-0 hidden flex-col items-center justify-center z-50"
+         style="background:var(--bg-deep)">
+        <div class="absolute inset-0"
+             style="background:radial-gradient(ellipse at center,rgba(201,162,39,.07) 0%,transparent 65%)"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-5 px-6 max-w-xl w-full">
+
+            <!-- Main title -->
+            <div class="text-center">
+                <div class="font-tech text-lg tracking-[.2em] mb-1" style="color:var(--text-muted)">
+                    AYUTTHAYA WEALTH SAGA
+                </div>
+                <h1 class="font-tech text-3xl md:text-4xl"
+                    style="color:var(--gold);text-shadow:0 0 28px rgba(201,162,39,.45);letter-spacing:.06em">
+                    THE ETERNAL LEDGER
+                </h1>
+                <div class="font-tech text-lg mt-1.5 tracking-widest" style="color:var(--text-muted)">
+                    บันทึกบัญชีแห่งกาลเวลา
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="w-full h-px" style="background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)"></div>
+
+            <!-- Slide: icon + text -->
+            <div class="flex flex-col items-center gap-3 min-h-[110px] justify-center">
+                <div class="text-4xl" id="intro-icon" style="animation:fade-in .4s ease">📜</div>
+                <div id="intro-text"
+                     class="intro-slide-text text-center"
+                     style="min-height:56px;display:flex;align-items:center;justify-content:center"></div>
+            </div>
+
+            <!-- Dots -->
+            <div id="intro-dots" class="flex gap-2"></div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3">
+                <button id="intro-next-btn" onclick="introNext()"
+                    class="btn-action px-8 py-3 rounded-lg text-sm tracking-widest font-tech">
+                    ถัดไป <i class="fas fa-chevron-right ml-1"></i>
+                </button>
+                <button onclick="skipIntro()"
+                    class="btn-gold px-5 py-3 rounded-lg text-xs font-tech">
+                    ข้าม <i class="fas fa-forward ml-1"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== PLAYER NAME SCREEN ===== -->
+    <div id="screen-name" class="fixed inset-0 hidden flex-col items-center justify-center z-50 p-4"
+        style="background:var(--bg-deep)">
+        <div class="panel p-8 w-full max-w-md scale-in">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-3">📖</div>
+                <h2 class="font-tech text-xl mb-1" style="color:var(--gold)">ระบุชื่อผู้แสวงหาปัญญา</h2>
+                <p class="text-sm" style="color:var(--text-muted)">ชื่อของท่านจะถูกบันทึกใน The Eternal Ledger</p>
+            </div>
+            <input type="text" id="player-name-input" placeholder="ชื่อ-นามสกุล หรือชื่อเล่น"
+                class="w-full px-4 py-3 rounded-lg text-sm mb-4 focus:outline-none"
+                style="background:var(--bg-card2);border:1px solid var(--gold-dim);color:var(--text-main);"
+                onkeydown="if(event.key==='Enter')game.startGame()" maxlength="40" />
+            <button onclick="game.startGame()"
+                class="btn-action w-full py-3 rounded-lg font-tech font-bold text-sm tracking-widest">
+                <i class="fas fa-book-open mr-2"></i>เปิด The Eternal Ledger
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN GAME SCREEN ===== -->
+    <div id="screen-game" class="hidden flex-col min-h-screen">
+
+        <!-- HEADER HUD -->
+        <header class="panel mx-2 mt-2 p-2 flex items-center gap-2 sticky top-2 z-40 rounded-lg"
+            style="background:rgba(14,11,7,.92)">
+
+            <!-- Logo + Name + Rank -->
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <div class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                    style="background:var(--bg-card2);border:2px solid var(--gold);box-shadow:0 0 10px rgba(201,162,39,.3)">
+                    📜
+                </div>
+                <div class="hidden sm:block">
+                    <div class="font-tech text-sm leading-tight" style="color:var(--text-main)" id="hud-player-name">
+                        ผู้แสวงหาปัญญา</div>
+                    <div class="text-sm" style="color:var(--gold)" id="hud-rank">ผู้แสวงหาปัญญา</div>
+                </div>
+            </div>
+
+            <!-- Wisdom (mobile: stat chip แยก | desktop: รวมใน center block) -->
+            <div class="stat-chip flex-shrink-0 sm:hidden">
+                <span style="color:var(--wisdom)">⚜️</span>
+                <span class="font-tech text-sm" style="color:var(--wisdom)" id="hud-wisdom">10</span>
+                <span class="font-tech text-sm" style="color:var(--text-muted)">/ 175</span>
+            </div>
+
+            <!-- Center block: Wisdom + Ledger (desktop only) -->
+            <div class="flex-1 hidden sm:flex flex-col items-center justify-center gap-1 overflow-hidden px-2">
+                <!-- Wisdom row -->
+                <div class="flex items-center gap-1.5">
+                    <span style="color:var(--wisdom)">⚜️</span>
+                    <span class="font-tech text-sm" style="color:var(--wisdom)" id="hud-wisdom-desktop">10</span>
+                    <span class="font-tech text-sm" style="color:var(--text-muted)">/ 175</span>
+                </div>
+                <!-- Ledger slots row -->
+                <div class="flex items-center gap-1">
+                    <span class="text-sm flex-shrink-0" style="color:var(--text-muted)">📖</span>
+                    <div id="hud-ledger-slots" class="flex gap-1 flex-wrap justify-center"></div>
+                    <span class="font-tech text-sm flex-shrink-0" style="color:var(--text-muted)" id="hud-ledger-count">0/10</span>
+                </div>
+            </div>
+
+            <!-- Mobile spacer -->
+            <div class="flex-1 sm:hidden"></div>
+
+            <!-- Action buttons -->
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+                <button onclick="game.openQuestLog()"
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    <i class="fas fa-scroll text-sm"></i>
+                    <span class="hidden sm:inline">Quests</span>
+                </button>
+                <button onclick="game.openLedger()"
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    <i class="fas fa-book-open text-sm"></i>
+                    <span class="hidden sm:inline">Ledger</span>
+                </button>
+                <button onclick="game.openTeacherReport()"
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    <i class="fas fa-file-alt text-sm"></i>
+                    <span class="hidden sm:inline">Report</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MOBILE: Ledger progress -->
+        <div class="sm:hidden mx-2 mt-1.5 panel p-2 flex items-center gap-2">
+            <span class="text-sm" style="color:var(--text-muted)">📖 Ledger:</span>
+            <div id="hud-ledger-slots-mobile" class="flex gap-1 flex-1"></div>
+            <span class="font-tech text-sm" style="color:var(--text-muted)" id="hud-ledger-count-mobile">0/10</span>
+        </div>
+
+        <!-- ACTIVE QUEST BAR (if quest in progress) -->
+        <div id="active-quest-bar" class="hidden mx-2 mt-1.5 px-3 py-2 rounded-lg flex items-center gap-2"
+            style="background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3)">
+            <div class="text-base" id="aqb-icon">📖</div>
+            <div class="flex-1 min-w-0">
+                <div class="font-tech text-sm" style="color:var(--gold)" id="aqb-quest-name">Quest Active</div>
+                <div class="text-sm" style="color:var(--text-muted)" id="aqb-npc-name">NPC</div>
+            </div>
+            <button onclick="game.openActiveQuestNPC()"
+                class="btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[32px]">
+                ดำเนินต่อ <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 flex flex-col lg:flex-row gap-2 p-2">
+
+            <!-- LEFT SIDEBAR: Fin. Comp. + Info -->
+            <div class="lg:w-56 flex-shrink-0 flex flex-col gap-2">
+
+                <!-- Fin. Comp. Coverage -->
+                <div class="panel p-3 hidden lg:block">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-chart-bar text-xs" style="color:var(--gold)"></i>
+                        <span class="font-tech text-xs tracking-widest" style="color:var(--gold)">สมรรถนะทางการเงิน</span>
+                    </div>
+                    <div id="fincomp-bars" class="space-y-2.5"></div>
+                </div>
+
+                <!-- Items (if any) -->
+                <div id="items-panel" class="panel p-3 hidden">
+                    <div class="text-xs font-tech tracking-wider mb-2" style="color:var(--text-muted)">
+                        <i class="fas fa-box mr-1"></i>ของสะสม
+                    </div>
+                    <div id="items-container" class="flex flex-wrap gap-1"></div>
+                </div>
+            </div>
+
+            <!-- QUEST MAP -->
+            <div class="flex-1 panel p-4 min-w-0">
+                <div class="flex items-center gap-2 mb-4 flex-shrink-0">
+                    <i class="fas fa-map" style="color:var(--gold)"></i>
+                    <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">The Eternal Ledger — แผนที่ภารกิจ</span>
+                    <span class="text-sm ml-auto" style="color:var(--text-muted)">กดที่ NPC เพื่อเริ่มสนทนา</span>
+                </div>
+
+                <!-- Quest Map Grid -->
+                <div id="quest-map" class="grid gap-3"
+                     style="grid-template-columns: repeat(3, 1fr); align-items: stretch"></div>
+
+                <!-- Mobile: Fin. Comp. -->
+                <div class="lg:hidden mt-4 pt-4" style="border-top:1px solid var(--gold-dim)">
+                    <div class="font-tech text-sm tracking-wider mb-2" style="color:var(--gold)">สมรรถนะทางการเงิน
+                    </div>
+                    <div id="fincomp-bars-mobile" class="grid grid-cols-2 gap-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NPC TERMINAL MODAL
+    ========================================== -->
+    <div id="modal-npc" class="modal-backdrop">
+        <div class="terminal-modal panel">
+
+            <!-- Header -->
+            <div class="p-3 flex items-center gap-3 flex-shrink-0"
+                style="background:rgba(14,11,7,.7);border-bottom:1px solid var(--gold-dim)">
+                <div id="tnpc-icon"
+                    class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                    style="background:var(--bg-card2);border:2px solid var(--gold)">📖</div>
+                <div class="flex-1 min-w-0">
+                    <div class="font-tech text-base text-white truncate" id="tnpc-name">NPC</div>
+                    <div class="text-xs truncate" style="color:var(--text-muted)" id="tnpc-role">role</div>
+                </div>
+                <div id="tnpc-unlock-badge" class="hidden text-xs font-tech px-2 py-0.5 rounded-full flex-shrink-0"
+                    style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.5);color:var(--emerald)">
+                    🔓 ปลดล็อก!
+                </div>
+                <button onclick="game.closeNPCTerminal()"
+                    class="text-gray-500 hover:text-white p-1 flex-shrink-0 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-shrink-0" style="border-bottom:1px solid var(--gold-dim);background:rgba(14,11,7,.5)">
+                <button class="terminal-tab active" id="tab-btn-comms" onclick="game.switchTab('comms')">
+                    <i class="fas fa-comments"></i><span>ศาลาสนทนา</span>
+                </button>
+                <button class="terminal-tab" id="tab-btn-quest" onclick="game.switchTab('quest')">
+                    <i class="fas fa-scroll"></i><span>ภารกิจ</span>
+                </button>
+                <button class="terminal-tab" id="tab-btn-datalog" onclick="game.switchTab('datalog')">
+                    <i class="fas fa-database"></i><span>บันทึกปัญญา</span>
+                </button>
+            </div>
+
+            <!-- TAB: Comms -->
+            <div id="tab-comms" class="flex-1 flex flex-col overflow-hidden">
+
+                <!-- Fragment tracker for Q8 -->
+                <div id="term-frag-tracker" class="hidden px-3 py-2 flex items-center gap-3 flex-shrink-0"
+                    style="background:rgba(14,11,7,.5);border-bottom:1px solid var(--gold-dim)">
+                    <span class="text-xs font-tech" style="color:var(--text-muted)">FRAGMENTS:</span>
+                    <div id="term-frag-dots" class="flex gap-2"></div>
+                    <span class="text-xs" style="color:var(--emerald)" id="term-frag-count">0/3</span>
+                </div>
+
+                <!-- Quest phase bar -->
+                <div id="term-quest-bar" class="hidden px-3 py-2 flex items-center gap-2 flex-shrink-0"
+                    style="background:rgba(201,162,39,.06);border-bottom:1px solid rgba(201,162,39,.2)">
+                    <span class="text-xs font-tech flex-1 truncate" style="color:var(--gold)"
+                        id="term-quest-label">QUEST</span>
+                    <span class="text-xs" style="color:var(--text-muted)" id="term-turns-label">0/3 turns</span>
+                    <button id="btn-collect-frag" onclick="game.collectFragment()"
+                        class="btn-gold px-2.5 py-1 rounded text-xs font-tech hidden min-h-[32px]">
+                        <i class="fas fa-flask mr-1"></i>เก็บข้อมูล
+                    </button>
+                    <button id="btn-eval-quest" onclick="game.evaluateQuest()"
+                        class="btn-action px-3 py-1.5 rounded text-xs font-tech hidden min-h-[32px]">
+                        <i class="fas fa-check-double mr-1"></i>ส่งรายงาน
+                    </button>
+                </div>
+
+                <!-- Blueprint input (Final Quest) -->
+                <div id="term-blueprint-area" class="hidden px-3 py-2 flex-shrink-0"
+                    style="border-bottom:1px solid var(--gold-dim);background:rgba(124,58,237,.04)">
+                    <div class="text-xs font-tech mb-2" style="color:var(--wisdom)">✍️ พิมพ์เขียวชีวิตของท่าน (Bloom's
+                        Create)</div>
+                    <textarea id="blueprint-input"
+                        class="w-full px-3 py-2 rounded text-sm focus:outline-none resize-none"
+                        style="background:var(--bg-card2);border:1px solid var(--wisdom-dim);color:var(--text-main);min-height:80px;"
+                        placeholder="สรุปสิ่งที่ท่านเรียนรู้ตลอดการเดินทาง และแผนการเงินส่วนบุคคลของท่าน..."></textarea>
+                    <button id="btn-submit-blueprint" onclick="game.submitBlueprint()"
+                        class="btn-action mt-2 w-full py-2 rounded text-sm font-tech">
+                        <i class="fas fa-paper-plane mr-1"></i>ส่งพิมพ์เขียว
+                    </button>
+                </div>
+
+                <!-- Chat history -->
+                <div id="term-chat" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
+
+                <!-- Typing indicator -->
+                <div id="term-typing" class="hidden px-3 py-2 flex-shrink-0"
+                    style="border-top:1px solid var(--gold-dim)">
+                    <div class="flex items-center gap-2">
+                        <div class="flex gap-1">
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                        </div>
+                        <span class="text-xs" style="color:var(--text-muted)" id="term-typing-name">กำลังตอบ...</span>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="p-3 flex gap-2 flex-shrink-0"
+                    style="border-top:1px solid var(--gold-dim);padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+                    <input type="text" id="term-input" placeholder="พิมพ์ข้อความถึง NPC..."
+                        class="flex-1 px-3 py-2.5 rounded-lg text-sm focus:outline-none min-h-[44px]"
+                        style="background:rgba(30,23,16,.9);border:1px solid var(--gold-dim);color:var(--text-main);"
+                        onkeydown="if(event.key==='Enter'){event.preventDefault();game.sendChat();}" enterkeyhint="send"
+                        inputmode="text" />
+                    <button onclick="game.sendChat()"
+                        class="btn-gold px-4 py-2 rounded-lg text-sm flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB: Quest -->
+            <div id="tab-quest" class="hidden flex-1 overflow-y-auto p-3"></div>
+
+            <!-- TAB: Data Log -->
+            <div id="tab-datalog" class="hidden flex-1 overflow-y-auto p-3"></div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         LEDGER SLIDE-OVER
+    ========================================== -->
+    <div id="ledger-overlay" class="ledger-overlay" onclick="game.closeLedger()"></div>
+    <aside id="ledger-panel" class="ledger-panel">
+        <div class="p-4 flex items-center gap-2 flex-shrink-0" style="border-bottom:1px solid var(--gold-dim)">
+            <i class="fas fa-book-open" style="color:var(--gold)"></i>
+            <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">THE ETERNAL LEDGER</span>
+            <span class="text-xs ml-auto" style="color:var(--text-muted)" id="ledger-count-label">0/10</span>
+            <button onclick="game.closeLedger()" class="ml-2 text-gray-500 hover:text-white p-1">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="ledger-wisdom-bar-wrap" class="px-4 py-2 flex-shrink-0"
+            style="border-bottom:1px solid var(--gold-dim);background:rgba(124,58,237,.04)">
+            <div class="flex justify-between text-xs mb-1" style="color:var(--text-muted)">
+                <span>Wisdom Score</span>
+                <span id="ledger-wisdom-val">10/175</span>
+            </div>
+            <div class="wisdom-bar-bg">
+                <div class="wisdom-bar-fill" id="ledger-wisdom-fill" style="width:5.7%"></div>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4" id="ledger-inner"></div>
+    </aside>
+
+    <!-- ==========================================
+         QUEST LOG MODAL
+    ========================================== -->
+    <div id="modal-quest-log" class="modal-backdrop"
+        onclick="if(event.target===this)game.closeModal('modal-quest-log')">
+        <div class="panel w-full max-w-2xl max-h-[85vh] flex flex-col scale-in">
+            <div class="p-4 flex items-center gap-2 flex-shrink-0" style="border-bottom:1px solid var(--gold-dim)">
+                <i class="fas fa-scroll" style="color:var(--gold)"></i>
+                <span class="font-tech" style="color:var(--gold)">QUEST LOG</span>
+                <button onclick="game.closeModal('modal-quest-log')" class="ml-auto text-gray-500 hover:text-white p-2">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4" id="quest-log-inner"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         TEACHER REPORT MODAL
+    ========================================== -->
+    <div id="modal-report" class="modal-backdrop" onclick="if(event.target===this)game.closeModal('modal-report')">
+        <div class="panel w-full max-w-3xl max-h-[90vh] flex flex-col scale-in">
+            <div class="p-4 flex items-center gap-2 flex-shrink-0" style="border-bottom:1px solid var(--gold-dim)">
+                <i class="fas fa-file-alt" style="color:var(--gold)"></i>
+                <span class="font-tech" style="color:var(--gold)">รายงานสมรรถนะทางการเงิน</span>
+                <button id="copy-report-btn" onclick="game.copyTeacherReport()"
+                    class="ml-auto btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[36px]">
+                    <i class="fas fa-copy sm:mr-1"></i><span class="hidden sm:inline">คัดลอก</span>
+                </button>
+                <button onclick="game.closeModal('modal-report')" class="text-gray-500 hover:text-white p-2 ml-1">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4" id="report-inner">
+                <div class="text-center py-8" style="color:var(--text-muted)">
+                    <div class="loader-ring mx-auto mb-3" style="width:32px;height:32px;border-width:2px;"></div>
+                    <p class="text-sm">กำลังสร้างรายงาน...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACHIEVEMENT TOAST -->
+    <div id="achievement-toast">
+        <div class="panel p-3 max-w-xs" style="border-color:rgba(201,162,39,.5)">
+            <div class="flex items-center gap-3">
+                <div class="text-2xl" id="toast-icon">🏆</div>
+                <div>
+                    <div class="font-tech text-xs tracking-widest" style="color:var(--gold)">ACHIEVEMENT</div>
+                    <div class="text-sm font-medium text-white" id="toast-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+
+    <!-- ==========================================
+         INTRO CINEMATIC
+    ========================================== -->
+    <script>
+        const INTRO_SLIDES = [
+            { icon: "🏛️", text: "ปี 2026... ห้องสมุดข้ามกาลเวลาแห่งกรุงศรีอยุธยาถูกค้นพบอีกครั้ง — เต็มไปด้วยปัญญาของบรรพชน" },
+            { icon: "📜", text: "The Eternal Ledger มี 10 หน้าว่าง แต่ละหน้าต้องพิสูจน์ด้วยสมรรถนะการเงิน ไม่ใช่ทรัพย์สิน" },
+            { icon: "💬", text: "สนทนากับปราชญ์ 11 ท่านแห่งอยุธยา — แต่ละท่านรักษาความลับคนละบทเรียน" },
+            { icon: "⚜️", text: "พิสูจน์ Knowledge · Skills · Attitudes ให้ครบ แล้ว The Eternal Ledger จะสมบูรณ์ในมือท่าน" },
+        ];
+        let introIdx = 0;
+
+        function renderIntroSlide() {
+            const s = INTRO_SLIDES[introIdx];
+            document.getElementById('intro-icon').textContent = s.icon;
+            document.getElementById('intro-icon').style.animation = 'none';
+            setTimeout(() => { document.getElementById('intro-icon').style.animation = 'fade-in .4s ease'; }, 10);
+            const t = document.getElementById('intro-text');
+            t.className = 'intro-slide-text min-h-[100px] flex items-center justify-center text-center fade-in';
+            t.textContent = s.text;
+            document.getElementById('intro-dots').innerHTML = INTRO_SLIDES.map((_, i) =>
+                `<div style="width:${i === introIdx ? '16px' : '8px'};height:8px;border-radius:4px;background:${i === introIdx ? 'var(--gold)' : 'var(--text-dim)'};transition:all .3s"></div>`
+            ).join('');
+            document.getElementById('intro-next-btn').innerHTML = introIdx < INTRO_SLIDES.length - 1
+                ? 'ถัดไป <i class="fas fa-chevron-right ml-1"></i>'
+                : 'เริ่มต้น <i class="fas fa-book-open ml-1"></i>';
+        }
+        function introNext() {
+            if (introIdx < INTRO_SLIDES.length - 1) { introIdx++; renderIntroSlide(); }
+            else skipIntro();
+        }
+        function skipIntro() {
+            document.getElementById('screen-intro').style.display = 'none';
+            document.getElementById('screen-name').style.display = 'flex';
+            setTimeout(() => document.getElementById('player-name-input').focus(), 100);
+        }
+        function showIntro() {
+            document.getElementById('screen-name').style.display = 'none';
+            document.getElementById('screen-intro').style.display = 'flex';
+            introIdx = 0; renderIntroSlide();
+        }
+    </script>
+
+    <!-- ==========================================
+         GAME ENGINE (IIFE)
+    ========================================== -->
+    <script>
+        const game = (() => {
+            'use strict';
+
+            // ---- Game data (from /api/init) ----
+            let data = null;
+
+            // ---- Client-side GameState ----
+            let state = null;
+
+            // ---- Local per-NPC chat history (synced to state.chat_histories) ----
+            let currentNpcId = null;
+            const animTimers = {};
+
+            // ============================================================
+            // SECTION 1: INIT + PLAYER SETUP
+            // ============================================================
+
+            async function init() {
+                try {
+                    document.getElementById('loading-text').textContent = 'กำลังโหลดข้อมูล...';
+                    const res = await fetch('/api/init');
+                    if (!res.ok) throw new Error('Server error');
+                    data = await res.json();
+                    setTimeout(() => {
+                        const ls = document.getElementById('loading-screen');
+                        ls.style.transition = 'opacity .5s';
+                        ls.style.opacity = '0';
+                        setTimeout(() => {
+                            ls.style.display = 'none';
+                            renderIntroSlide();
+                            showIntro();
+                        }, 500);
+                    }, 700);
+                } catch (e) {
+                    document.getElementById('loading-text').textContent = 'ERROR: ไม่สามารถเชื่อมต่อ Server';
+                    document.getElementById('loading-text').style.color = 'var(--red)';
+                }
+            }
+
+            function startGame() {
+                const nameEl = document.getElementById('player-name-input');
+                const name = (nameEl.value || '').trim() || 'ผู้แสวงหาปัญญา';
+
+                state = {
+                    player_name: name,
+                    wisdom_score: 10,
+                    rank: 'ผู้แสวงหาปัญญา',
+                    current_quest: null,
+                    active_npc: null,
+                    quest_phase: 'hook',
+                    quest_turn_count: 0,
+                    quest_chat_history: [],
+                    quest_fragments: {},
+                    completed_quests: [],
+                    unlocked_quests: ['entry'],
+                    ledger_pages: {},
+                    key_insights: {},
+                    ksa_evidence: {},
+                    fin_comp_coverage: { c1: false, c2: false, c3: false, c4: false, c5: false, c6: false },
+                    items: [],
+                    badges: [],
+                    chat_histories: {},
+                    total_turns: 0,
+                    retry_counts: {},
+                    session_start: new Date().toISOString(),
+                };
+
+                document.getElementById('screen-name').style.display = 'none';
+                const g = document.getElementById('screen-game');
+                g.style.display = 'flex';
+
+                updateHUD();
+                renderQuestMap();
+                renderFinCompBars();
+            }
+
+            // ============================================================
+            // SECTION 2: HUD
+            // ============================================================
+
+            function updateHUD() {
+                document.getElementById('hud-player-name').textContent = state.player_name;
+                const rank = calculateRank(state.wisdom_score);
+                document.getElementById('hud-rank').textContent = rank.icon + ' ' + rank.name;
+
+                animateValue('hud-wisdom', state.wisdom_score);
+                animateValue('hud-wisdom-desktop', state.wisdom_score);
+
+                // Ledger mini slots
+                renderLedgerMiniSlots('hud-ledger-slots');
+                renderLedgerMiniSlots('hud-ledger-slots-mobile');
+                const filled = Object.values(state.ledger_pages).filter(Boolean).length;
+                document.getElementById('hud-ledger-count').textContent = `${filled}/10`;
+                document.getElementById('hud-ledger-count-mobile').textContent = `${filled}/10`;
+
+                // Active quest bar
+                const aqb = document.getElementById('active-quest-bar');
+                if (state.current_quest && data.quests[state.current_quest]) {
+                    const q = data.quests[state.current_quest];
+                    const npc = data.npcs[q.npc_id];
+                    document.getElementById('aqb-quest-name').textContent = q.name;
+                    document.getElementById('aqb-npc-name').textContent = npc ? npc.name : '';
+                    document.getElementById('aqb-icon').textContent = npc ? npc.icon : '📜';
+                    aqb.classList.remove('hidden');
+                } else {
+                    aqb.classList.add('hidden');
+                }
+
+                // Items panel
+                const itemsPanel = document.getElementById('items-panel');
+                if (state.items.length > 0) {
+                    itemsPanel.classList.remove('hidden');
+                    document.getElementById('items-container').innerHTML = state.items.map(item =>
+                        `<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.3);color:var(--gold)">
+                        <i class="fas fa-gem mr-1 text-xs"></i>${item}
+                    </span>`
+                    ).join('');
+                } else {
+                    itemsPanel.classList.add('hidden');
+                }
+
+                renderFinCompBars();
+            }
+
+            function renderLedgerMiniSlots(containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const pages = (data && data.ledger_pages) ? Object.keys(data.ledger_pages).filter(k => k !== 'final') : [];
+                container.innerHTML = pages.map(pageId => {
+                    const filled = !!state.ledger_pages[pageId];
+                    return `<div class="ledger-slot-mini ${filled ? 'filled' : ''}"></div>`;
+                }).join('');
+            }
+
+            function animateValue(elId, target) {
+                const el = document.getElementById(elId);
+                if (!el) return;
+                const cur = parseInt(el.textContent.replace(/[^0-9-]/g, '')) || 0;
+                if (animTimers[elId]) clearInterval(animTimers[elId]);
+                if (cur === target) return;
+                let step = 0; const STEPS = 28;
+                animTimers[elId] = setInterval(() => {
+                    step++;
+                    el.textContent = Math.round(cur + (target - cur) * (step / STEPS));
+                    if (step >= STEPS) { el.textContent = target; clearInterval(animTimers[elId]); }
+                }, 20);
+            }
+
+            function renderFinCompBars() {
+                if (!data) return;
+                ['fincomp-bars', 'fincomp-bars-mobile'].forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    const isMobile = containerId.includes('mobile');
+                    container.innerHTML = Object.entries(data.fin_comp_map).map(([id, comp]) => {
+                        const covered = !!state.fin_comp_coverage[id];
+                        const pct = covered ? 100 : 0;
+                        return `<div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span style="color:${covered ? 'var(--gold)' : 'var(--text-muted)'}">${comp.name}</span>
+                            ${covered ? '<span style="color:var(--emerald)">✓</span>' : ''}
+                        </div>
+                        <div class="fincomp-bar">
+                            <div class="fincomp-bar-fill" style="width:${pct}%"></div>
+                        </div>
+                    </div>`;
+                    }).join('');
+                });
+            }
+
+            function calculateRank(wisdom) {
+                const ranks = data ? data.ranks : [];
+                let rank = ranks[0] || { name: 'ผู้แสวงหาปัญญา', icon: '🌱' };
+                for (const r of ranks) {
+                    if (wisdom >= r.min_wisdom) rank = r;
+                }
+                return rank;
+            }
+
+            // ============================================================
+            // SECTION 3: QUEST MAP TREE
+            // ============================================================
+
+            const QUEST_ORDER = [
+                'entry',
+                'q1', 'q2',
+                'q_new_a', 'q3',
+                'q5',
+                'q6', 'q4', 'q7',
+                'q_new_b', 'q8',
+                'final',
+            ];
+
+            function getNodeStatus(questId) {
+                if ((state.completed_quests || []).includes(questId)) return 'completed';
+                if (state.current_quest === questId) return 'active';
+                if ((state.unlocked_quests || []).includes(questId)) return 'available';
+                return 'locked';
+            }
+
+            function renderQuestMap() {
+                if (!data) return;
+                const map = document.getElementById('quest-map');
+                map.innerHTML = '';
+
+                const archetypeIcon = {
+                    trial: '⚔️', discovery: '🔍', rescue: '🤝',
+                    dilemma: '⚖️', rival: '🏹', investigation: '🔎',
+                    creation: '✨', gatekeeper: '🚪',
+                };
+
+                QUEST_ORDER.forEach(questId => {
+                    const quest = data.quests[questId];
+                    if (!quest) return;
+                    const npc = data.npcs[quest.npc_id];
+                    const status = getNodeStatus(questId);
+                    const isFinal = questId === 'final';
+
+                    // Final quest spans full width
+                    if (isFinal) {
+                        const spacer = document.createElement('div');
+                        spacer.style.gridColumn = '1 / -1';
+                        spacer.style.height = '1px';
+                        spacer.style.background = 'var(--gold-dim)';
+                        spacer.style.margin = '4px 0';
+                        map.appendChild(spacer);
+                    }
+
+                    let statusClass = `node-${status}`;
+                    if (isFinal) statusClass += ' node-final';
+
+                    let badge = '';
+                    if (status === 'completed') badge = `<span class="node-check">✓</span>`;
+                    else if (status === 'active') badge = `<div class="node-active-dot"></div>`;
+                    else if (status === 'locked') badge = `<span class="node-lock-icon">🔒</span>`;
+
+                    let wisdomBadge = '';
+                    if (isFinal && status === 'locked') {
+                        const cond = quest.unlock_condition;
+                        if (typeof cond === 'object') {
+                            wisdomBadge = `<div class="node-wisdom-badge">⚜️ ${cond.wisdom_min}+</div>`;
+                        }
+                    }
+
+                    const node = document.createElement('button');
+                    node.className = `quest-node ${statusClass}`;
+                    node.setAttribute('data-quest', questId);
+                    if (isFinal) node.style.gridColumn = '1 / -1';
+                    node.disabled = status === 'locked';
+                    node.onclick = () => { if (status !== 'locked') openNPCTerminal(quest.npc_id, questId); };
+                    node.innerHTML = `
+                        ${wisdomBadge}
+                        ${badge}
+                        <div class="node-icon">${npc ? npc.icon : '📖'}</div>
+                        <div class="node-npc">${npc ? npc.name : ''}</div>
+                        <div class="node-quest">${quest.name}</div>
+                        <div class="text-sm mt-1" style="color:var(--text-dim)">${archetypeIcon[quest.archetype] || ''}</div>
+                    `;
+                    map.appendChild(node);
+                });
+            }
+
+            // ============================================================
+            // SECTION 4: NPC TERMINAL
+            // ============================================================
+
+            function openNPCTerminal(npcId, questId) {
+                const npc = (data.npcs || {})[npcId];
+                if (!npc) return;
+
+                currentNpcId = npcId;
+
+                // Ensure chat history exists
+                if (!state.chat_histories[npcId]) state.chat_histories[npcId] = [];
+
+                // Header
+                document.getElementById('tnpc-icon').textContent = npc.icon;
+                document.getElementById('tnpc-name').textContent = npc.name;
+                document.getElementById('tnpc-role').textContent = npc.role;
+                document.getElementById('tnpc-unlock-badge').classList.add('hidden');
+
+                // Open modal
+                document.getElementById('modal-npc').classList.add('open');
+
+                // Populate tabs
+                setupCommsTab(npcId);
+                renderQuestTab(npcId);
+                renderDataLogTab(npcId);
+
+                switchTab('comms');
+
+                // Greeting on first visit
+                if (state.chat_histories[npcId].length === 0 && npc.greeting) {
+                    addToHistory(npcId, 'assistant', npc.greeting);
+                }
+                renderChatHistory(npcId);
+            }
+
+            function openActiveQuestNPC() {
+                if (!state.current_quest) return;
+                const q = data.quests[state.current_quest];
+                if (q) openNPCTerminal(q.npc_id, state.current_quest);
+            }
+
+            function closeNPCTerminal() {
+                document.getElementById('modal-npc').classList.remove('open');
+                currentNpcId = null;
+                renderQuestMap();
+            }
+
+            function switchTab(tab) {
+                ['comms', 'quest', 'datalog'].forEach(t => {
+                    document.getElementById(`tab-${t}`).classList.add('hidden');
+                    document.getElementById(`tab-btn-${t}`).classList.remove('active');
+                });
+                document.getElementById(`tab-${tab}`).classList.remove('hidden');
+                document.getElementById(`tab-btn-${tab}`).classList.add('active');
+            }
+
+            function setupCommsTab(npcId) {
+                const isQuestNpc = state.current_quest && (data.quests[state.current_quest]?.npc_id === npcId);
+                const quest = isQuestNpc ? data.quests[state.current_quest] : null;
+                const isFinalQuest = state.current_quest === 'final';
+
+                // Quest bar
+                const questBar = document.getElementById('term-quest-bar');
+                if (isQuestNpc && quest) {
+                    questBar.classList.remove('hidden');
+                    document.getElementById('term-quest-label').textContent = `QUEST: ${quest.name}`;
+                    const turns = state.quest_turn_count;
+                    const minT = quest.min_turns || 3;
+                    document.getElementById('term-turns-label').textContent = `${turns}/${minT} turns`;
+
+                    // Eval button: show only after min turns (and if not investigation with missing fragments)
+                    const evalBtn = document.getElementById('btn-eval-quest');
+                    let canEval = turns >= minT;
+                    if (quest.archetype === 'investigation') {
+                        const frags = state.quest_fragments || {};
+                        const allFrag = (quest.investigation_npcs || []).every(n => frags[n]);
+                        canEval = canEval && allFrag;
+                    }
+                    // Fix B: Always reset button state before toggling visibility
+                    // to prevent disabled/label bleed-over from a previous quest's evaluation
+                    evalBtn.disabled = false;
+                    evalBtn.innerHTML = '<i class="fas fa-check-double mr-1"></i>ส่งรายงาน';
+                    evalBtn.classList.toggle('hidden', !canEval);
+
+                    // Fragment collect button (only for investigation NPCs)
+                    const fragBtn = document.getElementById('btn-collect-frag');
+                    const isInvestNpc = quest.investigation_npcs?.includes(npcId) && quest.archetype === 'investigation';
+                    fragBtn.classList.toggle('hidden', !isInvestNpc || !!(state.quest_fragments || {})[npcId]);
+
+                } else {
+                    questBar.classList.add('hidden');
+                }
+
+                // Fragment tracker (Q8)
+                const fragTracker = document.getElementById('term-frag-tracker');
+                if (isQuestNpc && quest?.archetype === 'investigation') {
+                    fragTracker.classList.remove('hidden');
+                    renderFragmentTracker();
+                } else {
+                    fragTracker.classList.add('hidden');
+                }
+
+                // Blueprint area (Final quest only)
+                const bpArea = document.getElementById('term-blueprint-area');
+                bpArea.classList.toggle('hidden', !(isFinalQuest && isQuestNpc));
+
+                // NPC typing name
+                document.getElementById('term-typing-name').textContent =
+                    `${(data.npcs[npcId]?.name || 'NPC')} กำลังตอบ...`;
+            }
+
+            function renderChatHistory(npcId) {
+                const container = document.getElementById('term-chat');
+                const hist = state.chat_histories[npcId] || [];
+                container.innerHTML = '';
+                hist.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = `${msg.role === 'assistant' ? 'chat-npc' : 'chat-user'} markdown-body slide-in`;
+                    div.innerHTML = (typeof marked !== 'undefined' && marked.parse)
+                        ? marked.parse(msg.content) : msg.content;
+                    container.appendChild(div);
+                });
+                container.scrollTop = container.scrollHeight;
+            }
+
+            function addToHistory(npcId, role, content) {
+                if (!state.chat_histories[npcId]) state.chat_histories[npcId] = [];
+                const entry = {
+                    role, content,
+                    timestamp: new Date().toISOString(),
+                    quest_id: state.current_quest || null,
+                    turn: state.total_turns,
+                };
+                state.chat_histories[npcId].push(entry);
+
+                // Also sync to quest_chat_history if this is the quest NPC
+                if (state.current_quest && data.quests[state.current_quest]?.npc_id === npcId) {
+                    state.quest_chat_history.push({ role, content });
+                }
+            }
+
+            async function sendChat() {
+                const input = document.getElementById('term-input');
+                const msg = input.value.trim();
+                if (!msg || !currentNpcId) return;
+                input.value = '';
+                input.disabled = true;
+
+                const npcId = currentNpcId;
+                addToHistory(npcId, 'user', msg);
+                renderChatHistory(npcId);
+
+                document.getElementById('term-typing').classList.remove('hidden');
+
+                const ctx = buildGameContext();
+                const history = (state.chat_histories[npcId] || []).slice(0, -1).slice(-14).map(m => ({
+                    role: m.role, content: m.content,
+                }));
+
+                try {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            npc_id: npcId,
+                            user_message: msg,
+                            game_context: ctx,
+                            history,
+                            current_quest: state.current_quest,
+                            quest_turn_count: state.quest_turn_count,
+                        }),
+                    });
+
+                    const reader = res.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullContent = '';
+
+                    // Add streaming bubble
+                    addToHistory(npcId, 'assistant', '');
+                    const container = document.getElementById('term-chat');
+                    const lastBubble = document.createElement('div');
+                    lastBubble.className = 'chat-npc markdown-body';
+                    container.appendChild(lastBubble);
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        const lines = decoder.decode(value).split('\n');
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const d = JSON.parse(line.slice(6));
+                                    if (d.content) {
+                                        fullContent += d.content;
+                                        lastBubble.innerHTML = (typeof marked !== 'undefined' && marked.parse)
+                                            ? marked.parse(fullContent) : fullContent;
+                                        container.scrollTop = container.scrollHeight;
+                                    }
+                                    if (d.done || d.error) break;
+                                } catch { }
+                            }
+                        }
+                    }
+
+                    // Update history with full content
+                    const hist = state.chat_histories[npcId];
+                    if (hist && hist.length > 0) hist[hist.length - 1].content = fullContent;
+                    if (state.current_quest && data.quests[state.current_quest]?.npc_id === npcId) {
+                        const qh = state.quest_chat_history;
+                        if (qh.length > 0 && qh[qh.length - 1].role === 'assistant') {
+                            qh[qh.length - 1].content = fullContent;
+                        }
+                    }
+
+                    // Increment turn counts
+                    state.total_turns++;
+                    if (state.current_quest && data.quests[state.current_quest]?.npc_id === npcId) {
+                        state.quest_turn_count++;
+                        setupCommsTab(npcId);
+                    }
+
+                    updateHUD();
+
+                } catch (e) {
+                    addToHistory(npcId, 'assistant', '⚠️ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองอีกครั้ง');
+                    renderChatHistory(npcId);
+                } finally {
+                    document.getElementById('term-typing').classList.add('hidden');
+                    input.disabled = false;
+                    if (!document.getElementById('term-blueprint-area').classList.contains('hidden')) {
+                        // Don't focus if blueprint textarea is visible
+                    } else {
+                        setTimeout(() => input.focus(), 100);
+                    }
+                }
+            }
+
+            function buildGameContext() {
+                const finComp = Object.entries(state.fin_comp_coverage)
+                    .filter(([, v]) => v).map(([k]) => k).join(',') || 'none';
+                return `Player:${state.player_name}|Wisdom:${state.wisdom_score}|Rank:${state.rank}|Quest:${state.current_quest || 'none'}|Turn:${state.quest_turn_count}|CompletedQuests:${state.completed_quests.join(',') || 'none'}|Items:${state.items.join(',') || 'none'}|FinComp:${finComp}`;
+            }
+
+            function renderQuestTab(npcId) {
+                const container = document.getElementById('tab-quest');
+                const npcsQuests = Object.values(data.quests || {}).filter(q => q.npc_id === npcId);
+                if (!npcsQuests.length) {
+                    container.innerHTML = `<div class="text-center py-8 text-sm" style="color:var(--text-muted)">
+                    <i class="fas fa-scroll text-2xl mb-3 opacity-30 block"></i>ไม่มี Quest สำหรับ NPC นี้</div>`;
+                    return;
+                }
+                container.innerHTML = npcsQuests.map(q => {
+                    const status = getNodeStatus(q.id);
+                    const isActive = status === 'active' || state.current_quest === q.id;
+                    const isCompleted = (state.completed_quests || []).includes(q.id);
+                    const isAvailable = (state.unlocked_quests || []).includes(q.id) && !state.current_quest && !isCompleted;
+                    const canAccept = isAvailable;
+                    const label = isCompleted ? '✅ สำเร็จ' : (isActive ? '🟡 กำลังทำ' : (isAvailable ? '🔵 พร้อมรับ' : '⬜ ล็อค'));
+
+                    return `<div class="quest-log-item ${isCompleted ? 'completed' : isActive ? 'active' : isAvailable ? 'available' : ''} ${q.id === 'final' ? 'final-quest' : ''}">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="font-tech text-sm text-white">${q.name}</span>
+                        <span class="text-xs" style="color:var(--text-muted)">${label}</span>
+                    </div>
+                    <div class="text-xs mb-2" style="color:var(--text-muted)">${q.bloom_level || ''}</div>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs" style="color:var(--gold)">${(q.fin_comp_codes || []).join(', ')}</span>
+                        ${canAccept
+                            ? `<button onclick="game.acceptQuest('${q.id}')"
+                                class="btn-action px-3 py-1.5 rounded text-xs font-tech min-h-[32px]">รับ Quest</button>`
+                            : (isActive
+                                ? `<button onclick="game.switchTab('comms')"
+                                    class="btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[32px]">ดำเนินต่อ</button>`
+                                : '')}
+                    </div>
+                </div>`;
+                }).join('');
+            }
+
+            function renderDataLogTab(npcId) {
+                const container = document.getElementById('tab-datalog');
+                const npc = data.npcs[npcId];
+                // Find completed quests for this NPC with insights
+                const npcsQuests = Object.values(data.quests || {}).filter(q => q.npc_id === npcId);
+                const completedWithInsight = npcsQuests
+                    .filter(q => (state.completed_quests || []).includes(q.id))
+                    .filter(q => state.key_insights[q.id]);
+
+                let html = '';
+                if (npc?.philosophy) {
+                    html += `<div class="mb-4 p-3 rounded-lg text-sm italic" style="background:var(--bg-card2);border-left:3px solid var(--gold-dim);color:var(--text-muted)">
+                    "${npc.philosophy}"
+                </div>`;
+                }
+
+                if (completedWithInsight.length) {
+                    html += `<div class="font-tech text-xs tracking-wider mb-2" style="color:var(--gold)">📝 บันทึกปัญญา</div>`;
+                    completedWithInsight.forEach(q => {
+                        const pageData = data.ledger_pages[q.ledger_page_id];
+                        html += `<div class="ledger-page-card filled mb-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span>${pageData?.icon || '📄'}</span>
+                            <span class="font-tech text-xs" style="color:var(--gold)">${pageData?.title || q.name}</span>
+                            <span class="text-xs ml-auto" style="color:var(--text-muted)">${pageData?.fin_comp || ''}</span>
+                        </div>
+                        <p class="text-xs leading-relaxed" style="color:var(--text-main)">${state.key_insights[q.id]}</p>
+                    </div>`;
+                    });
+                } else {
+                    html += `<div class="text-center py-8 text-sm" style="color:var(--text-muted)">
+                    <i class="fas fa-database text-2xl mb-3 opacity-30 block"></i>
+                    <p>ยังไม่มีบันทึก<br><span class="text-xs">ทำ Quest ให้สำเร็จเพื่อบันทึกปัญญาลง Ledger</span></p>
+                </div>`;
+                }
+                container.innerHTML = html;
+            }
+
+            function renderFragmentTracker() {
+                const quest = state.current_quest ? data.quests[state.current_quest] : null;
+                if (!quest) return;
+                const npcs = quest.investigation_npcs || [];
+                const frags = state.quest_fragments || {};
+                document.getElementById('term-frag-dots').innerHTML = npcs.map(nid => {
+                    const npc = data.npcs[nid];
+                    const done = !!frags[nid];
+                    return `<div class="frag-dot ${done ? 'collected' : ''}" title="${npc?.name || nid}"></div>`;
+                }).join('');
+                const collected = Object.values(frags).filter(Boolean).length;
+                document.getElementById('term-frag-count').textContent = `${collected}/${npcs.length}`;
+            }
+
+            // ============================================================
+            // SECTION 5: QUEST FLOW
+            // ============================================================
+
+            async function acceptQuest(questId) {
+                try {
+                    const res = await fetch('/api/quest/accept', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ game_state: state, quest_id: questId }),
+                    });
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        showToast(err.detail || 'ไม่สามารถรับ Quest ได้', 'error');
+                        return;
+                    }
+                    const d = await res.json();
+
+                    state.current_quest = d.active_quest;
+                    state.active_npc = data.quests[questId]?.npc_id;
+                    state.quest_phase = d.quest_phase;
+                    state.quest_turn_count = d.quest_turn_count;
+                    state.quest_chat_history = d.quest_chat_history || [];
+                    state.quest_fragments = d.quest_fragments || {};
+
+                    // Inject quest greeting into chat history
+                    if (d.quest_chat_history?.length) {
+                        const npcId = data.quests[questId]?.npc_id;
+                        if (npcId && !state.chat_histories[npcId]) state.chat_histories[npcId] = [];
+                        if (npcId && d.quest_chat_history[0]) {
+                            // Avoid duplicate if greeting already in history
+                            const lastMsg = state.chat_histories[npcId].slice(-1)[0];
+                            if (!lastMsg || lastMsg.content !== d.quest_chat_history[0].content) {
+                                addToHistory(npcId, 'assistant', d.quest_chat_history[0].content);
+                            }
+                        }
+                    }
+
+                    updateHUD();
+                    setupCommsTab(currentNpcId);
+                    renderChatHistory(currentNpcId);
+                    renderQuestTab(currentNpcId);
+                    switchTab('comms');
+
+                    showToast(`รับ Quest: ${data.quests[questId]?.name}`, 'success');
+                    renderQuestMap();
+                } catch (e) {
+                    console.error('acceptQuest:', e);
+                    showToast('เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+                }
+            }
+
+            async function evaluateQuest() {
+                if (!state.current_quest) return;
+                const questId = state.current_quest;
+
+                const evalBtn = document.getElementById('btn-eval-quest');
+                evalBtn.disabled = true;
+                evalBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>กำลังประเมิน...';
+
+                // Fix A: track whether the full pass+complete flow finished successfully
+                // so the finally block knows whether to reset the button
+                let questCompletedSuccessfully = false;
+
+                // Fix C: AbortController for 40-second timeout on evaluation fetch
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 40000);
+
+                try {
+                    const res = await fetch('/api/quest/evaluate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            quest_id: questId,
+                            chat_history: state.quest_chat_history,
+                            player_name: state.player_name,
+                        }),
+                        signal: controller.signal,
+                    });
+                    clearTimeout(timeoutId);
+                    const d = await res.json();
+                    const npcId = currentNpcId;
+
+                    if (d.pass) {
+                        // Show pass feedback in chat
+                        addToHistory(npcId, 'assistant',
+                            `✅ **ประเมินผล: ผ่าน!** (คะแนน ${d.score}/5)\n\n${d.feedback}\n\n📖 *กำลังบันทึกลง The Eternal Ledger...*`);
+                        renderChatHistory(npcId);
+                        state.ksa_evidence[questId] = d.ksa_met || {};
+
+                        // Write ledger then complete
+                        await writeLedgerPage(questId);
+                        await completeQuestAfterEval(questId);
+
+                        // Fix A: only set true after BOTH calls above complete without throwing
+                        questCompletedSuccessfully = true;
+                    } else {
+                        addToHistory(npcId, 'assistant',
+                            `❌ **ยังไม่ผ่าน** (คะแนน ${d.score}/5)\n\n${d.feedback}\n\nลองอธิบายเพิ่มเติมแล้วกดส่งรายงานอีกครั้ง`);
+                        renderChatHistory(npcId);
+
+                        // Increment retry
+                        state.retry_counts[questId] = (state.retry_counts[questId] || 0) + 1;
+                    }
+                } catch (e) {
+                    clearTimeout(timeoutId);
+                    console.error('evaluateQuest:', e);
+                    // Fix C: give timeout-specific message
+                    const msg = e.name === 'AbortError'
+                        ? 'การประเมินใช้เวลานานเกินไป กรุณาลองใหม่'
+                        : 'เกิดข้อผิดพลาดในการประเมิน';
+                    showToast(msg, 'error');
+                } finally {
+                    // Fix A: reset button unless the quest was fully completed
+                    // (if completed, the button is already hidden by completeQuestAfterEval → setupCommsTab)
+                    if (!questCompletedSuccessfully) {
+                        evalBtn.disabled = false;
+                        evalBtn.innerHTML = '<i class="fas fa-check-double mr-1"></i>ส่งรายงาน';
+                    }
+                }
+            }
+
+            async function writeLedgerPage(questId) {
+                try {
+                    const res = await fetch('/api/ledger/write', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ quest_id: questId, game_state: state }),
+                    });
+                    const d = await res.json();
+                    if (d.success && d.key_insight) {
+                        state.key_insights[questId] = d.key_insight;
+                    }
+                } catch (e) {
+                    console.error('writeLedgerPage:', e);
+                }
+            }
+
+            async function completeQuestAfterEval(questId) {
+                try {
+                    const res = await fetch('/api/quest/complete', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ game_state: state, quest_id: questId }),
+                    });
+                    const d = await res.json();
+
+                    // Update state
+                    state.wisdom_score = d.new_wisdom_score;
+                    state.rank = d.new_rank?.name || state.rank;
+                    state.ledger_pages = d.new_ledger_pages;
+                    state.completed_quests = d.new_completed_quests;
+                    state.unlocked_quests = d.new_unlocked_quests;
+                    state.fin_comp_coverage = d.new_fin_comp_coverage;
+                    state.items = d.new_items;
+                    state.badges = d.new_badges;
+                    state.current_quest = null;
+                    state.active_npc = null;
+                    state.quest_turn_count = 0;
+                    state.quest_chat_history = [];
+                    state.quest_fragments = {};
+
+                    updateHUD();
+                    renderQuestMap();
+                    renderQuestTab(currentNpcId);
+                    renderDataLogTab(currentNpcId);
+                    setupCommsTab(currentNpcId);
+                    document.getElementById('btn-eval-quest').classList.add('hidden');
+
+                    // Show wisdom gain popup
+                    const rew = d.rewards || {};
+                    if (rew.wisdom) showXP(`+${rew.wisdom} Wisdom ⚜️`);
+                    if (d.new_rank?.name && d.new_rank.name !== state.rank) {
+                        setTimeout(() => showAchievement(`Rank ใหม่: ${d.new_rank.icon} ${d.new_rank.name}`), 800);
+                    }
+                    if (d.newly_unlocked?.length) {
+                        d.unlock_messages?.forEach((m, i) => {
+                            setTimeout(() => showToast(m, 'success'), (i + 1) * 600);
+                        });
+                    }
+                    // Badge
+                    if (rew.badge) setTimeout(() => showAchievement(rew.badge), 1200);
+
+                    // Ledger flash
+                    setTimeout(() => openLedger(), 1800);
+
+                } catch (e) {
+                    console.error('completeQuestAfterEval:', e);
+                    showToast('เกิดข้อผิดพลาด', 'error');
+                }
+            }
+
+            async function collectFragment() {
+                if (!state.current_quest || !currentNpcId) return;
+                const btn = document.getElementById('btn-collect-frag');
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/quest/update-fragment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            quest_id: state.current_quest,
+                            npc_id: currentNpcId,
+                            current_fragments: state.quest_fragments,
+                        }),
+                    });
+                    const d = await res.json();
+                    if (d.success) {
+                        state.quest_fragments = d.fragments;
+                        showXP(`📋 Fragment ${d.fragments_collected}/${d.total_fragments}`);
+                        renderFragmentTracker();
+                        setupCommsTab(currentNpcId);
+                        btn.classList.add('hidden'); // collected — hide for this NPC
+                        addToHistory(currentNpcId, 'assistant', `📋 ${d.message}`);
+                        renderChatHistory(currentNpcId);
+                    }
+                } catch (e) {
+                    console.error('collectFragment:', e);
+                    btn.disabled = false;
+                }
+            }
+
+            async function submitBlueprint() {
+                const text = document.getElementById('blueprint-input').value.trim();
+                if (!text || text.length < 30) {
+                    showToast('กรุณาเขียนพิมพ์เขียวให้ครบถ้วน (อย่างน้อย 30 ตัวอักษร)', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('btn-submit-blueprint');
+                btn.disabled = true;
+                btn.textContent = 'กำลังประเมิน...';
+
+                try {
+                    const res = await fetch('/api/final/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ blueprint_text: text, game_state: state }),
+                    });
+                    const d = await res.json();
+
+                    const npcId = currentNpcId;
+                    if (d.pass) {
+                        const covered = (d.competencies_covered || []).join(', ');
+                        addToHistory(npcId, 'assistant',
+                            `✨ **${d.ceremonial_message || 'พิมพ์เขียวของท่านสมบูรณ์แล้ว'}**\n\n${d.feedback_th || ''}\n\n*สมรรถนะที่ครอบคลุม: ${covered}*`);
+                        renderChatHistory(npcId);
+
+                        // Auto-complete final quest
+                        await completeQuestAfterEval('final');
+                    } else {
+                        addToHistory(npcId, 'assistant',
+                            `📜 ${d.feedback_th || 'กรุณาเพิ่มเติมเนื้อหาในพิมพ์เขียว'}`);
+                        renderChatHistory(npcId);
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane mr-1"></i>ส่งพิมพ์เขียว';
+                    }
+                } catch (e) {
+                    console.error('submitBlueprint:', e);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane mr-1"></i>ส่งพิมพ์เขียว';
+                }
+            }
+
+            // ============================================================
+            // SECTION 6: LEDGER PANEL
+            // ============================================================
+
+            function openLedger() {
+                document.getElementById('ledger-overlay').classList.add('open');
+                document.getElementById('ledger-panel').classList.add('open');
+                renderLedger();
+            }
+
+            function closeLedger() {
+                document.getElementById('ledger-overlay').classList.remove('open');
+                document.getElementById('ledger-panel').classList.remove('open');
+            }
+
+            function renderLedger() {
+                if (!data) return;
+                const inner = document.getElementById('ledger-inner');
+                const filled = Object.values(state.ledger_pages).filter(Boolean).length;
+                document.getElementById('ledger-count-label').textContent = `${filled}/10`;
+
+                // Wisdom bar
+                const pct = Math.min(100, (state.wisdom_score / 175) * 100);
+                document.getElementById('ledger-wisdom-val').textContent = `${state.wisdom_score}/175`;
+                document.getElementById('ledger-wisdom-fill').style.width = pct + '%';
+
+                const pages = Object.entries(data.ledger_pages || {});
+                inner.innerHTML = pages.map(([pageId, pageData]) => {
+                    const isFinal = pageId === 'final';
+                    const isFilled = !!state.ledger_pages[pageId];
+                    const insight = state.key_insights[pageId] || '';
+                    const cls = isFinal
+                        ? `final-page ${isFilled ? 'filled' : ''}`
+                        : `${isFilled ? 'filled' : ''}`;
+
+                    let lockInfo = '';
+                    if (!isFilled) {
+                        if (isFinal) {
+                            const cond = data.quests['final']?.unlock_condition || {};
+                            const curFilled = Object.values(state.ledger_pages).filter(Boolean).length;
+                            lockInfo = `<p class="text-xs mt-1" style="color:var(--text-muted)">
+                            ต้องการ Wisdom ≥ ${cond.wisdom_min || 120} (ปัจจุบัน: ${state.wisdom_score}) และ หน้า ≥ ${cond.pages_min || 8} (ปัจจุบัน: ${curFilled})</p>`;
+                        } else {
+                            lockInfo = `<p class="text-xs mt-1" style="color:var(--text-dim)">ทำ Quest ที่เกี่ยวข้องให้สำเร็จ</p>`;
+                        }
+                    }
+
+                    return `<div class="ledger-page-card ${cls}">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-lg">${isFilled ? pageData.icon : '🔒'}</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-tech text-xs ${isFilled ? '' : ''}" style="color:${isFilled ? (isFinal ? 'var(--wisdom)' : 'var(--gold)') : 'var(--text-dim)'}">
+                                หน้า ${pageData.page_num}: ${pageData.title}
+                            </div>
+                            <div class="text-xs" style="color:var(--text-muted)">${pageData.fin_comp}</div>
+                        </div>
+                        ${isFilled ? '<span style="color:var(--emerald)">✓</span>' : ''}
+                    </div>
+                    ${isFilled && insight
+                            ? `<p class="text-xs leading-relaxed mt-2 pt-2" style="color:var(--text-main);border-top:1px solid var(--gold-dim)">${insight}</p>`
+                            : lockInfo}
+                </div>`;
+                }).join('');
+            }
+
+            // ============================================================
+            // SECTION 7: QUEST LOG MODAL
+            // ============================================================
+
+            function openQuestLog() {
+                document.getElementById('modal-quest-log').classList.add('open');
+                renderQuestLog();
+            }
+
+            function renderQuestLog() {
+                if (!data) return;
+                const inner = document.getElementById('quest-log-inner');
+                const quests = Object.values(data.quests || {});
+                const bloomColors = {
+                    Remember: 'slate', Understand: 'sky', Apply: 'yellow',
+                    Analyze: 'orange', Evaluate: 'red', Create: 'purple',
+                };
+
+                inner.innerHTML = quests.map(q => {
+                    const status = getNodeStatus(q.id);
+                    const isCompleted = (state.completed_quests || []).includes(q.id);
+                    const isActive = state.current_quest === q.id;
+                    const isAvailable = (state.unlocked_quests || []).includes(q.id) && !state.current_quest && !isCompleted && q.id !== 'final';
+                    const isFinal = q.id === 'final';
+
+                    // Final: check wisdom/pages condition
+                    const finalAvail = isFinal && !isCompleted && !state.current_quest
+                        && state.wisdom_score >= 120
+                        && Object.values(state.ledger_pages).filter(Boolean).length >= 8;
+
+                    const canAccept = isAvailable || finalAvail;
+                    const label = isCompleted ? '✅ สำเร็จ' : (isActive ? '🟡 กำลังทำ' : (canAccept ? '🔵 พร้อมรับ' : '⬜ ล็อค'));
+
+                    const bloomKey = (q.bloom_level || '').split(' ')[0];
+                    const bc = bloomColors[bloomKey] || 'sky';
+
+                    const npc = data.npcs[q.npc_id];
+
+                    return `<div class="quest-log-item ${isCompleted ? 'completed' : isActive ? 'active' : (canAccept) ? 'available' : ''} ${isFinal ? 'final-quest' : ''}">
+                    <div class="flex justify-between items-start mb-1.5 gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">${npc?.icon || '📖'}</span>
+                            <span class="font-tech text-sm text-white">${q.name}</span>
+                        </div>
+                        <span class="text-xs flex-shrink-0" style="color:var(--text-muted)">${label}</span>
+                    </div>
+                    <div class="text-xs mb-2" style="color:var(--text-muted)">
+                        ${npc?.name || ''} · ${q.bloom_level || ''} · ${(q.fin_comp_codes || []).join(', ')}
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        ${canAccept
+                            ? `<button onclick="game.closeModal('modal-quest-log');game.openNPCTerminal('${q.npc_id}','${q.id}');setTimeout(()=>game.acceptQuest('${q.id}'),300)"
+                                class="btn-action px-3 py-1.5 rounded text-xs font-tech min-h-[32px]">รับ Quest</button>`
+                            : (isActive
+                                ? `<button onclick="game.closeModal('modal-quest-log');game.openActiveQuestNPC()"
+                                    class="btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[32px]">ดำเนินต่อ</button>`
+                                : '<div></div>')}
+                        ${isCompleted && state.key_insights[q.id]
+                            ? `<span class="text-xs" style="color:var(--emerald)"><i class="fas fa-file-alt mr-1"></i>บันทึกแล้ว</span>`
+                            : ''}
+                    </div>
+                </div>`;
+                }).join('');
+            }
+
+            // ============================================================
+            // SECTION 8: TEACHER REPORT
+            // ============================================================
+
+            async function openTeacherReport() {
+                document.getElementById('modal-report').classList.add('open');
+                document.getElementById('report-inner').innerHTML = `
+                <div class="text-center py-8" style="color:var(--text-muted)">
+                    <div class="loader-ring mx-auto mb-3" style="width:32px;height:32px;border-width:2px;"></div>
+                    <p class="text-sm">กำลังสร้างรายงาน...</p>
+                </div>`;
+
+                try {
+                    const res = await fetch('/api/report', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ game_state: state }),
+                    });
+                    const d = await res.json();
+                    renderTeacherReport(d);
+                } catch (e) {
+                    document.getElementById('report-inner').innerHTML =
+                        `<div class="text-center py-8 text-sm" style="color:var(--red)">เกิดข้อผิดพลาดในการสร้างรายงาน</div>`;
+                }
+            }
+
+            function renderTeacherReport(reportData) {
+                const inner = document.getElementById('report-inner');
+                const sum = reportData.summary || {};
+                const rank = sum.rank || {};
+
+                let html = `
+                <div class="mb-4 p-3 rounded-lg" style="background:rgba(201,162,39,.06);border:1px solid var(--gold-dim)">
+                    <div class="font-tech text-sm mb-2" style="color:var(--gold)">สรุปผลการเรียนรู้</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+                        <div><span style="color:var(--text-muted)">นักเรียน: </span><strong>${sum.student_name || '-'}</strong></div>
+                        <div><span style="color:var(--text-muted)">Wisdom: </span><strong style="color:var(--wisdom)">${sum.wisdom_score || 0}/175</strong></div>
+                        <div><span style="color:var(--text-muted)">Rank: </span><strong>${rank.icon || ''} ${rank.name || '-'}</strong></div>
+                        <div><span style="color:var(--text-muted)">Quest สำเร็จ: </span><strong>${sum.completed_quests || 0}</strong></div>
+                        <div><span style="color:var(--text-muted)">หน้า Ledger: </span><strong>${sum.ledger_pages_filled || 0}/10</strong></div>
+                        <div><span style="color:var(--text-muted)">สมรรถนะ: </span><strong style="color:var(--emerald)">${sum.competencies_covered || '0/6'}</strong></div>
+                    </div>
+                    ${sum.badges?.length ? `<div class="mt-2 text-xs" style="color:var(--text-muted)">Badges: ${sum.badges.join(', ')}</div>` : ''}
+                    <div class="text-xs mt-1" style="color:var(--text-dim)">สร้างเมื่อ: ${reportData.generated_at || ''}</div>
+                </div>
+                <div class="font-tech text-xs tracking-wider mb-3" style="color:var(--gold)">สมรรถนะทางการเงินที่ประเมิน</div>`;
+
+                (reportData.report_sections || []).forEach(sec => {
+                    const covered = sec.is_covered;
+                    html += `<div class="report-row ${covered ? 'covered' : ''}">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-tech text-sm" style="color:${covered ? 'var(--emerald)' : 'var(--text-muted)'}">
+                            ${covered ? '✓' : '○'} ${sec.comp_name}
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs" style="color:var(--text-dim)">${sec.codes?.join(', ') || ''}</span>
+                            <span class="text-xs" style="color:${covered ? 'var(--emerald)' : 'var(--text-dim)'}">${sec.coverage_note}</span>
+                        </div>
+                    </div>
+                    ${sec.evidence?.map(ev => `
+                        <div class="mt-1 pl-3 text-xs" style="border-left:2px solid ${covered ? 'rgba(16,185,129,.3)' : 'var(--gold-dim)'}">
+                            <span style="color:var(--gold)">${ev.quest_name}</span>
+                            ${ev.key_insight ? `<br><span style="color:var(--text-main)">${ev.key_insight}</span>` : ''}
+                            <div style="color:var(--text-dim)">K:${ev.ksa_met?.K ? '✓' : '✗'} S:${ev.ksa_met?.S ? '✓' : '✗'} A:${ev.ksa_met?.A ? '✓' : '✗'} · ${ev.bloom_level || ''}</div>
+                        </div>`).join('') || ''}
+                </div>`;
+                });
+
+                inner.innerHTML = html;
+                // Store raw text for copying
+                inner.dataset.reportText = JSON.stringify(reportData, null, 2);
+            }
+
+            function copyTeacherReport() {
+                const inner = document.getElementById('report-inner');
+                // ใช้ innerText (human-readable) เป็นหลัก ไม่ใช่ JSON
+                const raw = inner.innerText || inner.dataset.reportText || '';
+
+                // iOS-safe fallback (ต้องเรียกก่อน async ใด ๆ เพื่อให้อยู่ใน gesture chain)
+                function iosFallbackCopy(text) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    // position:fixed + opacity:0 — iOS ต้องการให้ element อยู่ใน viewport
+                    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:none;outline:none;opacity:0;';
+                    ta.readOnly = false; // iOS ignores readOnly elements
+                    document.body.appendChild(ta);
+                    ta.focus();                        // ต้อง focus ก่อน
+                    ta.setSelectionRange(0, text.length); // iOS ต้องใช้ setSelectionRange ไม่ใช่ select()
+                    let ok = false;
+                    try { ok = document.execCommand('copy'); } catch (_) {}
+                    document.body.removeChild(ta);
+                    return ok;
+                }
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(raw).then(() => {
+                        showToast('คัดลอกรายงานแล้ว ✓', 'success');
+                    }).catch(() => {
+                        const ok = iosFallbackCopy(raw);
+                        showToast(ok ? 'คัดลอกรายงานแล้ว ✓' : 'กรุณา Long-press แล้วเลือก "คัดลอก"', ok ? 'success' : 'error');
+                    });
+                } else {
+                    // ไม่มี Clipboard API (HTTP หรือ browser เก่า) — ใช้ fallback ทันที
+                    const ok = iosFallbackCopy(raw);
+                    showToast(ok ? 'คัดลอกรายงานแล้ว ✓' : 'กรุณา Long-press แล้วเลือก "คัดลอก"', ok ? 'success' : 'error');
+                }
+            }
+
+            // ============================================================
+            // SECTION 9: UTILITIES
+            // ============================================================
+
+            function showXP(text) {
+                const popup = document.createElement('div');
+                popup.className = 'xp-popup';
+                popup.textContent = text;
+                popup.style.left = `${Math.max(20, window.innerWidth / 2 - 80)}px`;
+                popup.style.top = '72px';
+                document.body.appendChild(popup);
+                setTimeout(() => popup.remove(), 1700);
+            }
+
+            function showAchievement(text) {
+                const toast = document.getElementById('achievement-toast');
+                document.getElementById('toast-icon').textContent = '🏆';
+                document.getElementById('toast-text').textContent = text;
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 4500);
+            }
+
+            function showToast(msg, type = 'info') {
+                const color = type === 'success' ? 'var(--emerald)' : type === 'error' ? 'var(--red)' : 'var(--gold)';
+                const toast = document.createElement('div');
+                toast.className = 'fixed z-[9999] text-sm font-tech px-4 py-2 rounded-lg slide-in';
+                toast.style.cssText = `bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg-card2);border:1px solid ${color};color:${color};white-space:nowrap;`;
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
+            }
+
+            function closeModal(id) {
+                document.getElementById(id)?.classList.remove('open');
+            }
+
+            // ============================================================
+            // SECTION 10: PUBLIC API
+            // ============================================================
+
+            return {
+                init, startGame,
+                openNPCTerminal, closeNPCTerminal, openActiveQuestNPC,
+                switchTab, sendChat,
+                acceptQuest, evaluateQuest, collectFragment, submitBlueprint,
+                openLedger, closeLedger,
+                openQuestLog,
+                openTeacherReport, copyTeacherReport,
+                closeModal,
+            };
+        })();
+
+        // ============================================================
+        // BOOT
+        // ============================================================
+        window.addEventListener('DOMContentLoaded', async () => {
+            await game.init();
+
+            // Close modals on backdrop click
+            document.addEventListener('click', e => {
+                const npcModal = document.getElementById('modal-npc');
+                if (e.target === npcModal) game.closeNPCTerminal();
+            });
+        });
+
+    </script>
+
+</body>
+</html>
