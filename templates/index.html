@@ -1001,15 +1001,15 @@
                 <div class="panel p-3 hidden lg:block">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fas fa-chart-bar text-xs" style="color:var(--gold)"></i>
-                        <span class="font-tech text-xs tracking-widest" style="color:var(--gold)">สมรรถนะทางการเงิน</span>
+                        <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">สมรรถนะทางการเงิน</span>
                     </div>
                     <div id="fincomp-bars" class="space-y-2.5"></div>
                 </div>
 
                 <!-- Items (if any) -->
                 <div id="items-panel" class="panel p-3 hidden">
-                    <div class="text-xs font-tech tracking-wider mb-2" style="color:var(--text-muted)">
-                        <i class="fas fa-box mr-1"></i>ของสะสม
+                    <div class="text-sm font-tech tracking-wider mb-2" style="color:var(--text-muted)">
+                        <i class="fas fa-box mr-1"></i>ไอเท็มสะสม
                     </div>
                     <div id="items-container" class="flex flex-wrap gap-1"></div>
                 </div>
@@ -1401,11 +1401,19 @@
                 const itemsPanel = document.getElementById('items-panel');
                 if (state.items.length > 0) {
                     itemsPanel.classList.remove('hidden');
-                    document.getElementById('items-container').innerHTML = state.items.map(item =>
-                        `<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.3);color:var(--gold)">
-                        <i class="fas fa-gem mr-1 text-xs"></i>${item}
-                    </span>`
-                    ).join('');
+                    document.getElementById('items-container').innerHTML = state.items.map(item => {
+                        // Items are stored as "{emoji} {name}" — split on first space
+                        const spaceIdx = item.indexOf(' ');
+                        const icon = spaceIdx > -1 ? item.slice(0, spaceIdx) : '📦';
+                        const name = spaceIdx > -1 ? item.slice(spaceIdx + 1) : item;
+                        // Color by taxonomy type
+                        const colorMap = { '🔧': 'rgba(59,130,246,.3)', '📜': 'rgba(139,92,246,.3)', '🗝️': 'rgba(201,162,39,.3)' };
+                        const borderColor = colorMap[icon] || 'rgba(201,162,39,.3)';
+                        return `<span class="text-sm px-2 py-0.5 rounded-full flex items-center gap-1"
+                            style="background:rgba(30,23,16,.9);border:1px solid ${borderColor};color:var(--text-main)">
+                            <span>${icon}</span><span>${name}</span>
+                        </span>`;
+                    }).join('');
                 } else {
                     itemsPanel.classList.add('hidden');
                 }
@@ -1447,7 +1455,7 @@
                         const covered = !!state.fin_comp_coverage[id];
                         const pct = covered ? 100 : 0;
                         return `<div>
-                        <div class="flex justify-between text-xs mb-1">
+                        <div class="flex justify-between text-sm mb-1">
                             <span style="color:${covered ? 'var(--gold)' : 'var(--text-muted)'}">${comp.name}</span>
                             ${covered ? '<span style="color:var(--emerald)">✓</span>' : ''}
                         </div>
@@ -1475,10 +1483,10 @@
             const QUEST_ORDER = [
                 'entry',
                 'q1', 'q2',
-                'q_new_a', 'q3',
+                'q3', 'q4',
                 'q5',
-                'q6', 'q4', 'q7',
-                'q_new_b', 'q8',
+                'q6', 'q7', 'q8',
+                'q9', 'q10',
                 'final',
             ];
 
@@ -1545,7 +1553,7 @@
                         <div class="node-icon">${npc ? npc.icon : '📖'}</div>
                         <div class="node-npc">${npc ? npc.name : ''}</div>
                         <div class="node-quest">${quest.name}</div>
-                        <div class="text-sm mt-1" style="color:var(--text-dim)">${archetypeIcon[quest.archetype] || ''}</div>
+                        <div class="text-base mt-1" style="color:var(--text-dim)">${archetypeIcon[quest.archetype] || ''}</div>
                     `;
                     map.appendChild(node);
                 });
@@ -1679,16 +1687,40 @@
 
             function addToHistory(npcId, role, content) {
                 if (!state.chat_histories[npcId]) state.chat_histories[npcId] = [];
-                const entry = {
-                    role, content,
+
+                // ── Research Metadata (Rich Entry for Data Export / RQ4) ──────────
+                const isQuestNpc = !!(state.current_quest && data.quests[state.current_quest]?.npc_id === npcId);
+                const questMinTurns = isQuestNpc ? (data.quests[state.current_quest]?.min_turns || 3) : 3;
+                const turn = state.quest_turn_count || 0;
+
+                let scaffoldingLevel = 'none';
+                let questPhase = 'none';
+                if (isQuestNpc) {
+                    scaffoldingLevel = turn <= 2 ? 'high' : turn <= 4 ? 'medium' : 'low';
+                    if (turn === 0) questPhase = 'hook';
+                    else if (turn === 1) questPhase = 'explore';
+                    else if (turn >= questMinTurns) questPhase = 'reflect';
+                    else questPhase = 'apply';
+                }
+
+                // Rich entry — stored in chat_histories for Research Export
+                const richEntry = {
+                    role,
+                    content,
                     timestamp: new Date().toISOString(),
                     quest_id: state.current_quest || null,
                     turn: state.total_turns,
+                    research_meta: {
+                        scaffolding_level: scaffoldingLevel,
+                        quest_phase: questPhase,
+                        quest_turn: turn,
+                    },
                 };
-                state.chat_histories[npcId].push(entry);
+                state.chat_histories[npcId].push(richEntry);
 
-                // Also sync to quest_chat_history if this is the quest NPC
-                if (state.current_quest && data.quests[state.current_quest]?.npc_id === npcId) {
+                // Clean entry — stored in quest_chat_history for Evaluator API
+                // IMPORTANT: must remain {role, content} only to avoid contaminating evaluation prompt
+                if (isQuestNpc) {
                     state.quest_chat_history.push({ role, content });
                 }
             }
@@ -2052,9 +2084,13 @@
                     setupCommsTab(currentNpcId);
                     document.getElementById('btn-eval-quest').classList.add('hidden');
 
-                    // Show wisdom gain popup
+                    // Show reward notifications per Item Taxonomy
                     const rew = d.rewards || {};
-                    if (rew.wisdom) showXP(`+${rew.wisdom} Wisdom ⚜️`);
+
+                    // Resource Token (Wisdom)
+                    const wisdomGained = rew.resource_token?.wisdom || 0;
+                    if (wisdomGained > 0) showXP(`+${wisdomGained} Wisdom ⚜️`);
+
                     if (d.new_rank?.name && d.new_rank.name !== state.rank) {
                         setTimeout(() => showAchievement(`Rank ใหม่: ${d.new_rank.icon} ${d.new_rank.name}`), 800);
                     }
@@ -2063,8 +2099,23 @@
                             setTimeout(() => showToast(m, 'success'), (i + 1) * 600);
                         });
                     }
-                    // Badge
-                    if (rew.badge) setTimeout(() => showAchievement(rew.badge), 1200);
+
+                    // Mastery Badge
+                    if (rew.mastery_badge) {
+                        setTimeout(() => showAchievement(`🏅 ปลดล็อกฉายา: ${rew.mastery_badge}`), 1200);
+                    }
+                    // Tool Item
+                    if (rew.tool_item) {
+                        setTimeout(() => showToast(`🔧 ได้รับ Tool Item: ${rew.tool_item}`, 'success'), 2000);
+                    }
+                    // Narrative Fragment
+                    if (rew.narrative_fragment) {
+                        setTimeout(() => showToast(`📜 ได้รับ Narrative: ${rew.narrative_fragment}`, 'success'), 2600);
+                    }
+                    // Access Item
+                    if (rew.access_item) {
+                        setTimeout(() => showToast(`🗝️ ปลดล็อก: ${rew.access_item}`, 'success'), 2600);
+                    }
 
                     // Ledger flash
                     setTimeout(() => openLedger(), 1800);
