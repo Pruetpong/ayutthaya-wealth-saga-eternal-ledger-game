@@ -401,7 +401,982 @@ ABSOLUTE RULES:
 }
 
 # ==========================================
-# SECTION 2: QUESTS — 10 Quest + 1 Final
+# SECTION 2: ITEMS_DB — Item Taxonomy Repository
+# ==========================================
+
+ITEMS_DB = {
+
+    # ── Q1: Emergency Fund (พระอาจารย์มั่น) ─────────────────────────────────
+
+    "q1_tool_emergency_calc": {
+        "id": "q1_tool_emergency_calc",
+        "type": "tool_item",
+        "name": "ตารางคำนวณกองทุนฉุกเฉิน",
+        "icon": "🧮",
+        "description": (
+            "ตารางลายมือของพระอาจารย์มั่น สำหรับคำนวณกองทุนฉุกเฉินตาม 3–6 เท่า "
+            "ของค่าใช้จ่ายรายเดือน ปรับตามความมั่นคงของอาชีพและภาระที่มี"
+        ),
+        "source_quest": "q1",
+        "source_npc": "phraajarnman",
+        "hint_prompt": (
+            "Player has the 'Emergency Fund Calculation Table'. "
+            "KEY FACT: Emergency Fund = monthly expenses × 3 to 6 months, "
+            "stored in high-liquidity instruments (savings account). "
+            "INSTRUCTION: Use as Socratic scaffolding. "
+            "Ask in Thai: 'ค่าใช้จ่ายรายเดือนของท่านเท่าไหร่? คูณ 3-6 เดือนแล้วได้เท่าไหร่ "
+            "และท่านคิดว่าควรเลือก 3 หรือ 6 เดือน เพราะอะไร?' "
+            "Do NOT state the final figure. Guide them to reason based on their situation."
+        ),
+        "relevance_map": {
+            "q3": (
+                "Player carries the Emergency Fund Calculator. "
+                "Acknowledge early in your first response: "
+                "'ท่านมีตารางคำนวณกองทุนฉุกเฉินแล้ว ดีขอรับ — เราเข้าเรื่อง Pay Yourself First กันเลย'. "
+                "Skip introductory explanation of why emergency fund matters."
+            ),
+            "q5": (
+                "Player understands emergency fund foundation. "
+                "Reference briefly: 'ท่านรู้เรื่องกองทุนฉุกเฉินแล้วเจ้าค่ะ จึงไม่แปลกที่ท่านมาคิดเรื่อง Risk Profile'. "
+                "Do not re-teach emergency fund concepts."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q1_tool_liquid_savings": {
+        "id": "q1_tool_liquid_savings",
+        "type": "tool_item",
+        "name": "สมุดบัญชีปลอดภัยประจำวัด",
+        "icon": "📓",
+        "description": (
+            "สมุดบัญชีที่พระอาจารย์มั่นใช้สอนเรื่องการเก็บเงินในที่ที่เปลี่ยนเป็นเงินสดได้ทันที "
+            "ไม่ใช่ผูกไว้กับการลงทุนยาว"
+        ),
+        "source_quest": "q1",
+        "source_npc": "phraajarnman",
+        "hint_prompt": (
+            "Player has the 'Temple Liquidity Ledger'. "
+            "KEY FACT: Emergency funds must be kept in HIGH-LIQUIDITY instruments "
+            "(savings account, money market fund) — NOT stocks, LTF, RMF, or long-term investments "
+            "that can lose value when withdrawn quickly. "
+            "INSTRUCTION: Use Socratic scaffolding. "
+            "Ask in Thai: 'ถ้าท่านต้องถอนเงินฉุกเฉิน 50,000 บาทภายใน 1 วัน แหล่งใดที่ท่านจะถอนได้ครบโดยไม่ขาดทุน?' "
+            "Do NOT list instruments directly — let them reason about liquidity."
+        ),
+        "relevance_map": {
+            "q5": (
+                "Player understands liquidity concept. "
+                "You may use the term 'สภาพคล่อง' / 'Liquidity' without redefining it."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q1_narrative_rice_parable": {
+        "id": "q1_narrative_rice_parable",
+        "type": "narrative_fragment",
+        "name": "คำเทศน์ข้าวสารสามเดือน",
+        "icon": "🪔",
+        "description": (
+            "คำสอนโบราณของพระอาจารย์มั่นเรื่องภิกษุที่รอดชีวิตผ่านฤดูแล้ง "
+            "เพราะเก็บข้าวสารไว้ 3 เดือน"
+        ),
+        "source_quest": "q1",
+        "source_npc": "phraajarnman",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**คำเทศน์ของพระอาจารย์มั่น — บันทึกโดยสามเณรในสมัยพระเจ้าบรมโกศ**\n\n"
+            "ครั้งหนึ่งในสมัยอยุธยา เมื่อเกิดความแห้งแล้งใหญ่ พระภิกษุรูปหนึ่งนามว่าหลวงพี่ทอง "
+            "สามารถดำรงชีวิตต่อไปได้ในขณะที่หมู่บ้านรอบข้างอดอยาก เพราะท่านเก็บข้าวสารไว้เสมอ 3 เดือน "
+            "ไม่ว่าจะได้มาเท่าใดก็ตาม\n\n"
+            "เมื่อชาวบ้านถามว่าทำไมท่านจึงเก็บไว้ทั้งที่วัดมีอาหารบิณฑบาตรายวันอยู่แล้ว "
+            "ท่านตอบว่า *'ฟ้าฝนเป็นของไม่แน่นอน กรรมของสัตว์โลกก็เช่นกัน ผู้ที่ไม่เตรียมย่อมเดือดร้อน "
+            "เมื่อทุกข์มาถึงแล้วจึงค่อยเริ่ม นั้นช้าเกินไป'*\n\n"
+            "นี่คือเหตุที่อาตมาสอนโยมว่า กองทุนฉุกเฉินต้องมี **ก่อน** ทุกข์มาถึง ไม่ใช่หลัง"
+        ),
+        "gates": None,
+    },
+
+    # ── Q2: Compound Interest (ยายอิน) ──────────────────────────────────────
+
+    "q2_tool_compound_formula": {
+        "id": "q2_tool_compound_formula",
+        "type": "tool_item",
+        "name": "บันทึกสูตรทบต้น",
+        "icon": "📐",
+        "description": "บันทึกสูตร A = P(1+r)^n ของยายอิน พร้อมตัวอย่างการคำนวณ 5 แบบ",
+        "source_quest": "q2",
+        "source_npc": "yaayin",
+        "hint_prompt": (
+            "Player has the 'Compound Interest Formula Notes' (A = P(1+r)^n). "
+            "KEY FACT: Compound interest = interest on (principal + prior interest). "
+            "Year 2 interest is calculated from (P + Year-1 interest), not from P alone. "
+            "INSTRUCTION: Use as Socratic scaffolding. "
+            "Ask in Thai: 'ในสูตร A = P(1+r)^n ปีที่ 2 เราคิดดอกเบี้ยจาก P เดิม หรือจาก P + ดอกเบี้ยปีแรก?' "
+            "Do NOT calculate the answer. Make them apply the formula."
+        ),
+        "relevance_map": {
+            "q4": (
+                "Player has compound formula. "
+                "Use it to bridge to Real Return discussion: "
+                "'ท่านรู้สูตร A = P(1+r)^n อยู่แล้ว ลองแทน r ด้วยอัตราเงินเฟ้อแทนดอกเบี้ย — "
+                "อำนาจซื้อของท่านจะ หด ในอัตราเดียวกันเลยขอรับ'"
+            ),
+            "q10": (
+                "Player has compound formula. "
+                "In ThaiESG/RMF investigation: 'ท่านรู้เรื่องทบต้น ลองคิดว่าถ้า RMF ลงทุน 30 ปี "
+                "พลังทบต้นจะสร้างความแตกต่างขนาดไหน?' "
+                "Accelerate the discussion by skipping compound interest reintroduction."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q2_tool_rule_of_72": {
+        "id": "q2_tool_rule_of_72",
+        "type": "tool_item",
+        "name": "ตารางมรดกเวลา (Rule of 72)",
+        "icon": "⏳",
+        "description": (
+            "กฎ 72 สำหรับประมาณจำนวนปีที่เงินจะเพิ่มเป็น 2 เท่า — "
+            "72 ÷ อัตราดอกเบี้ย = จำนวนปี"
+        ),
+        "source_quest": "q2",
+        "source_npc": "yaayin",
+        "hint_prompt": (
+            "Player has the 'Rule of 72 Time Inheritance Table'. "
+            "KEY FACT: Rule of 72 — divide 72 by interest rate to get years to double. "
+            "Example: at 6% interest, 72/6 = 12 years to double. "
+            "INSTRUCTION: Use to scaffold time-value thinking. "
+            "Ask in Thai: 'ถ้าดอกเบี้ย 8% จะใช้เวลากี่ปีให้เงินเป็น 2 เท่า? แล้ว 4% ล่ะ? "
+            "ทำไมคนอายุ 22 ถึงได้เปรียบคนอายุ 32 แม้ออมเงินเท่ากัน?' "
+            "Do NOT compute for them. Make them apply Rule of 72."
+        ),
+        "relevance_map": {
+            "final": (
+                "Player understands time value. "
+                "In final blueprint evaluation: probe their plan for long-term thinking explicitly. "
+                "Expect them to reference Rule of 72 or doubling time in their blueprint."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q2_narrative_first_customer": {
+        "id": "q2_narrative_first_customer",
+        "type": "narrative_fragment",
+        "name": "บันทึกลูกค้าคนแรกของยายอิน",
+        "icon": "🧧",
+        "description": (
+            "เรื่องราวของพ่อค้าหนุ่มที่กู้เงินยายอินเมื่อ 40 ปีก่อน "
+            "และกลายเป็นเศรษฐีเพราะ 'เริ่มเร็ว'"
+        ),
+        "source_quest": "q2",
+        "source_npc": "yaayin",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกของยายอิน — ลูกค้าคนแรกเมื่อ ๔๐ ปีที่แล้ว**\n\n"
+            "เมื่อตอนแกยังสาว มีเด็กหนุ่มคนหนึ่งอายุ ๑๘ มาขอกู้แกซื้อเรือสำปั้นลำแรก "
+            "ทรัพย์ในกระเป๋ามีเพียง ๕ บาท แกบอกว่า *'เจ้าเด็กน้อย เงินน้อยนี้ถ้าเอาไปลงทุน "
+            "และปล่อยให้ทบต้นทุกปี ผ่านไป ๓๐ ปีจะไม่ใช่ ๕ บาทอีกแล้ว'*\n\n"
+            "เด็กคนนั้นทำตาม ไม่เคยถอนเงินต้นเลยแม้ปีที่อดอยาก ๔๐ ปีผ่านไป "
+            "เขากลับมาหาแกพร้อมทรัพย์ ๕ พันตำลึง "
+            "เขาบอกว่า *'ยายอิน ความลับไม่ได้อยู่ที่กำไรต่อปี "
+            "แต่อยู่ที่การไม่ถอน และการเริ่มเร็ว'*\n\n"
+            "วันนี้ เขาคือหนึ่งในเศรษฐีใหญ่ของตลาดอยุธยา "
+            "และแกเก็บจดหมายของเขาไว้เป็นเครื่องเตือนใจจนถึงวันนี้"
+        ),
+        "gates": None,
+    },
+
+    # ── Q3: Budgeting (ขุนหลวงบริรักษ์) ──────────────────────────────────────
+
+    "q3_tool_pay_yourself_first": {
+        "id": "q3_tool_pay_yourself_first",
+        "type": "tool_item",
+        "name": "สมุดบัญชี Pay Yourself First",
+        "icon": "💼",
+        "description": (
+            "สมุดบัญชีที่จัดระเบียบเงินเข้า → ออม 20% อัตโนมัติก่อน → "
+            "จ่ายค่าใช้จ่ายจำเป็น → จ่ายค่าใช้จ่ายฟุ่มเฟือย"
+        ),
+        "source_quest": "q3",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": (
+            "Player has the 'Pay Yourself First Notebook'. "
+            "KEY FACT: Pay Yourself First = transfer savings (e.g. 20%) immediately when income arrives, "
+            "BEFORE any spending. Opposite of 'spend first, save what's left' which usually leaves nothing. "
+            "Rooted in behavioral economics — expenses expand to fill available income (Parkinson's Law). "
+            "INSTRUCTION: Use Socratic method. "
+            "Ask in Thai: 'ระหว่าง ใช้ก่อน-ออมที่เหลือ กับ ออมก่อน-ใช้ที่เหลือ "
+            "ผลลัพธ์ในชีวิตจริงต่างกันอย่างไร? ลองยกตัวอย่างคนที่ทำแต่ละแบบขอรับ' "
+            "Guide them to behavioral insight without stating it."
+        ),
+        "relevance_map": {
+            "q5": (
+                "Player has Pay Yourself First principle. "
+                "Reference in risk profile context: 'ท่านจัดระเบียบการเงินเป็นแล้ว "
+                "ทีนี้เรามาคุยเรื่อง Risk Profile ได้เจ้าค่ะ'. "
+                "Skip budgeting foundations."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q3_tool_50_30_20": {
+        "id": "q3_tool_50_30_20",
+        "type": "tool_item",
+        "name": "แม่แบบงบประมาณ 50/30/20",
+        "icon": "📊",
+        "description": "กรอบการจัดสรรรายได้: 50% ความจำเป็น / 30% ความอยาก / 20% ออม+ลงทุน",
+        "source_quest": "q3",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": (
+            "Player has the '50/30/20 Budget Template'. "
+            "KEY FACT: 50/30/20 rule — 50% needs (food/housing/transport), "
+            "30% wants (entertainment/lifestyle), 20% savings+investments. "
+            "Adjustable per situation — students may use 60/20/20 or 40/30/30 depending on income. "
+            "INSTRUCTION: Use Socratic scaffolding. "
+            "Ask in Thai: 'ถ้ารายได้ ๓๐,๐๐๐ บาท ตาม 50/30/20 จะแบ่งเป็นเท่าไหร่? "
+            "ลองคำนวณแต่ละส่วนให้ข้าฟังขอรับ' "
+            "Do NOT compute the amounts. Make them apply the framework."
+        ),
+        "relevance_map": {
+            "final": (
+                "Player has 50/30/20 framework. "
+                "In blueprint evaluation: expect them to include concrete allocation numbers in their plan."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q3_narrative_treasury_failure": {
+        "id": "q3_narrative_treasury_failure",
+        "type": "narrative_fragment",
+        "name": "บันทึกพระคลังที่ผิดพลาด",
+        "icon": "📜",
+        "description": (
+            "บันทึกของขุนหลวงบริรักษ์เล่าช่วงที่ราชสำนักเกือบล่ม "
+            "เพราะผิดพลาดเรื่องการจัดการรายรับรายจ่าย"
+        ),
+        "source_quest": "q3",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกลับของขุนหลวงบริรักษ์ — ฤดูฝนใหญ่ปี ๒๒๔๖**\n\n"
+            "ข้าเคยผิดพลาดครั้งใหญ่ในสมัยพระเจ้าบรมโกศ ปีนั้นราชสำนักใช้จ่ายตามวิธี "
+            "'รายได้เข้ามา ใช้ให้หมดก่อน' เพราะคิดว่าฤดูถัดไปภาษีจะเข้ามาอีก\n\n"
+            "แต่ปีนั้นฝนใหญ่ท่วมทุ่งนา ข้าวเสียหายทั้งภูมิภาค รายได้ภาษีหดหายไปครึ่งหนึ่ง "
+            "และพระคลังที่ไม่เหลือเงินสำรอง ทำให้ต้องหยิบยืมพ่อค้าต่างชาติด้วยดอกเบี้ยสูง "
+            "ราชสำนักเกือบต้องขายที่ดินเพื่อใช้หนี้\n\n"
+            "บทเรียนนั้นข้าไม่เคยลืม — แต่ข้ากลับนำมาใช้ผิดในชีวิตราษฎร "
+            "พระคลังมีรายได้สม่ำเสมอ ยังต้องสำรอง 20% ก่อนใช้ "
+            "ยิ่งชีวิตคนเรา ซึ่งไม่แน่นอนกว่าพระคลังเสียอีก ยิ่งต้องออมก่อนใช้..."
+        ),
+        "gates": None,
+    },
+
+    # ── Q4: Inflation (หมอหลวงทองอิน) ────────────────────────────────────────
+
+    "q4_tool_real_return": {
+        "id": "q4_tool_real_return",
+        "type": "tool_item",
+        "name": "ตำรา Real Return",
+        "icon": "📘",
+        "description": (
+            "ตำราการคำนวณผลตอบแทนที่แท้จริงของหมอหลวงทองอิน — "
+            "Real Return ≈ Nominal Return − Inflation Rate"
+        ),
+        "source_quest": "q4",
+        "source_npc": "morluangtongyin",
+        "hint_prompt": (
+            "Player has the 'Real Return Formula Treatise'. "
+            "KEY FACT: Real Return ≈ Nominal Return − Inflation Rate. "
+            "Example: savings interest 1.5% − inflation 3% = Real Return −1.5% "
+            "(purchasing power decreases even though account balance grows). "
+            "INSTRUCTION: Use as scaffolding to expose the savings-account-is-safe myth. "
+            "Ask in Thai: 'ถ้าผลิตภัณฑ์ A ให้ดอกเบี้ย ๒% และเงินเฟ้อ ๓% Real Return คือเท่าไหร่? "
+            "และนั่นหมายความว่าอะไรต่ออำนาจซื้อของท่านขอรับ?' "
+            "Do NOT compute. Make them apply the formula."
+        ),
+        "relevance_map": {
+            "q10": (
+                "Player has Real Return formula. "
+                "In ThaiESG/RMF investigation, deepen the discussion: "
+                "'ท่านมีสูตร Real Return แล้วขอรับ ลองคิดว่า Real Return หลังภาษีของ ThaiESG "
+                "ต้องเพิ่มคุณค่าของสิทธิประโยชน์ทางภาษีเข้าไปอย่างไร' "
+                "Skip Real Return reintroduction."
+            ),
+            "final": (
+                "Player understands Real Return. "
+                "In blueprint evaluation: expect them to articulate Real Return as an evaluation metric."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q4_tool_purchasing_power": {
+        "id": "q4_tool_purchasing_power",
+        "type": "tool_item",
+        "name": "ไม้วัดอำนาจซื้อ",
+        "icon": "📏",
+        "description": (
+            "ไม้ลายสมัยอยุธยา สำหรับวัดว่าข้าว 1 ถัง ในปีต่างๆ ซื้อได้ด้วยเงินเท่าไหร่ — "
+            "เห็นภาพอำนาจซื้อที่ลดลง"
+        ),
+        "source_quest": "q4",
+        "source_npc": "morluangtongyin",
+        "hint_prompt": (
+            "Player has the 'Purchasing Power Ruler'. "
+            "KEY FACT: Purchasing Power = goods quantity the same money can buy. "
+            "If inflation 3% per year, 100 baht today has purchasing power of ~97 baht next year (in today's terms). "
+            "Over 20 years at 3% inflation, 100 baht retains only ~55% of its purchasing power. "
+            "INSTRUCTION: Use Socratic scaffolding for cumulative effect. "
+            "Ask in Thai: 'ถ้าเงินเฟ้อ ๓% ทุกปี อำนาจซื้อของเงิน ๑๐๐,๐๐๐ บาท "
+            "จะเหลือเท่าไหร่ในอีก ๒๐ ปีขอรับ? ใช้ไม้วัดนี้คำนวณดู' "
+            "Do NOT state the percentage. Let them compute."
+        ),
+        "relevance_map": {},
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q4_narrative_rich_but_poor": {
+        "id": "q4_narrative_rich_but_poor",
+        "type": "narrative_fragment",
+        "name": "ไดอารี่พ่อค้าผ้าไหมที่ร่ำรวยจน",
+        "icon": "📖",
+        "description": (
+            "บันทึกของพ่อค้าผ้าไหมที่สะสมทองได้หลายพันตำลึง "
+            "แต่พบว่าตอนแก่ซื้อของได้น้อยกว่าตอนหนุ่ม"
+        ),
+        "source_quest": "q4",
+        "source_npc": "morluangtongyin",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**ไดอารี่ของนายเสือพ่อค้าผ้าไหม — คัดจากหอจดหมายเหตุ**\n\n"
+            "เมื่อข้าอายุ ๒๕ ข้าเริ่มค้าผ้าไหมกับพ่อค้าจีน ขายได้ก็เก็บเป็นทองคำ ๑๐ ตำลึงทุกปี "
+            "ไม่เคยเอาไปลงทุนอื่น เพราะเชื่อว่า 'ทองคำไม่เคยลดค่า'\n\n"
+            "เมื่อข้าอายุ ๖๕ ข้ามีทองคำ ๔๐๐ ตำลึง ซึ่งสมัยข้าหนุ่มสามารถซื้อที่ดินทั้งตำบลได้ "
+            "แต่ตอนนี้ ข้าซื้อได้เพียงเรือนหนึ่งหลัง เพราะราคาที่ดินขึ้นไปมากเหลือเกิน\n\n"
+            "ข้าเพิ่งเข้าใจว่า ทองคำไม่ได้ลดค่า แต่เงินเฟ้อทำให้ของอื่นแพงขึ้นเร็วกว่าทองคำขึ้น "
+            "ถ้าข้าเอาทองบางส่วนมาลงทุนในการค้า หรือซื้อที่ดินตั้งแต่วันนั้น ข้าคงเป็นเศรษฐีใหญ่ "
+            "ไม่ใช่คนที่ถือทรัพย์ไว้แล้ว 'ร่ำรวยจนลง' อย่างทุกวันนี้..."
+        ),
+        "gates": None,
+    },
+
+    # ── Q5: Risk Profile (แม่นายการะเกด) ────────────────────────────────────
+
+    "q5_tool_risk_assessment": {
+        "id": "q5_tool_risk_assessment",
+        "type": "tool_item",
+        "name": "แบบประเมิน Risk Profile",
+        "icon": "📋",
+        "description": (
+            "แบบประเมิน 10 ข้อของแม่นายการะเกด สำหรับจัด Risk Profile "
+            "(Conservative / Moderate / Aggressive) ให้ตรงกับชีวิต"
+        ),
+        "source_quest": "q5",
+        "source_npc": "maenaykaraket",
+        "hint_prompt": (
+            "Player has the 'Risk Profile Assessment Form'. "
+            "KEY FACT: Three risk profiles — "
+            "Conservative (low risk, ~2-4% return, majority bonds/savings), "
+            "Moderate (medium, ~5-7% return, balanced stocks+bonds), "
+            "Aggressive (high, ~8-12% return, majority stocks). "
+            "Factors: age, dependents, goals, tolerance for temporary losses. "
+            "INSTRUCTION: Use Socratic matching. "
+            "Ask in Thai: 'ดูแบบประเมินนี้ ถ้าคนอายุ ๕๐ ปี ใกล้เกษียณ ๑๐ ปี มีลูกเรียน ๒ คน "
+            "ปัจจัย ๓ ข้อนี้บอกอะไรเกี่ยวกับ Risk Profile ของเขา?' "
+            "Do NOT name the profile. Let them reason to Conservative/Moderate/Aggressive."
+        ),
+        "relevance_map": {
+            "q6": (
+                "Player understands Risk Profile. "
+                "In Concentration Risk debate, challenge faster: "
+                "'ท่านรู้เรื่อง Risk Profile แล้วขอรับ การลงทุนกระจุกตัว ๑๐๐% "
+                "สอดคล้องกับ Profile ใดในแบบประเมินของท่าน?' "
+                "Start from higher Bloom's level."
+            ),
+            "q7": (
+                "Player has risk profile knowledge. "
+                "In Diversification: 'Risk Profile ส่งผลต่อสัดส่วน Asset Class อย่างไรขอรับ? "
+                "Conservative กับ Aggressive ควรมีหุ้นกี่ %?' "
+                "Skip profile definitions."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q5_tool_life_stage_scenarios": {
+        "id": "q5_tool_life_stage_scenarios",
+        "type": "tool_item",
+        "name": "บันทึก Life Stage 5 แบบ",
+        "icon": "🕰️",
+        "description": (
+            "ตัวอย่าง 5 ช่วงชีวิต (นักเรียน / เพิ่งทำงาน / แต่งงาน / มีลูก / ก่อนเกษียณ) "
+            "พร้อมการจัด Risk Profile ที่เหมาะ"
+        ),
+        "source_quest": "q5",
+        "source_npc": "maenaykaraket",
+        "hint_prompt": (
+            "Player has '5 Life Stage Scenarios Notebook'. "
+            "KEY FACT: Rule of thumb — '100 minus age' = suggested % allocation to equities. "
+            "Young+no dependents → higher risk tolerance; old+high dependents → lower risk tolerance. "
+            "INSTRUCTION: Use specific scenarios as comparative hints. "
+            "Ask in Thai: 'ดูสถานการณ์ที่ ๓ (คนอายุ ๕๕ ปีใกล้เกษียณ) "
+            "เหตุผลหลักที่เขาควรปรับ Risk Profile คืออะไร? "
+            "เปรียบกับสถานการณ์ที่ ๑ (จบใหม่อายุ ๒๒) ต่างกันอย่างไร?' "
+            "Guide them to connect time horizon with appropriate risk level."
+        ),
+        "relevance_map": {
+            "final": (
+                "Player has life stage scenarios. "
+                "In blueprint evaluation: expect explicit life-stage self-assessment in their plan."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q5_narrative_letter_to_daughter": {
+        "id": "q5_narrative_letter_to_daughter",
+        "type": "narrative_fragment",
+        "name": "จดหมายถึงลูกสาวของแม่นาย",
+        "icon": "💌",
+        "description": (
+            "จดหมายที่แม่นายการะเกดเขียนถึงลูกสาวเรื่องการเลือกคู่ครอง — "
+            "เทียบกับการเลือกกลยุทธ์ลงทุน"
+        ),
+        "source_quest": "q5",
+        "source_npc": "maenaykaraket",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**จดหมายของแม่นายการะเกดถึงลูกสาว นางระรื่น — วันพรพหัสบดี ขึ้น ๕ ค่ำ**\n\n"
+            "ลูกของแม่ เมื่อเจ้าโตขึ้นและต้องเลือกคู่ครอง แม่อยากให้เจ้าเข้าใจว่า "
+            "การเลือกคู่กับการเลือกการลงทุนไม่ต่างกันเลย\n\n"
+            "คนที่ดูใสซื่อและมั่นคงอาจไม่ตื่นเต้น แต่ไม่เคยทำเจ้าเจ็บปวด "
+            "คนที่โดดเด่นและน่าตื่นเต้นอาจพาเจ้าขึ้นสู่สูงสุด — หรือพังทลายในชั่วข้ามคืน\n\n"
+            "ไม่มีคู่แบบไหนที่ดีที่สุดสำหรับทุกคน ขึ้นอยู่กับเจ้าว่าทนต่อความผันผวนได้เพียงใด "
+            "มีใครในชีวิตที่พึ่งพิงเจ้าอยู่หรือเปล่า และเจ้ายังมีเวลาฟื้นตัวจากความผิดพลาดนานแค่ไหน\n\n"
+            "การเลือก Risk Profile ก็เช่นเดียวกัน ลูก — ไม่มีคำตอบที่ดีที่สุด "
+            "มีแต่คำตอบที่ดีที่สุดสำหรับเจ้าในช่วงชีวิตนี้เท่านั้น"
+        ),
+        "gates": None,
+    },
+
+    # ── Q6: Concentration Risk (ออกหลวงอาสา) ────────────────────────────────
+
+    "q6_tool_survivorship_bias": {
+        "id": "q6_tool_survivorship_bias",
+        "type": "tool_item",
+        "name": "บันทึก Survivorship Bias Checklist",
+        "icon": "🎯",
+        "description": (
+            "รายการคำถามสำหรับตรวจจับ Survivorship Bias: "
+            "'คนที่พังแล้วเขาไม่ได้มาเล่าให้ฟัง'"
+        ),
+        "source_quest": "q6",
+        "source_npc": "okluangarsa",
+        "hint_prompt": (
+            "Player has 'Survivorship Bias Checklist'. "
+            "KEY FACT: Survivorship Bias — we only hear from those who SURVIVED a risky strategy "
+            "(they tell success stories); we rarely hear from those who FAILED (they go silent). "
+            "This causes systematic underestimation of risk. "
+            "INSTRUCTION: Guide critical evaluation of 'X made 10 years of gains' claims. "
+            "Ask in Thai: 'ถ้าออกหลวงอ้างว่า ทำแบบนี้มา ๑๐ ปีได้กำไร "
+            "นั่นเป็นหลักฐานประเภทใด? ใครที่เราไม่ได้ยินเสียงเขา?' "
+            "Do NOT name 'Survivorship Bias' until they discover it themselves."
+        ),
+        "relevance_map": {
+            "q8": (
+                "Player understands Survivorship Bias. "
+                "In Trickster alternative assets context: 'ท่านรู้เรื่อง Survivorship Bias แล้ว "
+                "ข่าวทองคำและ Crypto ที่เห็นในสื่อ มักเป็น Case ที่รอดหรือที่ล้ม?'. "
+                "Increase trap difficulty — the student has stronger defenses."
+            ),
+            "final": (
+                "Player demonstrates critical thinking. "
+                "In blueprint evaluation: probe for evidence-based reasoning (not anecdotes)."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q6_tool_correlation_matrix": {
+        "id": "q6_tool_correlation_matrix",
+        "type": "tool_item",
+        "name": "ตาราง Correlation Matrix",
+        "icon": "🔗",
+        "description": (
+            "ตารางแสดงความสัมพันธ์ระหว่าง asset class ต่างๆ — "
+            "เข้าใจว่าทำไมการกระจายจริงๆ ต้องเลือกสินทรัพย์ที่ไม่ correlate กัน"
+        ),
+        "source_quest": "q6",
+        "source_npc": "okluangarsa",
+        "hint_prompt": (
+            "Player has the 'Correlation Matrix Table'. "
+            "KEY FACT: Correlation ranges -1 to +1. "
+            "Correlation near +1 = assets move together (weak diversification); "
+            "correlation near -1 or 0 = assets move independently (strong diversification). "
+            "Thai stocks + US stocks may correlate more than intuition suggests (e.g. 0.5-0.7). "
+            "INSTRUCTION: Use as scaffolding for diversification quality. "
+            "Ask in Thai: 'ถ้า Correlation ระหว่างหุ้นและพันธบัตรคือ -0.3 "
+            "แล้ว Correlation ระหว่างหุ้นสองตัวในอุตสาหกรรมเดียวกันคือ +0.9 "
+            "อย่างไหน Diversify ได้ดีกว่า และทำไม?' "
+            "Do NOT explain correlation. Make them reason from the numbers."
+        ),
+        "relevance_map": {
+            "q7": (
+                "Player understands correlation. "
+                "Reveal Secret Layer about correlation earlier than normal: "
+                "'ท่านมีตาราง Correlation Matrix แล้วขอรับ ข้าจะเปิดเผยความลับของข้าเร็วขึ้น — "
+                "ความลึกของ Diversification อยู่ที่ Correlation ระหว่างสินทรัพย์ ไม่ใช่แค่จำนวน asset class'"
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q6_narrative_asa_defeat": {
+        "id": "q6_narrative_asa_defeat",
+        "type": "narrative_fragment",
+        "name": "บันทึกการพ่ายแพ้ของอาสา",
+        "icon": "⚔️",
+        "description": (
+            "บันทึกส่วนตัวของออกหลวงอาสา "
+            "เล่าช่วงที่เขาเกือบสูญเสียทุกอย่างเพราะลงหุ้นบริษัทเดียว"
+        ),
+        "source_quest": "q6",
+        "source_npc": "okluangarsa",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกส่วนตัวของออกหลวงอาสา — เขียนหลังพ่ายแพ้การโต้แย้ง**\n\n"
+            "เมื่อ ๑๒ ปีก่อน ข้ามั่นใจในบริษัทการค้าเรือสำเภาชื่อ 'สุวรรณนที' มาก "
+            "เพราะเห็นผลประกอบการขึ้นต่อเนื่อง ๗ ปี ข้าใส่ทรัพย์ ๘๐% ลงไป\n\n"
+            "ปีที่ ๘ เรือของพวกเขา ๓ ลำล่มในพายุใหญ่ที่ช่องแคบมะละกา "
+            "บริษัทล้มละลายในคืนเดียว ทรัพย์ ๘๐% ของข้าเหลือศูนย์ภายใน ๓ สัปดาห์\n\n"
+            "สิ่งที่ทำให้ข้ารอดคือเงินอีก ๒๐% ที่ข้ากระจายไว้ในการค้าข้าวและทองคำ "
+            "ซึ่งข้าเคยดูถูกในใจว่า 'ทำไมต้องเสียเวลา กำไรน้อยกว่าเยอะ'\n\n"
+            "วันนี้ข้ายังโต้แย้งเรื่องการลงทุนกับทุกคน "
+            "เพราะข้าอยากรู้ว่าใครเข้าใจความเสี่ยงจริงๆ แค่ไหน — ไม่ใช่เพราะข้าเชื่อในสิ่งที่พูด "
+            "แต่เพราะข้ากลัวว่าจะมีคนอีกคนที่ทำผิดแบบเดียวกับข้า"
+        ),
+        "gates": None,
+    },
+
+    # ── Q7: Diversification (ออกญาโกษาธิบดี) ────────────────────────────────
+
+    "q7_tool_asset_map": {
+        "id": "q7_tool_asset_map",
+        "type": "tool_item",
+        "name": "แผนที่กระจายทรัพย์ข้ามมิติ",
+        "icon": "🗺️",
+        "description": (
+            "แผนที่ที่ออกญาโกษาธิบดีใช้สอน: กระจายใน 4 มิติ — "
+            "Asset Class / Geographic / Time / Tax"
+        ),
+        "source_quest": "q7",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": (
+            "Player has the 'Multi-Dimensional Diversification Map'. "
+            "KEY FACT: Diversification operates in 4 dimensions — "
+            "(1) Asset Class (stocks/bonds/gold/real estate), "
+            "(2) Geographic (Thailand/US/China/Europe), "
+            "(3) Time (Dollar-Cost Averaging spreads entry points), "
+            "(4) Tax (ThaiESG/RMF spreads tax treatment). "
+            "INSTRUCTION: Use to scaffold multi-dimensional thinking. "
+            "Ask in Thai: 'ดูแผนที่นี้ สินทรัพย์ทั้ง ๔ ประเภท (หุ้น พันธบัตร อสังหา ทอง) "
+            "ทำไมถึงต้องกระจายข้ามประเภท ไม่ใช่แค่กระจายในหุ้นหลายตัวขอรับ?' "
+            "Guide them toward cross-class correlation vs within-class correlation."
+        ),
+        "relevance_map": {
+            "q10": (
+                "Player has multi-dimensional diversification map. "
+                "Frame ThaiESG/RMF as the Tax dimension: "
+                "'ท่านเห็นแผนที่กระจายทรัพย์ของข้าแล้วขอรับ "
+                "ThaiESG/RMF คือมิติภาษี — กระจายการลงทุนในมิติการเสียภาษีด้วย'"
+            ),
+            "final": (
+                "Player understands 4-dimensional diversification. "
+                "In blueprint: expect cross-dimensional reasoning in their portfolio plan."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q7_tool_five_ships": {
+        "id": "q7_tool_five_ships",
+        "type": "tool_item",
+        "name": "บันทึกเรือสำเภา 5 ลำ",
+        "icon": "⛵",
+        "description": (
+            "บทเรียนของออกญาโกษาธิบดี ที่แบ่งทรัพย์ของราชสำนักใส่เรือ 5 ลำแทนลำเดียว — "
+            "ใช้ในกรณี catastrophic loss prevention"
+        ),
+        "source_quest": "q7",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": (
+            "Player has 'Five Ships Parable'. "
+            "KEY FACT: '5 ships' principle — if one ship sinks, 4 remain. "
+            "In investing: if one holding fails (company bankruptcy, sector crash), "
+            "the rest of the portfolio survives. This is the core of risk management. "
+            "INSTRUCTION: Use parable as scaffolding. "
+            "Ask in Thai: 'ถ้าท่านมีทรัพย์ ๑,๐๐๐ บาท จะเลือกใส่เรือ ๑ ลำหรือ ๑๐ ลำขอรับ? "
+            "แต่ละทางเลือกมีข้อดีข้อเสียอย่างไร?' "
+            "Do NOT state conclusion. Let them trade off."
+        ),
+        "relevance_map": {},
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q7_narrative_secret_royal": {
+        "id": "q7_narrative_secret_royal",
+        "type": "narrative_fragment",
+        "name": "บันทึกลับราชสำนัก — ว่าด้วยเรือสำเภามณีรัตน์",
+        "icon": "📜",
+        "description": (
+            "บันทึกลับของออกญาโกษาธิบดีเล่าเหตุการณ์ปี ๒๒๑๕ — "
+            "เรือล่มแต่ราชสำนักไม่สะเทือน"
+        ),
+        "source_quest": "q7",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกลับราชสำนัก โดยออกญาโกษาธิบดี — ปีระกา จุลศักราช ๑๐๗๗**\n\n"
+            "ข้าได้รับข่าวในเช้าวันที่ ๑๕ เดือน ๘ ว่าเรือสำเภา 'มณีรัตน์' ของราชสำนักล่มในอ่าวไทย "
+            "พร้อมกับผ้าไหม เครื่องถ้วยจีน และเงินทองมูลค่า ๕,๐๐๐ ตำลึง\n\n"
+            "ถ้าข้าใส่ทรัพย์ทั้งหมดของราชสำนักไว้ในเรือลำนั้น "
+            "วันนั้นคงเป็นวันสิ้นอำนาจของราชสำนักอยุธยา "
+            "แต่เพราะข้าเคยแบ่งไว้ในเรือ ๕ ลำ ข้าสูญเสียเพียง ๒๐% ของทรัพย์เท่านั้น\n\n"
+            "ในหลวงถามข้าในวันนั้นว่า *'ท่านโกษา ทำไมท่านถึงแบ่ง'* "
+            "ข้าตอบว่า *'เพราะเรือลำเดียวอยู่ในเงื้อมมือของพายุ แต่เรือ ๕ ลำอยู่ในเงื้อมมือของเรา'*\n\n"
+            "ในหลวงตรัสให้บันทึกคำนั้นไว้ในจดหมายเหตุของราชสำนัก "
+            "และตั้งแต่วันนั้นเป็นต้นมา ข้าทูลให้ราชสำนักแบ่งเป็น ๗ ลำ ไม่ใช่ ๕ เสียด้วยซ้ำ..."
+        ),
+        "gates": None,
+    },
+
+    # ── Q8: Alternative Investments (ขุนวิจิตรสุวรรณ) ────────────────────────
+
+    "q8_tool_ask_before_trust": {
+        "id": "q8_tool_ask_before_trust",
+        "type": "tool_item",
+        "name": "คู่มือถามก่อนเชื่อ",
+        "icon": "❓",
+        "description": (
+            "รายการคำถาม 5 ข้อที่ต้องถามก่อนลงทุนในสินทรัพย์ทางเลือก: "
+            "สภาพคล่อง? ประวัติ? ความผันผวน? คู่แข่ง? ภาษี?"
+        ),
+        "source_quest": "q8",
+        "source_npc": "khunwichitsuwanna",
+        "hint_prompt": (
+            "Player has the 'Ask Before You Trust' 5-Question Checklist. "
+            "KEY FACT: 5 questions before any alternative investment — "
+            "(1) Liquidity: how fast to sell? "
+            "(2) Historical volatility: 10-year range? "
+            "(3) Price discovery: who sets the price? "
+            "(4) Total fees: all-in cost? "
+            "(5) Tax treatment on sale? "
+            "INSTRUCTION: Use checklist to scaffold critical evaluation. "
+            "Ask in Thai: 'ประโยค ทองขึ้นทุกปีเสมอ ต้องผ่านคำถามข้อใดในคู่มือนี้ก่อน? "
+            "และท่านจะตรวจสอบอย่างไรขอรับ?' "
+            "Do NOT state which questions apply. Let them match."
+        ),
+        "relevance_map": {
+            "final": (
+                "Player has critical evaluation framework. "
+                "In blueprint: expect explicit evaluation criteria, not blind investment choices."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q8_tool_volatility_table": {
+        "id": "q8_tool_volatility_table",
+        "type": "tool_item",
+        "name": "ตารางความผันผวนสินทรัพย์ทางเลือก",
+        "icon": "📉",
+        "description": (
+            "ตารางเปรียบเทียบความผันผวนย้อนหลัง 20 ปีของ: "
+            "ทอง / Crypto / ที่ดิน / หุ้น / พันธบัตร"
+        ),
+        "source_quest": "q8",
+        "source_npc": "khunwichitsuwanna",
+        "hint_prompt": (
+            "Player has the 'Alternative Asset Volatility Table'. "
+            "KEY FACT: Historical volatility (rough): "
+            "Gov bonds ~3% / Gold ~15% / Thai stocks ~20% / Crypto ~70%+. "
+            "High volatility = high upside potential AND high downside risk, in roughly equal measure. "
+            "INSTRUCTION: Use as scaffolding for risk-return tradeoff. "
+            "Ask in Thai: 'ดูตารางนี้ Crypto มีความผันผวน ๗๐% แปลว่าอะไร? "
+            "และสัดส่วนที่เหมาะในพอร์ตของคนทั่วไปควรเป็นเท่าไหร่ขอรับ?' "
+            "Do NOT prescribe allocation. Make them reason from the numbers."
+        ),
+        "relevance_map": {},
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q8_narrative_goldsmith_truth": {
+        "id": "q8_narrative_goldsmith_truth",
+        "type": "narrative_fragment",
+        "name": "บันทึกฝีมือช่างทอง — ทองที่ไม่ขึ้นทุกปี",
+        "icon": "🥇",
+        "description": (
+            "ความลับที่ขุนวิจิตรสุวรรณไม่ยอมเปิดเผยในการสนทนา: "
+            "ช่วงที่ทองคำลดค่า 5 ปีติดกัน"
+        ),
+        "source_quest": "q8",
+        "source_npc": "khunwichitsuwanna",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกส่วนตัวของขุนวิจิตรสุวรรณ — ไม่เคยเปิดเผยในสนทนา**\n\n"
+            "ในการสนทนาข้ามักบอกว่า 'ทองขึ้นทุกปีเสมอ' "
+            "เพื่อทดสอบว่าท่านจะเชื่อโดยไม่ตรวจสอบหรือไม่ "
+            "ความจริงคือ ทองคำมีช่วงที่ลดค่ายาวนานเช่นกัน\n\n"
+            "ปี ๒๕๕๕ ทองคำราคา ๑,๖๗๓ เหรียญต่อออนซ์ / ปี ๒๕๕๘ ราคาลดเหลือ ๑,๐๖๐ เหรียญ — "
+            "ลดลง ๓๗% ใน ๓ ปี ใครที่ซื้อทองทั้งหมดในปี ๒๕๕๕ รอคืนทุน ๖ ปีจึงได้ราคาเดิม\n\n"
+            "ข้าทดสอบนักเรียนด้วยวิธีนี้ เพราะในโลกการลงทุนจริง "
+            "ท่านจะพบคนที่พูด 'xxx ขึ้นทุกปีเสมอ' ตลอดเวลา — ถ้าท่านเชื่อโดยไม่ตรวจสอบ "
+            "ท่านจะสูญเสียไม่ใช่แค่ทรัพย์สิน แต่โอกาสของชีวิตด้วย"
+        ),
+        "gates": None,
+    },
+
+    # ── Q9: Consumer Rights (ออกญาโกษาธิบดี) — STRATEGIC CHOICE ────────────
+
+    "q9_tool_consumer_rights": {
+        "id": "q9_tool_consumer_rights",
+        "type": "tool_item",
+        "name": "คู่มือสิทธิผู้บริโภค (ธปท. · ก.ล.ต. · สคบ.)",
+        "icon": "📋",
+        "description": (
+            "คู่มือรวมช่องทางร้องเรียนและหน่วยงานกำกับดูแล — "
+            "ใช้สนับสนุนการโต้แย้งข้อมูลล้าสมัย"
+        ),
+        "source_quest": "q9",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": (
+            "Player has the 'Consumer Rights Guide (ธปท. · ก.ล.ต. · สคบ.)'. "
+            "KEY FACT: Agency jurisdictions — "
+            "ธปท. (Bank of Thailand): banks, credit cards, loans. "
+            "ก.ล.ต. (SEC): mutual funds, securities. "
+            "สคบ. (OCPB): general goods and services. "
+            "Complain to the regulator of the SERVICE PROVIDER, not of the product type. "
+            "INSTRUCTION: Use Socratic matching. "
+            "Ask in Thai: 'ถ้าบัตรเครดิตมีค่าธรรมเนียมที่ไม่ได้แจ้งล่วงหน้า "
+            "หน่วยงานใดที่ท่านควรร้องเรียนก่อน และผ่านช่องทางใดขอรับ?' "
+            "Do NOT state the answer. Let them match scenarios to agencies."
+        ),
+        "relevance_map": {
+            "q10": (
+                "Player has consumer rights guide. "
+                "When ขุนหลวงบริรักษ์ gives outdated info: player may cite ธปท. complaint channels. "
+                "Acknowledge this credibility: 'ท่านอ้างอิงแหล่งจากคู่มือของออกญาฯ ได้เป็นประโยชน์ขอรับ'."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q9_access_bot_seal": {
+        "id": "q9_access_bot_seal",
+        "type": "access_item",
+        "name": "ตราอนุมัติ ธปท.",
+        "icon": "🏛️",
+        "description": (
+            "ตราประจำธนาคารแห่งประเทศไทย — เป็นสัญลักษณ์ว่าผู้ถือมีความรู้ทางการเงินที่ได้รับการรับรอง "
+            "ทำให้ข้อโต้แย้งมีน้ำหนักต่อ Unreliable Witness ใน Q10"
+        ),
+        "source_quest": "q9",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": None,
+        "relevance_map": {
+            "q10": (
+                "Player carries the official ธปท. seal. "
+                "When interacting with ขุนหลวงบริรักษ์: acknowledge the seal immediately in your greeting: "
+                "'ข้าเห็นตราประทับของออกญาฯ แล้วขอรับ — ท่านรู้สิทธิ์ของตนเองดีพอสมควร "
+                "ข้าจะพูดตรงๆ มากขึ้น ข้อมูลบางส่วนของข้าอาจไม่ใช่ปัจจุบัน "
+                "และถ้าท่านพบข้อผิดพลาดก็บอกข้าได้เลยขอรับ'. "
+                "BEHAVIORAL EFFECT: soften your Unreliable Witness resistance — "
+                "accept the first well-reasoned correction immediately instead of requiring 2 challenges."
+            ),
+        },
+        "narrative_content": None,
+        "gates": {
+            "q10": "soften_unreliable_witness",
+        },
+    },
+
+    "q9_narrative_court_cases": {
+        "id": "q9_narrative_court_cases",
+        "type": "narrative_fragment",
+        "name": "บันทึกคดีความของออกญา 3 คดี",
+        "icon": "⚖️",
+        "description": (
+            "สามคดีความสำคัญในสมัยอยุธยาที่ออกญาโกษาธิบดีตัดสิน — "
+            "ช่วยให้เห็นว่าผู้บริโภคในอดีตก็ถูกเอาเปรียบเช่นกัน"
+        ),
+        "source_quest": "q9",
+        "source_npc": "okyakosathibodi",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกคดีความ 3 คดี โดยออกญาโกษาธิบดี**\n\n"
+            "**คดีที่ 1 — พ่อค้าจีนหลอกขายทอง (ปี ๒๒๑๘)**\n"
+            "ชาวบ้านซื้อทองจากพ่อค้าจีน น้ำหนัก ๑ บาท แต่พบว่าด้านในเป็นทองแดง "
+            "ข้าตัดสินให้พ่อค้าต้องคืนเงิน ๕ เท่า + ประจานที่ตลาด ๗ วัน — "
+            "ผู้บริโภคต้องได้รับการปกป้อง\n\n"
+            "**คดีที่ 2 — เสียค่าเช่าที่ดินซ้ำ (ปี ๒๒๒๐)**\n"
+            "ชาวนาจ่ายค่าเช่าล่วงหน้าปีหนึ่ง แต่ถูกขอเก็บอีกเพราะ 'เอกสารเดิมหาย' "
+            "ข้าบังคับให้มีสัญญาลายลักษณ์อักษรติดตัวชาวนาไว้เป็นหลักฐานตลอดไป\n\n"
+            "**คดีที่ 3 — ดอกเบี้ยซ่อน (ปี ๒๒๒๕)**\n"
+            "พ่อค้าคนหนึ่งปล่อยเงินกู้แต่คิดดอกเบี้ยซ่อนในเงื่อนไขเล็ก "
+            "ข้าออกกฎ 'ดอกเบี้ยต้องเปิดเผยล่วงหน้า' — นี่คือบรรพบุรุษของกฎ "
+            "'ค่าธรรมเนียมและดอกเบี้ยต้องเปิดเผยครบ' ที่ ธปท. ใช้วันนี้\n\n"
+            "*สามคดีนี้พิสูจน์ว่า สิทธิผู้บริโภคไม่ใช่สิ่งใหม่ "
+            "แต่เป็นหลักที่มนุษย์ต้องต่อสู้เพื่อให้ได้มา*"
+        ),
+        "gates": None,
+    },
+
+    # ── Q10: ThaiESG / RMF (ขุนหลวงบริรักษ์) ────────────────────────────────
+
+    "q10_tool_thaiesg_rmf": {
+        "id": "q10_tool_thaiesg_rmf",
+        "type": "tool_item",
+        "name": "ตารางเงื่อนไข ThaiESG + RMF",
+        "icon": "📑",
+        "description": (
+            "ตารางเปรียบเทียบเงื่อนไขการลงทุน ThaiESG กับ RMF ที่ up-to-date — "
+            "ใช้เป็น reference ในเควสต์ Final"
+        ),
+        "source_quest": "q10",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": (
+            "Player has the 'ThaiESG + RMF Conditions Table'. "
+            "KEY FACT: ThaiESG — hold ≥ 5 calendar years (no age requirement). "
+            "RMF — hold ≥ 5 full years AND sell only after age ≥ 55. "
+            "Tax deduction limits are separate — can use both concurrently for tax diversification. "
+            "INSTRUCTION: Use Socratic comparison. "
+            "Ask in Thai: 'ดูตารางนี้ เงื่อนไขที่ทำให้ ThaiESG แตกต่างจาก RMF มากที่สุดคืออะไร? "
+            "และใครคือกลุ่มที่ได้ประโยชน์สูงสุดจากแต่ละตัวขอรับ?' "
+            "Do NOT read the conditions. Let them identify key differences."
+        ),
+        "relevance_map": {
+            "final": (
+                "Player has verified ThaiESG/RMF conditions. "
+                "In blueprint evaluation: expect personal suitability analysis "
+                "(age, tax bracket, time horizon)."
+            ),
+        },
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q10_tool_tax_bracket": {
+        "id": "q10_tool_tax_bracket",
+        "type": "tool_item",
+        "name": "เครื่องคิด Tax Bracket",
+        "icon": "💰",
+        "description": (
+            "เครื่องคำนวณ tax bracket ประเทศไทย — "
+            "ช่วยประเมินว่า ThaiESG/RMF ประหยัดภาษีเท่าไหร่จริงๆ"
+        ),
+        "source_quest": "q10",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": (
+            "Player has the 'Tax Bracket Calculator'. "
+            "KEY FACT: Thai progressive tax brackets (approximate): "
+            "≤ 150k: 0% / 150k-300k: 5% / 300k-500k: 10% / 500k-750k: 15% / "
+            "750k-1M: 20% / 1M-2M: 25% / 2M-5M: 30% / > 5M: 35%. "
+            "ThaiESG/RMF tax deduction benefit = deduction amount × marginal bracket %. "
+            "Students and low-income workers in 0% bracket receive ZERO tax benefit. "
+            "INSTRUCTION: Use Socratic scaffolding. "
+            "Ask in Thai: 'ถ้าคนรายได้ ๒๐๐,๐๐๐ บาท/ปี ลงทุน ThaiESG ๓๐,๐๐๐ บาท "
+            "จะได้ประโยชน์ทางภาษีเท่าไหร่? แล้วคนรายได้ ๓,๐๐๐,๐๐๐ บาท/ปีล่ะ?' "
+            "Do NOT compute. Make them apply bracket-by-bracket."
+        ),
+        "relevance_map": {},
+        "narrative_content": None,
+        "gates": None,
+    },
+
+    "q10_narrative_no_tax_benefit": {
+        "id": "q10_narrative_no_tax_benefit",
+        "type": "narrative_fragment",
+        "name": "บันทึกผู้ที่ไม่ได้สิทธิ์ประโยชน์",
+        "icon": "📜",
+        "description": (
+            "เรื่องราวของนักศึกษาจบใหม่ที่ถูกแนะนำให้ลงทุน RMF "
+            "ทั้งที่ยังไม่มีรายได้เสียภาษี"
+        ),
+        "source_quest": "q10",
+        "source_npc": "khunluangboriruk",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": (
+            "**บันทึกจากหอจดหมายเหตุการคลัง**\n\n"
+            "มีนักศึกษาจบใหม่อายุ ๒๒ ปีคนหนึ่ง เงินเดือนแรก ๑๘,๐๐๐ บาทต่อเดือน "
+            "ถูกคนรู้จักแนะนำให้เปิดบัญชี RMF ทันทีด้วยเงินเก็บ ๑๐๐,๐๐๐ บาทที่พ่อแม่ให้ "
+            "บอกว่า 'ลงทุนยิ่งเร็วยิ่งดี ประหยัดภาษีด้วย'\n\n"
+            "แต่เขาลืมคำนวณ — รายได้ปีละ ๒๑๖,๐๐๐ บาท "
+            "หลังหักลดหย่อนส่วนตัวและประกันสังคมเหลือเงินได้สุทธิน้อยกว่า ๑๕๐,๐๐๐ บาท "
+            "ที่ไม่ต้องเสียภาษี ดังนั้นการลดหย่อน RMF = ๐ ประโยชน์ภาษี\n\n"
+            "แย่กว่านั้น RMF ของเขาถูกล็อคไว้จนอายุ ๕๕ ปี — ๓๓ ปีข้างหน้า "
+            "เงินที่ควรใช้ตั้งเนื้อตั้งตัวในวัย ๒๒ กลายเป็นเงินที่ขยับไม่ได้\n\n"
+            "บทเรียน: RMF และ ThaiESG ไม่ใช่ 'ดีสำหรับทุกคน' — "
+            "มันดีสำหรับผู้ที่อยู่ใน tax bracket สูง และพร้อมล็อคเงินได้ยาวนาน "
+            "ผู้ที่ไม่มีรายได้เสียภาษีเพียงพอ ควรพิจารณาตัวเลือกอื่นก่อน"
+        ),
+        "gates": None,
+    },
+
+    # ── Final Quest: Automatic Reward (ไม่อยู่ใน choice pool) ───────────────
+
+    "final_access_ledger": {
+        "id": "final_access_ledger",
+        "type": "access_item",
+        "name": "The Eternal Ledger — ฉบับสมบูรณ์",
+        "icon": "📜",
+        "description": (
+            "บัญชีแห่งกาลเวลาที่สมบูรณ์ ได้รับการประทับตราจากพระโหราธิบดีแล้ว "
+            "เป็นสัญลักษณ์แห่งการบรรลุสมรรถนะทางการเงินครบถ้วน"
+        ),
+        "source_quest": "final",
+        "source_npc": "phrahorathibodi",
+        "hint_prompt": None,
+        "relevance_map": {},
+        "narrative_content": None,
+        "gates": None,
+    },
+}
+
+# ==========================================
+# SECTION 3: QUESTS — 10 Quest + 1 Final
 # ==========================================
 
 QUESTS = {
@@ -428,7 +1403,7 @@ QUESTS = {
             "reflect": "ดีขอรับ ข้าเห็นแล้วว่าท่านพร้อม เปิด Ledger หน้าแรกได้เลย"
         },
         "min_turns": 2,
-        "rewards": {"resource_token": {"wisdom": 0}, "mastery_badge": "ผู้แสวงหาปัญญา"},
+        "rewards": {"resource_token": {"wisdom": 10}, "mastery_badge": "ผู้แสวงหาปัญญา"},
         "ledger_page_id": None,
         "investigation_npcs": []
     },
@@ -455,7 +1430,15 @@ QUESTS = {
             "reflect": "สาธุ โยมเข้าใจแล้ว ก่อนลงทุนสิ่งใด กองทุนฉุกเฉินต้องพร้อมก่อนเสมอเจริญพร"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "tool_item": "ตราสัญลักษณ์ความปลอดภัย", "mastery_badge": "ผู้รู้จักเกราะทางการเงิน"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้รู้จักเกราะทางการเงิน",
+            "item_choice_pool": [
+                "q1_tool_emergency_calc",
+                "q1_tool_liquid_savings",
+                "q1_narrative_rice_parable",
+            ],
+        },
         "ledger_page_id": "q1",
         "investigation_npcs": []
     },
@@ -482,7 +1465,15 @@ QUESTS = {
             "reflect": "จำไว้นะจ้ะ 'เริ่มเร็ว ออมสม่ำเสมอ ทบต้น' สามอย่างนี้คือความลับที่ยายใช้ทำให้รวยได้จ้ะ"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "tool_item": "บันทึกสูตรทบต้น", "mastery_badge": "ผู้เข้าใจพลังแห่งเวลา"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้เข้าใจพลังแห่งเวลา",
+            "item_choice_pool": [
+                "q2_tool_compound_formula",
+                "q2_tool_rule_of_72",
+                "q2_narrative_first_customer",
+            ],
+        },
         "ledger_page_id": "q2",
         "investigation_npcs": []
     },
@@ -509,7 +1500,15 @@ QUESTS = {
             "reflect": "วินิจฉัยถูกต้องขอรับ ท่านเข้าใจ 'โรคเงินเฟ้อ' แล้ว"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "tool_item": "ตำรา Real Return", "mastery_badge": "ผู้ถอดรหัสเงินเฟ้อ"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้ถอดรหัสเงินเฟ้อ",
+            "item_choice_pool": [
+                "q4_tool_real_return",
+                "q4_tool_purchasing_power",
+                "q4_narrative_rich_but_poor",
+            ],
+        },
         "ledger_page_id": "q4",
         "investigation_npcs": []
     },
@@ -536,7 +1535,15 @@ QUESTS = {
             "reflect": "ท่านชี้ข้อผิดพลาดข้าได้ครบขอรับ ข้าคงต้องเปลี่ยนวิธีคิดบ้างแล้ว"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "tool_item": "สมุดบัญชีรายรับรายจ่าย", "mastery_badge": "ผู้วางแผนงบประมาณ"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้วางแผนงบประมาณ",
+            "item_choice_pool": [
+                "q3_tool_pay_yourself_first",
+                "q3_tool_50_30_20",
+                "q3_narrative_treasury_failure",
+            ],
+        },
         "ledger_page_id": "q3",
         "investigation_npcs": []
     },
@@ -563,7 +1570,15 @@ QUESTS = {
             "reflect": "ท่านเข้าใจแล้วขอรับ ความลับสุดท้ายคือ Correlation — เลือกสินทรัพย์ที่ไม่วิ่งไปทิศเดียวกัน"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 20}, "tool_item": "แผนที่กระจายทรัพย์", "mastery_badge": "ผู้เชี่ยวชาญการกระจายความเสี่ยง"},
+        "rewards": {
+            "resource_token": {"wisdom": 20},
+            "mastery_badge": "ผู้เชี่ยวชาญการกระจายความเสี่ยง",
+            "item_choice_pool": [
+                "q7_tool_asset_map",
+                "q7_tool_five_ships",
+                "q7_narrative_secret_royal",
+            ],
+        },
         "ledger_page_id": "q7",
         "investigation_npcs": []
     },
@@ -590,7 +1605,15 @@ QUESTS = {
             "reflect": "เข้าใจแล้วเจ้าค่ะ ขอบคุณมาก แม่นายจะไปปรึกษา Financial Planner อย่างที่ท่านแนะนำเลย"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 20}, "tool_item": "บัตรประเมิน Risk Profile", "mastery_badge": "ผู้เข้าใจโปรไฟล์ความเสี่ยง"},
+        "rewards": {
+            "resource_token": {"wisdom": 20},
+            "mastery_badge": "ผู้เข้าใจโปรไฟล์ความเสี่ยง",
+            "item_choice_pool": [
+                "q5_tool_risk_assessment",
+                "q5_tool_life_stage_scenarios",
+                "q5_narrative_letter_to_daughter",
+            ],
+        },
         "ledger_page_id": "q5",
         "investigation_npcs": []
     },
@@ -617,7 +1640,15 @@ QUESTS = {
             "reflect": "ต้องยอมรับขอรับ ท่านโต้ได้มีเหตุผล ข้าจะพิจารณากระจายการลงทุนบ้างแล้วกัน"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "narrative_fragment": "บันทึกการโต้ข้อโต้แย้งของขุนนาง", "mastery_badge": "ผู้ชนะการโต้แย้งด้วยข้อมูล"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้ชนะการโต้แย้งด้วยข้อมูล",
+            "item_choice_pool": [
+                "q6_tool_survivorship_bias",
+                "q6_tool_correlation_matrix",
+                "q6_narrative_asa_defeat",
+            ],
+        },
         "ledger_page_id": "q6",
         "investigation_npcs": []
     },
@@ -644,7 +1675,15 @@ QUESTS = {
             "reflect": "ดีมากขอรับ ท่านผ่านการทดสอบ ไม่หลงกลข้าแม้แต่ข้อเดียว"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "mastery_badge": "ผู้ไม่หลงกลนักการตลาด"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้ไม่หลงกลนักการตลาด",
+            "item_choice_pool": [
+                "q8_tool_ask_before_trust",
+                "q8_tool_volatility_table",
+                "q8_narrative_goldsmith_truth",
+            ],
+        },
         "ledger_page_id": "q8",
         "investigation_npcs": []
     },
@@ -671,7 +1710,15 @@ QUESTS = {
             "reflect": "ข้าต้องยอมรับว่าท่านสืบสวนได้ดีมากขอรับ และพบว่าข้อมูลของข้าบางส่วนล้าสมัยไปแล้ว"
         },
         "min_turns": 4,
-        "rewards": {"resource_token": {"wisdom": 20}, "narrative_fragment": "หลักฐานผลประโยชน์ทางภาษีฉบับราชสำนัก", "mastery_badge": "นักสืบข้อมูลการเงิน"},
+        "rewards": {
+            "resource_token": {"wisdom": 20},
+            "mastery_badge": "นักสืบข้อมูลการเงิน",
+            "item_choice_pool": [
+                "q10_tool_thaiesg_rmf",
+                "q10_tool_tax_bracket",
+                "q10_narrative_no_tax_benefit",
+            ],
+        },
         "ledger_page_id": "q10",
         "investigation_npcs": ["khunluangboriruk", "okyakosathibodi", "morluangtongyin"],
         "investigation_prompts": {
@@ -719,7 +1766,15 @@ QUESTS = {
             "reflect": "ดีมากขอรับ ท่านเข้าใจสิทธิของตนเองแล้ว ข้าจะบันทึกว่าท่านรู้กฎลงใน Ledger ได้เลย"
         },
         "min_turns": 3,
-        "rewards": {"resource_token": {"wisdom": 15}, "tool_item": "คู่มือสิทธิผู้บริโภค", "mastery_badge": "ผู้รู้จักสิทธิทางการเงิน"},
+        "rewards": {
+            "resource_token": {"wisdom": 15},
+            "mastery_badge": "ผู้รู้จักสิทธิทางการเงิน",
+            "item_choice_pool": [
+                "q9_tool_consumer_rights",
+                "q9_access_bot_seal",
+                "q9_narrative_court_cases",
+            ],
+        },
         "ledger_page_id": "q9",
         "investigation_npcs": []
     },
@@ -746,53 +1801,57 @@ QUESTS = {
             "reflect": "พิมพ์เขียวของท่านสมบูรณ์แล้วขอรับ The Eternal Ledger ประทับตราให้ท่านแล้ว"
         },
         "min_turns": 4,
-        "rewards": {"resource_token": {"wisdom": 25}, "access_item": "The Eternal Ledger — ฉบับสมบูรณ์", "mastery_badge": "ผู้พิทักษ์ The Eternal Ledger"},
+        "rewards": {
+            "resource_token": {"wisdom": 25},
+            "mastery_badge": "ผู้พิทักษ์ The Eternal Ledger",
+            "auto_access_item": "final_access_ledger",
+        },
         "ledger_page_id": "final",
         "investigation_npcs": []
     },
 }
 
 # ==========================================
-# SECTION 3: LEDGER_PAGES
+# SECTION 4: LEDGER_PAGES
 # ==========================================
 
 LEDGER_PAGES = {
-    "q1":    {"title": "กองทุนฉุกเฉิน",                  "fin_comp": "H4.2",       "icon": "🛡️",  "page_num": 1},
-    "q2":    {"title": "ดอกเบี้ยทบต้น",                  "fin_comp": "H4.1",       "icon": "⏳",  "page_num": 2},
-    "q3":    {"title": "งบประมาณส่วนบุคคล",               "fin_comp": "H3.1",       "icon": "📊",  "page_num": 3},
-    "q4":    {"title": "เงินเฟ้อและผลตอบแทนที่แท้จริง",  "fin_comp": "J1.1+H4.1",  "icon": "📉",  "page_num": 4},
-    "q5":    {"title": "โปรไฟล์ความเสี่ยง",               "fin_comp": "H4.4+H5.1",  "icon": "⚖️",  "page_num": 5},
-    "q6":    {"title": "ความเสี่ยงจากการกระจุกตัว",        "fin_comp": "H4.4+H5.1",  "icon": "⚔️",  "page_num": 6},
-    "q7":    {"title": "การกระจายความเสี่ยง",              "fin_comp": "H4.3",       "icon": "🌐",  "page_num": 7},
-    "q8":    {"title": "สินทรัพย์ทางเลือก",               "fin_comp": "H1.1+H4.4",  "icon": "🪙",  "page_num": 8},
-    "q9":    {"title": "สิทธิผู้บริโภคทางการเงิน",         "fin_comp": "H6.1",       "icon": "📋",  "page_num": 9},
-    "q10":   {"title": "ThaiESG และ RMF",                 "fin_comp": "H2.1",       "icon": "🏛️",  "page_num": 10},
-    "final": {"title": "พิมพ์เขียวชีวิต",                "fin_comp": "ทุกสมรรถนะ", "icon": "📜",  "page_num": 11},
+    "q1":    {"title": "กองทุนฉุกเฉิน", "fin_comp": "H4.2", "icon": "🛡️", "page_num": 1},
+    "q2":    {"title": "ดอกเบี้ยทบต้น", "fin_comp": "H4.1", "icon": "⏳", "page_num": 2},
+    "q3":    {"title": "งบประมาณส่วนบุคคล", "fin_comp": "H3.1", "icon": "📊", "page_num": 3},
+    "q4":    {"title": "เงินเฟ้อและผลตอบแทนที่แท้จริง", "fin_comp": "J1.1+H4.1", "icon": "📉", "page_num": 4},
+    "q5":    {"title": "โปรไฟล์ความเสี่ยง", "fin_comp": "H4.4+H5.1", "icon": "⚖️", "page_num": 5},
+    "q6":    {"title": "ความเสี่ยงจากการกระจุกตัว", "fin_comp": "H4.4+H5.1", "icon": "⚔️", "page_num": 6},
+    "q7":    {"title": "การกระจายความเสี่ยง", "fin_comp": "H4.3", "icon": "🌐", "page_num": 7},
+    "q8":    {"title": "สินทรัพย์ทางเลือก", "fin_comp": "H1.1+H4.4", "icon": "🪙", "page_num": 8},
+    "q9":    {"title": "สิทธิผู้บริโภคทางการเงิน", "fin_comp": "H6.1", "icon": "📋", "page_num": 9},
+    "q10":   {"title": "ThaiESG และ RMF", "fin_comp": "H2.1", "icon": "🏛️", "page_num": 10},
+    "final": {"title": "พิมพ์เขียวชีวิต", "fin_comp": "ทุกสมรรถนะ", "icon": "📜", "page_num": 11},
 }
 
 # ==========================================
-# SECTION 4: RANKS + FIN_COMP_MAP
+# SECTION 5: RANKS + FIN_COMP_MAP
 # ==========================================
 
 RANKS = [
-    {"id": "seeker",    "name": "ผู้แสวงหาปัญญา",          "icon": "🌱", "min_wisdom": 0,   "desc": "เพิ่งเริ่มต้นการเดินทาง"},
-    {"id": "learner",   "name": "ลูกศิษย์แห่ง The Ledger", "icon": "📖", "min_wisdom": 50,  "desc": "เริ่มเข้าใจหลักการเงินพื้นฐาน"},
-    {"id": "scholar",   "name": "บัณฑิตการเงิน",            "icon": "🎓", "min_wisdom": 90,  "desc": "เข้าใจแนวคิดการเงินได้อย่างลึกซึ้ง"},
-    {"id": "master",    "name": "ปรมาจารย์แห่งทรัพย์",      "icon": "⚜️", "min_wisdom": 130, "desc": "สามารถวิเคราะห์และประยุกต์ความรู้การเงินได้"},
-    {"id": "keeper",    "name": "ผู้พิทักษ์ The Eternal Ledger", "icon": "📜", "min_wisdom": 165, "desc": "บรรลุปัญญาการเงินครบถ้วน"},
+    {"id": "seeker", "name": "ผู้แสวงหาปัญญา", "icon": "🌱", "min_wisdom": 0,   "desc": "เพิ่งเริ่มต้นการเดินทาง"},
+    {"id": "learner", "name": "ลูกศิษย์แห่ง The Ledger", "icon": "📖", "min_wisdom": 50,  "desc": "เริ่มเข้าใจหลักการเงินพื้นฐาน"},
+    {"id": "scholar", "name": "บัณฑิตการเงิน", "icon": "🎓", "min_wisdom": 100, "desc": "เข้าใจแนวคิดการเงินได้อย่างลึกซึ้ง"},
+    {"id": "master", "name": "ปรมาจารย์แห่งทรัพย์", "icon": "⚜️", "min_wisdom": 150, "desc": "สามารถวิเคราะห์และประยุกต์ความรู้การเงินได้"},
+    {"id": "keeper", "name": "ผู้พิทักษ์ The Eternal Ledger", "icon": "📜", "min_wisdom": 190, "desc": "บรรลุปัญญาการเงินครบถ้วน"},
 ]
 
 FIN_COMP_MAP = {
     "c1": {"name": "เข้าใจบทบาทและมูลค่าเงิน", "codes": ["H1.1", "J1.1"], "quests": ["q4", "q8"]},
-    "c2": {"name": "จัดการรายได้และภาษี",        "codes": ["H2.1"],         "quests": ["q10"]},
-    "c3": {"name": "จัดการรายจ่ายและหนี้",       "codes": ["H3.1"],         "quests": ["q3"]},
-    "c4": {"name": "ออมและลงทุน",                "codes": ["H4.1","H4.2","H4.3","H4.4"], "quests": ["q1","q2","q4","q5","q6","q7","q8"]},
-    "c5": {"name": "จัดการความเสี่ยงทางการเงิน", "codes": ["H5.1"],         "quests": ["q5","q6"]},
-    "c6": {"name": "สิทธิและความรับผิดชอบ",      "codes": ["H6.1"],         "quests": ["q9"]},
+    "c2": {"name": "จัดการรายได้และภาษี", "codes": ["H2.1"], "quests": ["q10"]},
+    "c3": {"name": "จัดการรายจ่ายและหนี้", "codes": ["H3.1"], "quests": ["q3"]},
+    "c4": {"name": "ออมและลงทุน", "codes": ["H4.1","H4.2","H4.3","H4.4"], "quests": ["q1","q2","q4","q5","q6","q7","q8"]},
+    "c5": {"name": "จัดการความเสี่ยงทางการเงิน", "codes": ["H5.1"], "quests": ["q5","q6"]},
+    "c6": {"name": "สิทธิและความรับผิดชอบ", "codes": ["H6.1"], "quests": ["q9"]},
 }
 
 # ==========================================
-# SECTION 5: PYDANTIC MODELS
+# SECTION 6: PYDANTIC MODELS
 # ==========================================
 
 class ChatMessage(BaseModel):
@@ -804,7 +1863,7 @@ class ChatMessage(BaseModel):
 
 class GameState(BaseModel):
     player_name: Optional[str] = "ผู้แสวงหาปัญญา"
-    wisdom_score: int = 10
+    wisdom_score: int = 0
     rank: str = "ผู้แสวงหาปัญญา"
 
     current_quest: Optional[str] = None
@@ -813,6 +1872,11 @@ class GameState(BaseModel):
     quest_turn_count: int = 0
     quest_chat_history: List[Dict] = []
     quest_fragments: Dict[str, bool] = {}
+
+    # ── Pending reward state (Mechanic F) ──
+    # Set when quest evaluates pass + has choice pool; cleared when
+    # /api/quest/reward-choice finalizes the selection.
+    pending_reward_quest: Optional[str] = None
 
     completed_quests: List[str] = []
     unlocked_quests: List[str] = ["entry"]
@@ -826,7 +1890,16 @@ class GameState(BaseModel):
         "c4": False, "c5": False, "c6": False
     }
 
+    # ── Item system (Mechanic F + A + B + C) ──
+    # items: list of item IDs (lookup ITEMS_DB for details)
+    # unchosen_items: IDs rejected during reward choice (shown greyed in Ledger)
+    # item_choice_history: {quest_id: chosen_item_id} — research data
+    # item_hint_usage: {item_id: count} — hint request tracking
     items: List[str] = []
+    unchosen_items: List[str] = []
+    item_choice_history: Dict[str, str] = {}
+    item_hint_usage: Dict[str, int] = {}
+
     badges: List[str] = []
 
     # Research export: full chat history per NPC
@@ -873,8 +1946,23 @@ class TeacherReportRequest(BaseModel):
 class InsightsRequest(BaseModel):
     game_state: GameState
 
+class RewardChoiceRequest(BaseModel):
+    """Player selects 1 item from the quest's item_choice_pool."""
+    quest_id: str
+    chosen_item_id: str
+    game_state: GameState
+
+class ItemHintRequest(BaseModel):
+    """Player uses a Tool Item to request a Socratic hint from the current NPC."""
+    item_id: str
+    npc_id: str
+    current_quest: Optional[str] = None
+    quest_turn_count: int = 0
+    recent_chat_history: List[Dict[str, str]] = []
+    game_state: GameState
+
 # ==========================================
-# SECTION 6: HELPER FUNCTIONS
+# SECTION 7: HELPER FUNCTIONS
 # ==========================================
 
 def calculate_rank(wisdom_score: int) -> dict:
@@ -964,6 +2052,35 @@ This bridge is non-optional. Omit it only when the concept was already bridged e
             ),
         }
 
+        # ─── MECHANIC C: Item Context Injection ──────────────────────────────
+        # Inject item-driven NPC behavior modifications for this quest.
+        item_context = build_item_context_block(game_state, current_quest)
+
+        # ─── ACCESS ITEM GATE EFFECTS ────────────────────────────────────────
+        # For access_items with `gates` matching current_quest, append a strong
+        # behavioral override (e.g. soften_unreliable_witness for Q10).
+        gate_overrides = []
+        for item_id in game_state.items:
+            item = ITEMS_DB.get(item_id)
+            if not item or item.get("type") != "access_item":
+                continue
+            gates = item.get("gates") or {}
+            effect = gates.get(current_quest)
+            if effect == "soften_unreliable_witness":
+                gate_overrides.append(
+                    "ACCESS GATE (soften_unreliable_witness): The player carries an authority-granting "
+                    "access item for this quest. If you are an UNRELIABLE WITNESS archetype, "
+                    "accept the FIRST well-reasoned correction immediately instead of requiring 2 challenges. "
+                    "Acknowledge gracefully: 'อ๋อ... ท่านพูดมีเหตุผลขอรับ ข้าคงต้องยอมรับ'."
+                )
+        gate_block = ""
+        if gate_overrides:
+            gate_block = (
+                "\n=== ACCESS GATE OVERRIDES (Machine-Readable Effects) ===\n"
+                + "\n".join(gate_overrides)
+                + "\n"
+            )
+
         layer2 = f"""
 === LAYER 2: PEDAGOGY (ACTIVE) ===
 Quest: {quest['name']}
@@ -985,13 +2102,14 @@ Archetype-specific mandate:
 - If RESCUE / QUEST GIVER: Play confused; let the student teach YOU. Ask follow-up questions that expose gaps.
 - If MENTOR WITH SECRET: Reveal only the next layer of your secret if student demonstrates they have absorbed the current one.
 - If GATEKEEPER: Be firm; do not advance until K-S-A criteria are met.
-"""
+{item_context}{gate_block}"""
     else:
-        layer2 = """
+        item_context = build_item_context_block(game_state, current_quest)
+        layer2 = f"""
 === LAYER 2: PEDAGOGY (NO ACTIVE QUEST) ===
 No quest is currently active. Stay in character and guide the student toward accepting a quest.
 You may briefly mention the quests you have available, but do not teach content unprompted.
-"""
+{item_context}"""
 
     # ─── LAYER 3: ASSESSMENT (Dynamic) ───────────────────────────────────────
     if quest:
@@ -1113,8 +2231,57 @@ def get_newly_unlocked_quests(completed_quests: List[str], new_quest_id: str) ->
 
     return newly_unlocked
 
+
+def resolve_item(item_id: str) -> Optional[Dict[str, Any]]:
+    """Look up an item in ITEMS_DB. Returns None if not found."""
+    return ITEMS_DB.get(item_id)
+
+
+def get_quest_choice_pool(quest_id: str) -> List[Dict[str, Any]]:
+    """Return full item objects for a quest's choice pool."""
+    quest = QUESTS.get(quest_id)
+    if not quest:
+        return []
+    pool_ids = quest.get("rewards", {}).get("item_choice_pool", [])
+    return [ITEMS_DB[iid] for iid in pool_ids if iid in ITEMS_DB]
+
+
+def build_item_context_block(state: "GameState", current_quest: Optional[str]) -> str:
+    """
+    Build the Item Context Injection block for NPC system prompts (Mechanic C).
+
+    For each item the player holds whose relevance_map has an entry matching
+    current_quest, inject the relevance instruction. Items without relevance
+    for the current quest are skipped. Returns empty string if no relevant items.
+    """
+    if not current_quest or not state.items:
+        return ""
+
+    relevant_entries = []
+    for item_id in state.items:
+        item = ITEMS_DB.get(item_id)
+        if not item:
+            continue
+        rmap = item.get("relevance_map") or {}
+        instruction = rmap.get(current_quest)
+        if instruction:
+            relevant_entries.append(
+                f"- Player holds '{item.get('name', item_id)}' ({item.get('type', '?')}): {instruction}"
+            )
+
+    if not relevant_entries:
+        return ""
+
+    header = (
+        "\n=== PLAYER INVENTORY CONTEXT (Mechanic C — Item-Aware Behavior) ===\n"
+        "The player carries items from past quests that affect how you should respond in this quest.\n"
+        "Apply these behavioral adjustments naturally without breaking character:\n"
+    )
+    return header + "\n".join(relevant_entries) + "\n"
+
+
 # ==========================================
-# SECTION 7: API ROUTES
+# SECTION 8: API ROUTES
 # ==========================================
 
 @app.get("/")
@@ -1154,6 +2321,24 @@ async def get_init_data():
                 "investigation_npcs": q.get("investigation_npcs", []),
             }
             for qid, q in QUESTS.items()
+        },
+        # ── Item metadata for frontend (Mechanic F + A + B + C) ──
+        # Frontend uses this for Inspector modal, Choice Modal, Ledger chips, etc.
+        "items": {
+            iid: {
+                "id": iid,
+                "type": it["type"],
+                "name": it["name"],
+                "icon": it["icon"],
+                "description": it["description"],
+                "source_quest": it["source_quest"],
+                "source_npc": it["source_npc"],
+                "narrative_content": it.get("narrative_content"),
+                "relevant_in_quests": list((it.get("relevance_map") or {}).keys()),
+                "has_hint": bool(it.get("hint_prompt")),
+                "gates_quests": list((it.get("gates") or {}).keys()),
+            }
+            for iid, it in ITEMS_DB.items()
         },
         "ledger_pages": LEDGER_PAGES,
         "ranks": RANKS,
@@ -1345,24 +2530,49 @@ Respond with JSON only, no markdown:
                     content = content[4:]
             result = json.loads(content.strip())
 
+            # If quest passed AND has choice pool, include it so frontend
+            # can open the Reward Choice Modal (Mechanic F).
+            passed = result.get("pass", False)
+            pool_ids: List[str] = quest.get("rewards", {}).get("item_choice_pool", [])
+            choice_pool_details = None
+            if passed and pool_ids:
+                choice_pool_details = [
+                    {
+                        "id": iid,
+                        "type": ITEMS_DB[iid]["type"],
+                        "name": ITEMS_DB[iid]["name"],
+                        "icon": ITEMS_DB[iid]["icon"],
+                        "description": ITEMS_DB[iid]["description"],
+                        "relevant_in_quests": list((ITEMS_DB[iid].get("relevance_map") or {}).keys()),
+                        "gates_quests": list((ITEMS_DB[iid].get("gates") or {}).keys()),
+                    }
+                    for iid in pool_ids if iid in ITEMS_DB
+                ]
+
             return {
-                "pass": result.get("pass", False),
+                "pass": passed,
                 "score": result.get("score", 0),
                 "bloom_level_demonstrated": result.get("bloom_level_demonstrated", ""),
                 "ksa_met": result.get("ksa_met", {"K": False, "S": False, "A": False}),
                 "feedback": result.get("feedback_th", "ไม่สามารถประเมินได้"),
+                "has_choice_pool": bool(choice_pool_details),
+                "choice_pool": choice_pool_details,
             }
     except Exception as e:
         logger.error(f"Quest evaluate error: {e}")
-        return {"pass": False, "score": 0, "ksa_met": {}, "feedback": "เกิดข้อผิดพลาดในการประเมิน กรุณาลองใหม่"}
+        return {
+            "pass": False, "score": 0, "ksa_met": {},
+            "feedback": "เกิดข้อผิดพลาดในการประเมิน กรุณาลองใหม่",
+            "has_choice_pool": False, "choice_pool": None,
+        }
 
-@app.post("/api/quest/complete")
-async def quest_complete(request: QuestRequest):
-    """Record quest completion, update wisdom, ledger, and unlock new quests."""
-    state = request.game_state
-    quest_id = request.quest_id
+def _finalize_quest_completion(state: GameState, quest_id: str, chosen_item_id: Optional[str]) -> Dict[str, Any]:
+    """
+    Core quest completion logic. Used by:
+    - /api/quest/complete (for Final Quest with auto_access_item)
+    - /api/quest/reward-choice (for quests with item_choice_pool)
+    """
     quest = QUESTS.get(quest_id)
-
     if not quest:
         raise HTTPException(status_code=400, detail="ไม่พบ Quest นี้")
 
@@ -1370,45 +2580,57 @@ async def quest_complete(request: QuestRequest):
     new_wisdom = state.wisdom_score + rewards.get("resource_token", {}).get("wisdom", 0)
     new_rank = calculate_rank(new_wisdom)
 
-    # Update ledger pages
+    # Ledger pages
     new_ledger_pages = dict(state.ledger_pages)
     if quest["ledger_page_id"]:
         new_ledger_pages[quest["ledger_page_id"]] = True
 
-    # Update completed quests
+    # Completed quests
     new_completed = list(state.completed_quests)
     if quest_id not in new_completed:
         new_completed.append(quest_id)
 
-    # Update financial competency coverage
+    # Financial competency coverage
     new_fin_comp = update_fin_comp_coverage(dict(state.fin_comp_coverage), quest_id)
 
-    # Update items per Item Taxonomy (tool_item, narrative_fragment, access_item)
+    # ── Item delivery (Mechanic F) — ID-based ──
     new_items = list(state.items)
-    ITEM_TAXONOMY_KEYS = {
-        "tool_item": "🔧",
-        "narrative_fragment": "📜",
-        "access_item": "🗝️",
-    }
-    for key, prefix in ITEM_TAXONOMY_KEYS.items():
-        if rewards.get(key):
-            tagged = f"{prefix} {rewards[key]}"
-            if tagged not in new_items:
-                new_items.append(tagged)
+    new_unchosen = list(state.unchosen_items)
+    new_choice_history = dict(state.item_choice_history)
 
-    # Update badges (Mastery Badge)
+    # Case 1: Quest with choice pool — add chosen, mark others as unchosen
+    pool_ids: List[str] = rewards.get("item_choice_pool", [])
+    if pool_ids:
+        if not chosen_item_id or chosen_item_id not in pool_ids:
+            raise HTTPException(
+                status_code=400,
+                detail=f"chosen_item_id ต้องอยู่ใน choice pool ของ quest '{quest_id}'"
+            )
+        if chosen_item_id not in new_items:
+            new_items.append(chosen_item_id)
+        new_choice_history[quest_id] = chosen_item_id
+        for iid in pool_ids:
+            if iid != chosen_item_id and iid not in new_unchosen:
+                new_unchosen.append(iid)
+
+    # Case 2: Auto access item (Final Quest)
+    auto_item = rewards.get("auto_access_item")
+    if auto_item and auto_item not in new_items:
+        new_items.append(auto_item)
+
+    # Mastery Badge (automatic)
     new_badges = list(state.badges)
     if rewards.get("mastery_badge") and rewards["mastery_badge"] not in new_badges:
         new_badges.append(rewards["mastery_badge"])
 
-    # Discover newly unlocked quests
+    # Newly unlocked quests
     newly_unlocked = get_newly_unlocked_quests(state.completed_quests, quest_id)
     new_unlocked_quests = list(state.unlocked_quests)
     for qid in newly_unlocked:
         if qid not in new_unlocked_quests:
             new_unlocked_quests.append(qid)
 
-    # Check if Final Quest is now unlockable
+    # Final Quest unlock check
     final_quest = QUESTS.get("final", {})
     final_cond = final_quest.get("unlock_condition", {})
     if isinstance(final_cond, dict):
@@ -1421,6 +2643,10 @@ async def quest_complete(request: QuestRequest):
     unlock_messages = [
         f"🔓 ปลดล็อก Quest ใหม่: '{QUESTS[q]['name']}'" for q in newly_unlocked if q in QUESTS
     ]
+
+    # Item details for frontend notifications
+    chosen_item_obj = ITEMS_DB.get(chosen_item_id) if chosen_item_id else None
+    auto_item_obj = ITEMS_DB.get(auto_item) if auto_item else None
 
     return {
         "success": True,
@@ -1435,10 +2661,79 @@ async def quest_complete(request: QuestRequest):
         "newly_unlocked": newly_unlocked,
         "new_fin_comp_coverage": new_fin_comp,
         "new_items": new_items,
+        "new_unchosen_items": new_unchosen,
+        "new_item_choice_history": new_choice_history,
         "new_badges": new_badges,
+        "chosen_item": chosen_item_obj,
+        "auto_awarded_item": auto_item_obj,
         "unlock_messages": unlock_messages,
-        "message": f"✅ Quest '{quest['name']}' สำเร็จ! +{rewards.get('wisdom', 0)} Wisdom",
+        "message": f"✅ Quest '{quest['name']}' สำเร็จ! +{rewards.get('resource_token', {}).get('wisdom', 0)} Wisdom",
     }
+
+
+@app.post("/api/quest/complete")
+async def quest_complete(request: QuestRequest):
+    """
+    Two flows:
+    1. Quest has `auto_access_item` (Final Quest) — finalize directly.
+    2. Quest has `item_choice_pool` — reject; frontend must call /api/quest/reward-choice.
+    """
+    state = request.game_state
+    quest_id = request.quest_id
+    quest = QUESTS.get(quest_id)
+
+    if not quest:
+        raise HTTPException(status_code=400, detail="ไม่พบ Quest นี้")
+
+    rewards = quest.get("rewards", {})
+    if rewards.get("item_choice_pool"):
+        raise HTTPException(
+            status_code=400,
+            detail="Quest นี้มี item choice pool — กรุณาเรียก /api/quest/reward-choice แทน"
+        )
+
+    return _finalize_quest_completion(state, quest_id, chosen_item_id=None)
+
+
+@app.post("/api/quest/reward-choice")
+async def quest_reward_choice(request: RewardChoiceRequest):
+    """
+    Player has selected their reward item from the quest's choice pool.
+    Finalizes quest completion with the chosen item.
+    """
+    state = request.game_state
+    quest_id = request.quest_id
+    chosen = request.chosen_item_id
+
+    quest = QUESTS.get(quest_id)
+    if not quest:
+        raise HTTPException(status_code=400, detail="ไม่พบ Quest นี้")
+
+    pool: List[str] = quest.get("rewards", {}).get("item_choice_pool", [])
+    if not pool:
+        raise HTTPException(status_code=400, detail="Quest นี้ไม่มี item choice pool")
+
+    if chosen not in pool:
+        raise HTTPException(
+            status_code=400,
+            detail=f"ไอเท็ม '{chosen}' ไม่อยู่ใน choice pool ของ quest '{quest_id}'"
+        )
+
+    # Irreversibility guard — cannot re-choose
+    if quest_id in state.item_choice_history:
+        raise HTTPException(
+            status_code=400,
+            detail="ท่านได้เลือกรางวัลของ Quest นี้ไปแล้ว ไม่สามารถเปลี่ยนได้"
+        )
+
+    result = _finalize_quest_completion(state, quest_id, chosen_item_id=chosen)
+    result["new_pending_reward_quest"] = None
+    result["message"] = (
+        f"✅ Quest '{quest['name']}' สำเร็จ! ท่านได้รับ "
+        f"{ITEMS_DB[chosen]['icon']} {ITEMS_DB[chosen]['name']}"
+    )
+    return result
+
 
 @app.post("/api/quest/update-fragment")
 async def update_quest_fragment(request: QuestFragmentRequest):
@@ -1465,6 +2760,99 @@ async def update_quest_fragment(request: QuestFragmentRequest):
         "all_collected": collected >= total,
         "message": f"📋 เก็บข้อมูลจาก {npc_name} สำเร็จ ({collected}/{total})",
     }
+
+@app.post("/api/item/hint")
+async def item_hint(request: ItemHintRequest):
+    """
+    Player uses a Tool Item to request a Socratic hint from the current NPC.
+    (Mechanic B — Tool Hint Request)
+    """
+    if not API_KEY:
+        return {
+            "success": False,
+            "message": "ไม่สามารถสร้างคำใบ้ได้ (ไม่มี API Key)",
+            "hint_text": None,
+        }
+
+    item = ITEMS_DB.get(request.item_id)
+    if not item:
+        raise HTTPException(status_code=400, detail="ไม่พบไอเท็มนี้")
+    if item.get("type") != "tool_item":
+        raise HTTPException(status_code=400, detail="ไอเท็มนี้ไม่ใช่ Tool Item — ใช้คำใบ้ไม่ได้")
+    if not item.get("hint_prompt"):
+        raise HTTPException(status_code=400, detail="ไอเท็มนี้ไม่มีข้อมูลคำใบ้")
+
+    npc = NPC_DATA.get(request.npc_id)
+    if not npc:
+        raise HTTPException(status_code=400, detail="ไม่พบ NPC นี้")
+
+    if request.item_id not in request.game_state.items:
+        raise HTTPException(status_code=400, detail="ท่านยังไม่มีไอเท็มนี้")
+
+    hint_system_prompt = f"""{npc['system']}
+
+=== HINT REQUEST MODE (SINGLE-TURN OVERRIDE) ===
+The player has invoked their Tool Item: "{item['name']}" to request a Socratic hint from you.
+You must respond in your NPC voice (character, speech particle, Thai), but your ONE job in this turn is:
+
+{item['hint_prompt']}
+
+RULES:
+- Stay fully in character. Open with a natural phrase that acknowledges the item
+  (e.g., "อ๋อ ท่านหยิบ {item['name']} ออกมาหรือขอรับ").
+- Keep the response under 3 short paragraphs.
+- Follow the Socratic instruction above STRICTLY — do NOT give the answer directly.
+- Respond in Thai.
+- Do NOT break the fourth wall. Do NOT mention "hint_prompt" or "instruction".
+"""
+
+    recent = request.recent_chat_history[-6:] if request.recent_chat_history else []
+    chat_context = "\n".join([
+        f"{'นักเรียน' if m.get('role') == 'user' else npc['name']}: {m.get('content', '')[:300]}"
+        for m in recent
+    ]) or "(ยังไม่มีการสนทนา)"
+
+    user_content = (
+        f"บริบทการสนทนาล่าสุด:\n{chat_context}\n\n"
+        f"ตอนนี้ผู้เล่นใช้ไอเท็ม '{item['name']}' เพื่อขอคำใบ้จากท่านขอรับ "
+        f"กรุณาตอบในบุคลิกของท่านตามที่ระบุในระบบ"
+    )
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": API_MODEL,
+                "messages": [
+                    {"role": "system", "content": hint_system_prompt},
+                    {"role": "user", "content": user_content},
+                ],
+                "max_tokens": 500,
+                "temperature": 0.60,
+            }
+            resp = await client.post(f"{API_BASE_URL}/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            content = resp.json()["choices"][0]["message"]["content"].strip()
+
+            new_usage = dict(request.game_state.item_hint_usage or {})
+            new_usage[request.item_id] = new_usage.get(request.item_id, 0) + 1
+
+            return {
+                "success": True,
+                "hint_text": content,
+                "item_name": item["name"],
+                "item_icon": item["icon"],
+                "npc_name": npc["name"],
+                "new_item_hint_usage": new_usage,
+            }
+    except Exception as e:
+        logger.error(f"Item hint error: {e}")
+        return {
+            "success": False,
+            "message": "เกิดข้อผิดพลาดในการสร้างคำใบ้ กรุณาลองใหม่",
+            "hint_text": None,
+        }
+
 
 @app.post("/api/ledger/write")
 async def ledger_write(request: LedgerWriteRequest):
@@ -1542,7 +2930,7 @@ async def final_blueprint_generate(request: FinalBlueprintRequest):
     eval_prompt = f"""You are "พระโหราธิบดี", evaluating a student's Personal Financial Blueprint.
 
 Student: {state.player_name}
-Wisdom Score: {state.wisdom_score}/175
+Wisdom Score: {state.wisdom_score}/200
 Quests Completed: {', '.join(completed_names)}
 Ledger Pages: {pages_filled}/10
 Financial Competencies Covered: {', '.join(comp_covered) if comp_covered else 'none'}
@@ -1590,7 +2978,7 @@ Respond with JSON:
 
 @app.post("/api/report")
 async def teacher_report(request: TeacherReportRequest):
-    """Generate teacher-facing Fin. Comp. coverage report."""
+    """Generate teacher-facing Fin. Comp. coverage report with item choice data."""
     state = request.game_state
     selected = request.selected_competencies or list(FIN_COMP_MAP.keys())
 
@@ -1609,6 +2997,8 @@ async def teacher_report(request: TeacherReportRequest):
             q = QUESTS.get(qid, {})
             insight = state.key_insights.get(qid, "")
             ksa = state.ksa_evidence.get(qid, {})
+            chosen_item_id = state.item_choice_history.get(qid)
+            chosen_item = ITEMS_DB.get(chosen_item_id) if chosen_item_id else None
             evidence_items.append({
                 "quest_id": qid,
                 "quest_name": q.get("name", qid),
@@ -1617,6 +3007,12 @@ async def teacher_report(request: TeacherReportRequest):
                 "ksa_met": ksa,
                 "bloom_level": q.get("bloom_level", ""),
                 "fin_comp_codes": q.get("fin_comp_codes", []),
+                "chosen_item": {
+                    "id": chosen_item["id"],
+                    "type": chosen_item["type"],
+                    "name": chosen_item["name"],
+                    "icon": chosen_item["icon"],
+                } if chosen_item else None,
             })
 
         report_sections.append({
@@ -1628,7 +3024,53 @@ async def teacher_report(request: TeacherReportRequest):
             "coverage_note": f"ครอบคลุม {len(completed_related)}/{len(related_quests)} Quest ที่เกี่ยวข้อง",
         })
 
-    # Summary statistics
+    # Choice Pattern Analysis
+    choice_type_counts = {"tool_item": 0, "narrative_fragment": 0, "access_item": 0}
+    for iid in state.item_choice_history.values():
+        item = ITEMS_DB.get(iid)
+        if item:
+            t = item.get("type", "")
+            if t in choice_type_counts:
+                choice_type_counts[t] += 1
+
+    total_choices = sum(choice_type_counts.values())
+    if total_choices > 0:
+        max_type = max(choice_type_counts, key=choice_type_counts.get)
+        pattern_label = {
+            "tool_item": "Tool-Heavy (ฝั่ง Utility) — เลือกไอเท็มที่ใช้ขอคำใบ้ได้เป็นหลัก",
+            "narrative_fragment": "Narrative-Heavy (ฝั่ง Story) — สนใจบริบทเชิงเรื่องเล่าเป็นหลัก",
+            "access_item": "Access-Oriented — แสวงหาการปลดล็อกเชิงกลไก",
+        }.get(max_type, "Balanced")
+        if max(choice_type_counts.values()) <= total_choices / 2:
+            pattern_label = "Balanced — เลือกหลากหลายประเภทอย่างสมดุล"
+    else:
+        pattern_label = "ยังไม่มีการเลือก"
+
+    # Item inventory details
+    items_detailed = []
+    for iid in state.items:
+        item = ITEMS_DB.get(iid)
+        if item:
+            items_detailed.append({
+                "id": iid,
+                "type": item["type"],
+                "name": item["name"],
+                "icon": item["icon"],
+                "from_quest": item.get("source_quest", ""),
+            })
+
+    # Hint usage
+    hint_usage_detailed = []
+    for iid, count in (state.item_hint_usage or {}).items():
+        item = ITEMS_DB.get(iid)
+        if item:
+            hint_usage_detailed.append({
+                "item_id": iid,
+                "item_name": item["name"],
+                "icon": item["icon"],
+                "usage_count": count,
+            })
+
     total_covered = sum(1 for r in report_sections if r["is_covered"])
     completed_quests_count = len(state.completed_quests)
     pages_filled = sum(1 for v in state.ledger_pages.values() if v)
@@ -1644,7 +3086,16 @@ async def teacher_report(request: TeacherReportRequest):
             "ledger_pages_filled": pages_filled,
             "competencies_covered": f"{total_covered}/{len(selected)}",
             "badges": state.badges,
-            "items": state.items,
+            "items": items_detailed,
+            "choice_pattern": {
+                "type_counts": choice_type_counts,
+                "total_choices": total_choices,
+                "pattern_label": pattern_label,
+            },
+            "hint_usage": {
+                "items": hint_usage_detailed,
+                "total_hints_requested": sum((state.item_hint_usage or {}).values()),
+            },
         },
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
     }
@@ -1688,7 +3139,7 @@ async def generate_insights(request: InsightsRequest):
     rank = calculate_rank(state.wisdom_score)
 
     summary = f"""สรุปการเดินทางใน The Eternal Ledger
-ผู้เล่น: {state.player_name} | Wisdom: {state.wisdom_score}/175 | Rank: {rank['name']}
+ผู้เล่น: {state.player_name} | Wisdom: {state.wisdom_score}/200 | Rank: {rank['name']}
 Quest สำเร็จ ({len(state.completed_quests)}): {', '.join(quest_names) if quest_names else 'ไม่มี'}
 หน้า Ledger: {pages}/10 | สมรรถนะที่ครอบคลุม: {', '.join(comp_covered) if comp_covered else 'ไม่มี'}
 """
