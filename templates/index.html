@@ -323,23 +323,57 @@
             transition: width .8s ease;
         }
 
-        /* Ledger slots mini */
+        /* Ledger slots mini — icon-enhanced clickable */
         .ledger-slot-mini {
-            width: 14px;
-            height: 14px;
-            border-radius: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
             border: 1px solid var(--gold-dim);
             background: var(--bg-card);
-            transition: all .3s;
+            transition: all .25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            color: var(--text-dim);
+        }
+
+        .ledger-slot-mini:hover:not(.locked) {
+            transform: scale(1.15);
+            border-color: var(--gold);
+            z-index: 5;
+            box-shadow: 0 0 10px rgba(201, 162, 39, .5);
         }
 
         .ledger-slot-mini.filled {
-            background: var(--gold);
+            background: rgba(201, 162, 39, .15);
             border-color: var(--gold);
-            box-shadow: 0 0 6px rgba(201, 162, 39, .5);
+            color: var(--gold);
+            box-shadow: 0 0 6px rgba(201, 162, 39, .3);
         }
 
-        /* ==================== FIN COMP BARS ==================== */
+        .ledger-slot-mini.locked {
+            opacity: .55;
+            cursor: default;
+        }
+
+        .ledger-slot-mini.locked:hover {
+            transform: none;
+        }
+
+        /* Ledger page highlight pulse — triggered when opened via slot click */
+        @keyframes ledger-highlight-pulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(201, 162, 39, 0); }
+            50% { box-shadow: 0 0 18px rgba(201, 162, 39, .7); }
+        }
+        .ledger-page-card-highlight {
+            animation: ledger-highlight-pulse 1.6s ease;
+        }
+
+        /* ==================== FIN COMP BARS — 4-level color coding ==================== */
         .fincomp-bar {
             background: rgba(201, 162, 39, .08);
             border-radius: 3px;
@@ -349,9 +383,81 @@
 
         .fincomp-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #b8891f, #c9a227);
             border-radius: 3px;
-            transition: width .8s ease;
+            transition: width .8s ease, background .4s ease, box-shadow .4s ease;
+        }
+
+        /* Level 0: 0% — gray (not started) */
+        .fincomp-bar-fill.level-0 {
+            background: var(--text-dim);
+        }
+
+        /* Level 1: 1–66% — gold (in progress) */
+        .fincomp-bar-fill.level-1 {
+            background: linear-gradient(90deg, #b8891f, #c9a227);
+        }
+
+        /* Level 2: 67–99% — gold glow (nearly mastered) */
+        .fincomp-bar-fill.level-2 {
+            background: linear-gradient(90deg, #c9a227, #e4b92d);
+            box-shadow: 0 0 6px rgba(201, 162, 39, .5);
+        }
+
+        /* Level 3: 100% — emerald (mastered) */
+        .fincomp-bar-fill.level-3 {
+            background: linear-gradient(90deg, #059669, #10b981);
+            box-shadow: 0 0 6px rgba(16, 185, 129, .5);
+        }
+
+        /* ==================== FIN COMP STRIP (Mobile compact) ==================== */
+        .fincomp-strip-item {
+            background: var(--bg-card2);
+            border: 1px solid var(--gold-dim);
+            border-radius: 6px;
+            padding: 5px 7px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .fincomp-strip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .fincomp-strip-label {
+            font-size: .68rem;
+            color: var(--text-muted);
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.45;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fincomp-strip-pct {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .fincomp-strip-pct.level-3 {
+            color: var(--emerald);
+        }
+
+        .fincomp-strip-bar {
+            background: rgba(201, 162, 39, .08);
+            border-radius: 2px;
+            height: 3px;
+            overflow: hidden;
         }
 
         /* ==================== QUEST MAP TREE ==================== */
@@ -374,12 +480,8 @@
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(7, auto);
             gap: 12px 8px;
-            padding: 16px 8px;
-            align-items: center;
-            justify-items: center;
+            padding: 8px 8px;
         }
 
         /* Quest Nodes */
@@ -441,6 +543,22 @@
             animation: none;
             box-shadow: 0 0 24px rgba(124, 58, 237, .4);
             border-color: #7c3aed;
+        }
+
+        /* Final quest node — Entry completed but Final prereq not yet met */
+        .quest-node.node-accessible-locked {
+            opacity: .75;
+            cursor: pointer;
+            border-color: rgba(124, 58, 237, .35);
+            background: rgba(124, 58, 237, .04);
+        }
+
+        .quest-node.node-accessible-locked:hover {
+            opacity: 1;
+            border-color: rgba(124, 58, 237, .6);
+            background: rgba(124, 58, 237, .08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(124, 58, 237, .2);
         }
 
         .node-icon {
@@ -573,7 +691,9 @@
             border-radius: 0 8px 8px 8px;
             padding: 10px 12px;
             font-size: .9rem;
-            line-height: 1.65;
+            max-width: 85%;
+            width: fit-content;      /* shrink-wrap to content */
+            margin-right: auto;
         }
 
         .chat-user {
@@ -582,8 +702,10 @@
             border-radius: 8px 0 8px 8px;
             padding: 10px 12px;
             font-size: .9rem;
-            line-height: 1.65;
-            text-align: right;
+            text-align: left;
+            max-width: 80%;
+            width: fit-content;
+            margin-left: auto;
         }
 
         .markdown-body p {
@@ -820,6 +942,559 @@
                 min-height: 72px;
             }
         }
+
+        /* ==================== QUEST-GATE LOCK BANNER ==================== */
+        .comms-lock-banner {
+            background: linear-gradient(
+                135deg,
+                rgba(201, 162, 39, .10) 0%,
+                rgba(201, 162, 39, .06) 100%
+            );
+            border-top: 1px solid var(--gold-dim);
+            border-bottom: 1px solid var(--gold-dim);
+            animation: lock-banner-fade-in .3s ease;
+        }
+
+        @keyframes lock-banner-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comms-lock-banner.banner-complete {
+            background: linear-gradient(
+                135deg,
+                rgba(16, 185, 129, .10) 0%,
+                rgba(16, 185, 129, .05) 100%
+            );
+            border-top-color: rgba(16, 185, 129, .3);
+            border-bottom-color: rgba(16, 185, 129, .3);
+        }
+
+        .comms-lock-banner.banner-complete #comms-lock-cta {
+            background: linear-gradient(135deg, #059669, #10b981);
+            box-shadow: 0 3px 12px rgba(16, 185, 129, .25);
+        }
+
+        .comms-lock-banner.banner-warning {
+            background: linear-gradient(
+                135deg,
+                rgba(239, 68, 68, .08) 0%,
+                rgba(239, 68, 68, .04) 100%
+            );
+            border-top-color: rgba(239, 68, 68, .3);
+            border-bottom-color: rgba(239, 68, 68, .3);
+        }
+
+        /* Variant: final-quest prereq not yet met (purple tint matching Final theme) */
+        .comms-lock-banner.banner-final-locked {
+            background: linear-gradient(
+                135deg,
+                rgba(124, 58, 237, .10) 0%,
+                rgba(124, 58, 237, .05) 100%
+            );
+            border-top-color: rgba(124, 58, 237, .3);
+            border-bottom-color: rgba(124, 58, 237, .3);
+        }
+
+        .comms-lock-banner.banner-final-locked #comms-lock-cta {
+            background: linear-gradient(135deg, #6d28d9, #7c3aed);
+            color: white;
+            box-shadow: 0 3px 12px rgba(124, 58, 237, .3);
+        }
+
+        /* ==================== DISABLED INPUT STATES ==================== */
+        #term-input:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            background: rgba(30, 23, 16, .5) !important;
+        }
+
+        #term-input:disabled::placeholder {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .btn-gold:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        .btn-gold:disabled:hover {
+            background: rgba(201, 162, 39, .1);
+            color: var(--gold);
+            box-shadow: none;
+        }
+
+        /* ==================== ITEM SYSTEM (Mechanic F/A/B/C) ================ */
+
+        /* Clickable item chip — replaces non-interactive span chips */
+        .item-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(30, 23, 16, .9);
+            border: 1px solid rgba(201, 162, 39, .3);
+            color: var(--text-main);
+            font-size: .75rem;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .item-chip:hover {
+            background: rgba(201, 162, 39, .1);
+            border-color: var(--gold);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(201, 162, 39, .2);
+        }
+
+        .item-chip.type-tool_item {
+            border-color: rgba(59, 130, 246, .4);
+        }
+
+        .item-chip.type-narrative_fragment {
+            border-color: rgba(139, 92, 246, .4);
+        }
+
+        .item-chip.type-access_item {
+            border-color: rgba(201, 162, 39, .5);
+            background: rgba(201, 162, 39, .08);
+        }
+
+        /* ── Item Inspector Modal ───────────────────────────────────────── */
+
+        .inspector-type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: .7rem;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            letter-spacing: .05em;
+        }
+
+        .inspector-type-badge.type-tool_item {
+            background: rgba(59, 130, 246, .15);
+            border: 1px solid rgba(59, 130, 246, .4);
+            color: #93c5fd;
+        }
+
+        .inspector-type-badge.type-narrative_fragment {
+            background: rgba(139, 92, 246, .15);
+            border: 1px solid rgba(139, 92, 246, .4);
+            color: #c4b5fd;
+        }
+
+        .inspector-type-badge.type-access_item {
+            background: rgba(201, 162, 39, .15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .inspector-section {
+            background: var(--bg-card2);
+            border: 1px solid var(--gold-dim);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .inspector-narrative {
+            line-height: 1.8;
+            white-space: pre-wrap;
+            color: var(--text-main);
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .inspector-narrative strong {
+            color: var(--gold);
+        }
+
+        .inspector-narrative em {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ── Reward Choice Modal ─────────────────────────────────────────── */
+
+        .reward-choice-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .reward-choice-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .choice-card {
+            background: var(--bg-card2);
+            border: 2px solid var(--gold-dim);
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all .25s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .choice-card:hover {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, .05);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(201, 162, 39, .25);
+        }
+
+        .choice-card.selected {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, .12);
+            box-shadow: 0 0 20px rgba(201, 162, 39, .4);
+        }
+
+        .choice-card.type-access_item {
+            border-color: rgba(201, 162, 39, .5);
+        }
+
+        .choice-card.type-access_item::before {
+            content: '⚡ Ripple Effect';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: var(--gold);
+            color: var(--bg-deep);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: .65rem;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+        }
+
+        .choice-card-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .choice-card-type {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .7rem;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .choice-card-name {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .95rem;
+            color: var(--text-main);
+            text-align: center;
+            min-height: 2.4em;
+        }
+
+        .choice-card-desc {
+            font-size: .8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .choice-card-effect {
+            border-top: 1px solid var(--gold-dim);
+            padding-top: 8px;
+            font-size: .75rem;
+            color: var(--gold);
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .choice-irreversible-warning {
+            background: rgba(239, 68, 68, .08);
+            border: 1px solid rgba(239, 68, 68, .3);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #fca5a5;
+            font-size: .8rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* ── Chat Hint Bubble (from Tool Item) ───────────────────────────── */
+
+        .chat-hint {
+            background: rgba(59, 130, 246, .08);
+            border-left: 3px solid #3b82f6;
+            border-radius: 0 8px 8px 8px;
+            padding: 10px 12px;
+            font-size: .9rem;
+            max-width: 85%;
+            width: fit-content;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .chat-hint::before {
+            content: '💡 คำใบ้จากไอเท็ม';
+            display: block;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .7rem;
+            letter-spacing: .05em;
+            color: #93c5fd;
+            margin-bottom: 4px;
+        }
+
+        /* ── Ledger Unchosen Items Section ───────────────────────────────── */
+
+        .ledger-unchosen-divider {
+            margin: 16px 0 8px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--gold-dim);
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .8rem;
+            letter-spacing: .05em;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .unchosen-card {
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border: 1px dashed var(--text-dim);
+            background: rgba(30, 23, 16, .5);
+            opacity: .65;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .unchosen-card:hover {
+            opacity: .9;
+        }
+
+        /* ── Teacher Report Choice Pattern ───────────────────────────────── */
+
+        .choice-pattern-card {
+            background: rgba(124, 58, 237, .06);
+            border: 1px solid rgba(124, 58, 237, .3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .choice-type-bar {
+            display: flex;
+            gap: 2px;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .choice-type-segment {
+            height: 100%;
+            transition: width .6s ease;
+        }
+
+        .choice-type-segment.tool_item {
+            background: #3b82f6;
+        }
+
+        .choice-type-segment.narrative_fragment {
+            background: #8b5cf6;
+        }
+
+        .choice-type-segment.access_item {
+            background: var(--gold);
+        }
+
+        .hint-usage-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 4px 8px;
+            background: var(--bg-card);
+            border-radius: 6px;
+            margin-top: 4px;
+            font-size: .8rem;
+        }
+
+        /* ==================== ITEMS PANEL — EMPTY STATE GHOST CARDS ==================== */
+
+        .ghost-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--text-dim);
+            background: rgba(30, 23, 16, .4);
+            opacity: .55;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ghost-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(201, 162, 39, .05) 50%,
+                transparent 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 3s ease infinite;
+        }
+
+        .ghost-card-icon {
+            font-size: 1.4rem;
+            line-height: 1;
+            flex-shrink: 0;
+            filter: grayscale(1);
+            opacity: .5;
+        }
+
+        .ghost-card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ghost-card-type {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .65rem;
+            letter-spacing: .08em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .ghost-card-desc {
+            font-size: .75rem;
+            color: var(--text-dim);
+            line-height: 1.45;
+        }
+
+        .ghost-card-tooltip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: var(--bg-card2);
+            border: 1px solid var(--gold-dim);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: .75rem;
+            color: var(--text-main);
+            line-height: 1.55;
+            z-index: 20;
+            box-shadow: 0 4px 16px rgba(0,0,0,.5);
+            pointer-events: none;
+        }
+
+        .ghost-card:hover .ghost-card-tooltip {
+            display: block;
+        }
+
+        .items-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        /* Fin. Comp. bars inside Teacher Report */
+        .report-fincomp-bar {
+            background: rgba(201, 162, 39, .08);
+            border-radius: 3px;
+            height: 5px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+
+        .report-fincomp-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width .8s ease;
+        }
+
+        .report-fincomp-bar-fill.level-0 { background: var(--text-dim); }
+        .report-fincomp-bar-fill.level-1 { background: linear-gradient(90deg, #b8891f, #c9a227); }
+        .report-fincomp-bar-fill.level-2 {
+            background: linear-gradient(90deg, #c9a227, #e4b92d);
+            box-shadow: 0 0 5px rgba(201, 162, 39, .4);
+        }
+        .report-fincomp-bar-fill.level-3 {
+            background: linear-gradient(90deg, #059669, #10b981);
+            box-shadow: 0 0 5px rgba(16, 185, 129, .4);
+        }
+
+        /* ==================== FIN. COMP. REFERENCE MODAL ==================== */
+
+        .fincomp-ref-card {
+            border-radius: 8px;
+            border: 1px solid var(--gold-dim);
+            padding: 12px;
+            margin-bottom: 8px;
+            transition: background .2s;
+        }
+
+        .fincomp-ref-code-badge {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            padding: 2px 10px;
+            border-radius: 5px;
+            border: 1px solid;
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        .fincomp-ref-level-badge {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: .68rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .fincomp-ref-statement {
+            font-size: .82rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .fincomp-ref-quest-chip {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: .7rem;
+            font-family: 'Sarabun', sans-serif;
+            color: var(--text-muted);
+            border: 1px solid;
+            white-space: nowrap;
+        }
+
+        .fincomp-ref-domain-divider {
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid;
+        }
     </style>
 </head>
 
@@ -876,7 +1551,7 @@
                     ถัดไป <i class="fas fa-chevron-right ml-1"></i>
                 </button>
                 <button onclick="skipIntro()"
-                    class="btn-gold px-5 py-3 rounded-lg text-xs font-tech">
+                    class="btn-gold px-5 py-3 rounded-lg text-sm font-tech">
                     ข้าม <i class="fas fa-forward ml-1"></i>
                 </button>
             </div>
@@ -894,57 +1569,55 @@
                 <p class="text-sm" style="color:var(--text-muted)">ชื่อของท่านจะถูกบันทึกใน The Eternal Ledger</p>
             </div>
             <input type="text" id="player-name-input" placeholder="ชื่อ-นามสกุล หรือชื่อเล่น"
-                class="w-full px-4 py-3 rounded-lg text-sm mb-4 focus:outline-none"
+                class="w-full px-4 py-2 rounded-lg text-sm mb-4 focus:outline-none leading-relaxed"
                 style="background:var(--bg-card2);border:1px solid var(--gold-dim);color:var(--text-main);"
                 onkeydown="if(event.key==='Enter')game.startGame()" maxlength="40" />
-            <button onclick="game.startGame()"
-                class="btn-action w-full py-3 rounded-lg font-tech font-bold text-sm tracking-widest">
-                <i class="fas fa-book-open mr-2"></i>เปิด The Eternal Ledger
-            </button>
+            <div class="flex gap-2">
+                <button onclick="game.startGame()"
+                    class="btn-action flex-1 py-3 rounded-lg font-tech font-bold text-sm tracking-widest">
+                    <i class="fas fa-book-open mr-2"></i>เปิด The Eternal Ledger
+                </button>
+                <button onclick="game.openSaveLoadModal()"
+                    class="btn-gold px-4 py-3 rounded-lg text-sm font-tech flex-shrink-0"
+                    title="โหลดเกมที่บันทึกไว้">
+                    <i class="fas fa-folder-open"></i>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- ===== MAIN GAME SCREEN ===== -->
     <div id="screen-game" class="hidden flex-col min-h-screen">
 
-        <!-- HEADER HUD -->
+        <!-- HEADER HUD — restructured: Rank + Wisdom grouped under player name -->
         <header class="panel mx-2 mt-2 p-2 flex items-center gap-2 sticky top-2 z-40 rounded-lg"
             style="background:rgba(14,11,7,.92)">
 
-            <!-- Logo + Name + Rank -->
-            <div class="flex items-center gap-2 flex-shrink-0">
-                <div class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
-                    style="background:var(--bg-card2);border:2px solid var(--gold);box-shadow:0 0 10px rgba(201,162,39,.3)">
-                    📜
+            <!-- Left block: Avatar (= Rank icon) + (Rank name · Wisdom %) + mini bar -->
+            <div class="flex items-center gap-2 flex-shrink min-w-0">
+                <div id="hud-avatar" class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                    style="background:var(--bg-card2);border:2px solid var(--gold);box-shadow:0 0 10px rgba(201,162,39,.3);transition:all .4s ease">
+                    🌱
                 </div>
-                <div class="hidden sm:block">
-                    <div class="font-tech text-sm leading-tight" style="color:var(--text-main)" id="hud-player-name">
-                        ผู้แสวงหาปัญญา</div>
-                    <div class="text-sm" style="color:var(--gold)" id="hud-rank">ผู้แสวงหาปัญญา</div>
+                <div class="min-w-0 flex-1">
+                    <!-- Row 1: Rank name · Wisdom % (always visible) -->
+                    <div class="flex items-center gap-1.5 text-sm leading-relaxed truncate" id="hud-rank-wisdom-row">
+                        <span class="truncate" style="color:var(--gold)" id="hud-rank">ผู้แสวงหาปัญญา</span>
+                        <span style="color:var(--text-dim)">|</span>
+                        <span class="flex-shrink-0" style="color:var(--wisdom)">⚜️ <span id="hud-wisdom-pct" class="font-tech">0</span>%</span>
+                    </div>
+                    <!-- Row 2: Wisdom mini progress bar -->
+                    <div class="wisdom-bar-bg mt-2" style="height:6px;max-width:160px">
+                        <div class="wisdom-bar-fill" id="hud-wisdom-fill" style="width:0%"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Wisdom (mobile: stat chip แยก | desktop: รวมใน center block) -->
-            <div class="stat-chip flex-shrink-0 sm:hidden">
-                <span style="color:var(--wisdom)">⚜️</span>
-                <span class="font-tech text-sm" style="color:var(--wisdom)" id="hud-wisdom">10</span>
-                <span class="font-tech text-sm" style="color:var(--text-muted)">/ 175</span>
-            </div>
-
-            <!-- Center block: Wisdom + Ledger (desktop only) -->
-            <div class="flex-1 hidden sm:flex flex-col items-center justify-center gap-1 overflow-hidden px-2">
-                <!-- Wisdom row -->
-                <div class="flex items-center gap-1.5">
-                    <span style="color:var(--wisdom)">⚜️</span>
-                    <span class="font-tech text-sm" style="color:var(--wisdom)" id="hud-wisdom-desktop">10</span>
-                    <span class="font-tech text-sm" style="color:var(--text-muted)">/ 175</span>
-                </div>
-                <!-- Ledger slots row -->
-                <div class="flex items-center gap-1">
-                    <span class="text-sm flex-shrink-0" style="color:var(--text-muted)">📖</span>
-                    <div id="hud-ledger-slots" class="flex gap-1 flex-wrap justify-center"></div>
-                    <span class="font-tech text-sm flex-shrink-0" style="color:var(--text-muted)" id="hud-ledger-count">0/10</span>
-                </div>
+            <!-- Center block: Ledger slots only (desktop only) -->
+            <div class="flex-1 hidden sm:flex items-center justify-center gap-1.5 overflow-hidden px-2">
+                <span class="text-lg flex-shrink-0" style="color:var(--text-muted)">📖:</span>
+                <div id="hud-ledger-slots" class="flex gap-1 flex-wrap justify-center"></div>
+                <span class="font-tech text-sm flex-shrink-0" style="color:var(--text-muted)" id="hud-ledger-count">0/10</span>
             </div>
 
             <!-- Mobile spacer -->
@@ -953,17 +1626,17 @@
             <!-- Action buttons -->
             <div class="flex items-center gap-1.5 flex-shrink-0">
                 <button onclick="game.openQuestLog()"
-                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1 min-h-[36px]">
                     <i class="fas fa-scroll text-sm"></i>
                     <span class="hidden sm:inline">Quests</span>
                 </button>
                 <button onclick="game.openLedger()"
-                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1 min-h-[36px]">
                     <i class="fas fa-book-open text-sm"></i>
                     <span class="hidden sm:inline">Ledger</span>
                 </button>
                 <button onclick="game.openTeacherReport()"
-                    class="btn-gold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 min-h-[36px]">
+                    class="btn-gold px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1 min-h-[36px]">
                     <i class="fas fa-file-alt text-sm"></i>
                     <span class="hidden sm:inline">Report</span>
                 </button>
@@ -972,8 +1645,8 @@
 
         <!-- MOBILE: Ledger progress -->
         <div class="sm:hidden mx-2 mt-1.5 panel p-2 flex items-center gap-2">
-            <span class="text-sm" style="color:var(--text-muted)">📖 Ledger:</span>
-            <div id="hud-ledger-slots-mobile" class="flex gap-1 flex-1"></div>
+            <span class="text-sm" style="color:var(--text-muted)">📖:</span>
+            <div id="hud-ledger-slots-mobile" class="flex gap-1 flex-1 flex-wrap"></div>
             <span class="font-tech text-sm" style="color:var(--text-muted)" id="hud-ledger-count-mobile">0/10</span>
         </div>
 
@@ -994,32 +1667,74 @@
         <!-- MAIN CONTENT -->
         <div class="flex-1 flex flex-col lg:flex-row gap-2 p-2">
 
-            <!-- LEFT SIDEBAR: Fin. Comp. + Info -->
-            <div class="lg:w-56 flex-shrink-0 flex flex-col gap-2">
+            <!-- LEFT SIDEBAR: Items Panel (Desktop) -->
+            <div class="hidden lg:flex lg:w-64 flex-shrink-0 flex-col gap-2">
 
-                <!-- Fin. Comp. Coverage -->
-                <div class="panel p-3 hidden lg:block">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i class="fas fa-chart-bar text-xs" style="color:var(--gold)"></i>
-                        <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">สมรรถนะทางการเงิน</span>
+                <!-- Items Panel — always visible, expands to fill sidebar -->
+                <div id="items-panel" class="panel p-3 flex-1 flex flex-col min-h-0">
+                    <div class="items-panel-header">
+                        <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">
+                            <i class="fas fa-box mr-1.5"></i>ไอเท็มสะสม
+                        </span>
+                        <span class="text-xs" style="color:var(--text-dim)">กดเพื่อดูรายละเอียด</span>
                     </div>
-                    <div id="fincomp-bars" class="space-y-2.5"></div>
-                </div>
 
-                <!-- Items (if any) -->
-                <div id="items-panel" class="panel p-3 hidden">
-                    <div class="text-sm font-tech tracking-wider mb-2" style="color:var(--text-muted)">
-                        <i class="fas fa-box mr-1"></i>ไอเท็มสะสม
+                    <!-- Active items (shown when items.length > 0) -->
+                    <div id="items-container" class="hidden flex flex-wrap gap-1.5"></div>
+
+                    <!-- Empty State — Ghost Cards (shown when items.length === 0) -->
+                    <div id="items-empty-state" class="flex flex-col gap-2">
+                        <p class="text-xs mb-1" style="color:var(--text-dim)">
+                            ทำ Quest ให้สำเร็จเพื่อรับไอเท็ม:
+                        </p>
+
+                        <!-- Ghost: Tool Item -->
+                        <div class="ghost-card" style="position:relative">
+                            <div class="ghost-card-tooltip">
+                                🔧 <strong>Tool Item</strong> — ใช้ขอคำใบ้ (Socratic Hint) จาก NPC
+                                ได้ในเควสต์ที่เชื่อมโยง ไม่นับเป็น Turn ของเควสต์
+                            </div>
+                            <div class="ghost-card-icon">🧮</div>
+                            <div class="ghost-card-body">
+                                <div class="ghost-card-type">Tool Item</div>
+                                <div class="ghost-card-desc">ขอคำใบ้จาก NPC ได้</div>
+                            </div>
+                        </div>
+
+                        <!-- Ghost: Narrative Fragment -->
+                        <div class="ghost-card" style="position:relative">
+                            <div class="ghost-card-tooltip">
+                                📜 <strong>Narrative Fragment</strong> — บันทึกเรื่องเล่าลึกของโลกเกม
+                                เสริมบริบทและความเข้าใจนอกเหนือจาก Quest
+                            </div>
+                            <div class="ghost-card-icon">📜</div>
+                            <div class="ghost-card-body">
+                                <div class="ghost-card-type">Narrative</div>
+                                <div class="ghost-card-desc">บันทึกเรื่องเล่าของโลก</div>
+                            </div>
+                        </div>
+
+                        <!-- Ghost: Access Item -->
+                        <div class="ghost-card" style="position:relative">
+                            <div class="ghost-card-tooltip">
+                                🗝️ <strong>Access Item</strong> — ส่งผล Ripple Effect ต่อพฤติกรรม NPC
+                                ในเควสต์ถัดไป การมีไอเท็มนี้เปลี่ยนวิธีที่ NPC ตอบสนอง
+                            </div>
+                            <div class="ghost-card-icon">🏛️</div>
+                            <div class="ghost-card-body">
+                                <div class="ghost-card-type">Access Item</div>
+                                <div class="ghost-card-desc">Ripple Effect ต่อ NPC</div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="items-container" class="flex flex-wrap gap-1"></div>
                 </div>
             </div>
 
             <!-- QUEST MAP -->
             <div class="flex-1 panel p-4 min-w-0">
-                <div class="flex items-center gap-2 mb-4 flex-shrink-0">
+                <div class="flex items-center gap-2 mb-2 flex-shrink-0">
                     <i class="fas fa-map" style="color:var(--gold)"></i>
-                    <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">The Eternal Ledger — แผนที่ภารกิจ</span>
+                    <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">แผนที่ภารกิจ</span>
                     <span class="text-sm ml-auto" style="color:var(--text-muted)">กดที่ NPC เพื่อเริ่มสนทนา</span>
                 </div>
 
@@ -1027,18 +1742,12 @@
                 <div id="quest-map" class="grid gap-3"
                      style="grid-template-columns: repeat(3, 1fr); align-items: stretch"></div>
 
-                <!-- Mobile: Fin. Comp. -->
-                <div class="lg:hidden mt-4 pt-4" style="border-top:1px solid var(--gold-dim)">
-                    <div class="font-tech text-sm tracking-wider mb-2" style="color:var(--gold)">สมรรถนะทางการเงิน
-                    </div>
-                    <div id="fincomp-bars-mobile" class="grid grid-cols-2 gap-2"></div>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-         NPC TERMINAL MODAL
+        NPC TERMINAL MODAL
     ========================================== -->
     <div id="modal-npc" class="modal-backdrop">
         <div class="terminal-modal panel">
@@ -1051,9 +1760,9 @@
                     style="background:var(--bg-card2);border:2px solid var(--gold)">📖</div>
                 <div class="flex-1 min-w-0">
                     <div class="font-tech text-base text-white truncate" id="tnpc-name">NPC</div>
-                    <div class="text-xs truncate" style="color:var(--text-muted)" id="tnpc-role">role</div>
+                    <div class="text-xs truncate leading-relaxed" style="color:var(--text-muted)" id="tnpc-role">role</div>
                 </div>
-                <div id="tnpc-unlock-badge" class="hidden text-xs font-tech px-2 py-0.5 rounded-full flex-shrink-0"
+                <div id="tnpc-unlock-badge" class="hidden text-sm font-tech px-2 py-0.5 rounded-full flex-shrink-0"
                     style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.5);color:var(--emerald)">
                     🔓 ปลดล็อก!
                 </div>
@@ -1134,8 +1843,22 @@
                     </div>
                 </div>
 
+                <!-- Lock overlay banner (shown when input is gated) -->
+                <div id="comms-lock-overlay" class="hidden px-3 py-2.5 flex items-center gap-2 flex-shrink-0 comms-lock-banner">
+                    <i class="fas fa-lock text-xs flex-shrink-0" style="color:var(--gold-dim)"></i>
+                    <span class="flex-1 text-sm min-w-0" style="color:var(--text-main)" id="comms-lock-text">
+                        📜 รับเควสต์ก่อนจึงจะสนทนาได้
+                    </span>
+                    <button id="comms-lock-cta" onclick="game.gotoLockedTab()"
+                        class="btn-action px-3 py-1.5 rounded text-xs font-tech min-h-[32px] flex-shrink-0"
+                        data-target-tab="quest">
+                        <span id="comms-lock-cta-label">ไปที่ภารกิจ</span>
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
                 <!-- Input -->
-                <div class="p-3 flex gap-2 flex-shrink-0"
+                <div class="p-3 flex gap-2 flex-shrink-0 leading-relaxed"
                     style="border-top:1px solid var(--gold-dim);padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
                     <input type="text" id="term-input" placeholder="พิมพ์ข้อความถึง NPC..."
                         class="flex-1 px-3 py-2.5 rounded-lg text-sm focus:outline-none min-h-[44px]"
@@ -1159,7 +1882,7 @@
     </div>
 
     <!-- ==========================================
-         LEDGER SLIDE-OVER
+        LEDGER SLIDE-OVER
     ========================================== -->
     <div id="ledger-overlay" class="ledger-overlay" onclick="game.closeLedger()"></div>
     <aside id="ledger-panel" class="ledger-panel">
@@ -1175,17 +1898,17 @@
             style="border-bottom:1px solid var(--gold-dim);background:rgba(124,58,237,.04)">
             <div class="flex justify-between text-xs mb-1" style="color:var(--text-muted)">
                 <span>Wisdom Score</span>
-                <span id="ledger-wisdom-val">10/175</span>
+                <span id="ledger-wisdom-val">0/200</span>
             </div>
             <div class="wisdom-bar-bg">
-                <div class="wisdom-bar-fill" id="ledger-wisdom-fill" style="width:5.7%"></div>
+                <div class="wisdom-bar-fill" id="ledger-wisdom-fill" style="width:0%"></div>
             </div>
         </div>
         <div class="flex-1 overflow-y-auto p-4" id="ledger-inner"></div>
     </aside>
 
     <!-- ==========================================
-         QUEST LOG MODAL
+        QUEST LOG MODAL
     ========================================== -->
     <div id="modal-quest-log" class="modal-backdrop"
         onclick="if(event.target===this)game.closeModal('modal-quest-log')">
@@ -1202,16 +1925,27 @@
     </div>
 
     <!-- ==========================================
-         TEACHER REPORT MODAL
+        TEACHER REPORT MODAL
     ========================================== -->
     <div id="modal-report" class="modal-backdrop" onclick="if(event.target===this)game.closeModal('modal-report')">
         <div class="panel w-full max-w-3xl max-h-[90vh] flex flex-col scale-in">
             <div class="p-4 flex items-center gap-2 flex-shrink-0" style="border-bottom:1px solid var(--gold-dim)">
                 <i class="fas fa-file-alt" style="color:var(--gold)"></i>
                 <span class="font-tech" style="color:var(--gold)">รายงานสมรรถนะทางการเงิน</span>
+                <button onclick="game.openFinCompRef()"
+                    class="ml-auto btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[36px]"
+                    title="ดูกรอบสมรรถนะทางการเงิน ธปท. พ.ศ. 2569">
+                    <i class="fas fa-book-open sm:mr-1"></i>
+                    <span class="hidden sm:inline">กรอบ Fin. Comp.</span>
+                </button>
                 <button id="copy-report-btn" onclick="game.copyTeacherReport()"
-                    class="ml-auto btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[36px]">
+                    class="btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[36px]">
                     <i class="fas fa-copy sm:mr-1"></i><span class="hidden sm:inline">คัดลอก</span>
+                </button>
+                <button onclick="game.openSaveLoadModal()"
+                    class="btn-gold px-3 py-1.5 rounded text-xs font-tech min-h-[36px]"
+                    title="บันทึก/โหลดข้อมูลเกมและประวัติการเรียนรู้">
+                    <i class="fas fa-save sm:mr-1"></i><span class="hidden sm:inline">บันทึกเกม</span>
                 </button>
                 <button onclick="game.closeModal('modal-report')" class="text-gray-500 hover:text-white p-2 ml-1">
                     <i class="fas fa-times"></i>
@@ -1226,6 +1960,189 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         ITEM INSPECTOR MODAL
+         ใช้สำหรับทุก item type — layout เปลี่ยนตาม type
+    ========================================== -->
+    <div id="modal-item-inspector" class="modal-backdrop"
+        onclick="if(event.target===this)game.closeModal('modal-item-inspector')">
+        <div class="panel w-full max-w-lg max-h-[85vh] flex flex-col scale-in">
+            <!-- Header -->
+            <div class="p-4 flex items-center gap-3 flex-shrink-0"
+                style="border-bottom:1px solid var(--gold-dim)">
+                <div id="inspector-icon"
+                    class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl flex-shrink-0"
+                    style="background:var(--bg-card2);border:1px solid var(--gold-dim)">📦</div>
+                <div class="flex-1 min-w-0">
+                    <div class="font-tech text-sm text-white truncate" id="inspector-name">ไอเท็ม</div>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span id="inspector-type-badge" class="inspector-type-badge">—</span>
+                        <span class="text-xs" style="color:var(--text-muted)" id="inspector-source">—</span>
+                    </div>
+                </div>
+                <button onclick="game.closeModal('modal-item-inspector')"
+                    class="text-gray-500 hover:text-white p-1 flex-shrink-0 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body (scrollable) -->
+            <div class="flex-1 overflow-y-auto p-4" id="inspector-body">
+                <!-- Populated by game.openItemInspector() -->
+            </div>
+
+            <!-- Footer (optional action buttons) -->
+            <div id="inspector-footer" class="p-4 flex-shrink-0 hidden"
+                style="border-top:1px solid var(--gold-dim)">
+                <!-- Populated by game.openItemInspector() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         REWARD CHOICE MODAL (Mechanic F)
+         Non-dismissible — ผู้เล่นต้องเลือก 1 ใน N
+    ========================================== -->
+    <div id="modal-reward-choice" class="modal-backdrop">
+        <div class="panel w-full max-w-3xl max-h-[92vh] flex flex-col scale-in">
+            <!-- Header -->
+            <div class="p-4 flex items-center gap-2 flex-shrink-0"
+                style="border-bottom:1px solid var(--gold-dim); background:rgba(201,162,39,.06)">
+                <i class="fas fa-gift" style="color:var(--gold)"></i>
+                <span class="font-tech text-base tracking-widest" style="color:var(--gold)">
+                    เลือกรางวัลของท่าน
+                </span>
+                <span class="text-xs ml-auto" style="color:var(--text-muted)" id="reward-quest-label">
+                    Quest: —
+                </span>
+            </div>
+
+            <!-- Instructions -->
+            <div class="px-4 py-3 flex-shrink-0"
+                style="border-bottom:1px solid var(--gold-dim); background:rgba(14,11,7,.5)">
+                <p class="text-sm" style="color:var(--text-main)">
+                    ท่านได้พิสูจน์สมรรถนะของท่านแล้ว — ขอมอบรางวัล 3 ตัวเลือกให้ท่านพิจารณา
+                    <br>
+                    <span class="text-xs" style="color:var(--text-muted)">
+                        เลือกสิ่งที่สอดคล้องกับเส้นทางที่ท่านต้องการเดินต่อ — การตัดสินใจนี้เปลี่ยนแปลงไม่ได้
+                    </span>
+                </p>
+            </div>
+
+            <!-- Choice cards -->
+            <div class="flex-1 overflow-y-auto p-4" id="reward-choice-inner">
+                <!-- Populated by game.openRewardChoiceModal() -->
+            </div>
+
+            <!-- Footer — Confirm button + irreversible warning -->
+            <div class="p-4 flex-shrink-0"
+                style="border-top:1px solid var(--gold-dim); background:rgba(14,11,7,.7)">
+                <div class="choice-irreversible-warning">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    ⚠️ การเลือกนี้เปลี่ยนแปลงไม่ได้ และจะส่งผลต่อเควสต์ต่อๆ ไป
+                </div>
+                <button id="btn-confirm-reward" onclick="game.confirmRewardChoice()"
+                    class="btn-action w-full py-3 rounded-lg font-tech font-bold text-sm tracking-widest mt-3"
+                    disabled>
+                    <i class="fas fa-check mr-2"></i>ยืนยันการเลือก
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SAVE / LOAD GAME MODAL
+    ========================================== -->
+    <div id="modal-save-load" class="modal-backdrop"
+        onclick="if(event.target===this)game.closeSaveLoadModal()">
+        <div class="panel w-full max-w-2xl max-h-[90vh] flex flex-col scale-in">
+
+            <!-- Header -->
+            <div class="p-4 flex items-center gap-2 flex-shrink-0"
+                style="border-bottom:1px solid var(--gold-dim)">
+                <i class="fas fa-save flex-shrink-0" style="color:var(--gold)"></i>
+                <span class="font-tech text-sm tracking-widest" style="color:var(--gold)">
+                    บันทึก / โหลดเกม
+                </span>
+                <!-- span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0 hidden sm:inline-block"
+                    style="background:rgba(201,162,39,.1);border:1px solid var(--gold-dim);color:var(--text-muted)">
+                    Save / Load / Research Export
+                </span -->
+                <button onclick="game.closeSaveLoadModal()"
+                    class="ml-auto text-gray-500 hover:text-white p-1 flex-shrink-0 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-5">
+
+                <!-- ── EXPORT SECTION ── -->
+                <div id="save-export-section">
+                    <div class="font-tech text-sm mb-1" style="color:var(--gold)">
+                        <i class="fas fa-file-export mr-1.5"></i>บันทึกเกม / Export ข้อมูลการวิจัย
+                    </div>
+                    <p class="text-xs mb-2 leading-relaxed" style="color:var(--text-muted)">
+                        คัดลอกข้อมูลด้านล่างแล้ววางลงใน Google Forms
+                        หรือดาวน์โหลดเป็นไฟล์ .txt เพื่อโหลดเกมต่อในภายหลัง
+                        ข้อมูลนี้ครอบคลุมประวัติสนทนากับ NPC ทั้งหมดสำหรับงานวิจัย
+                    </p>
+                    <textarea id="save-export-textarea" readonly
+                        class="w-full px-3 py-2 rounded text-xs font-mono focus:outline-none resize-none"
+                        style="background:var(--bg-card2);border:1px solid var(--gold-dim);
+                               color:var(--text-muted);height:110px;line-height:1.4;"
+                        placeholder="กำลังเตรียมข้อมูล..."></textarea>
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="game.copyExportJson()"
+                            class="btn-action px-4 py-2 rounded text-xs font-tech flex-1 min-h-[36px]">
+                            <i class="fas fa-copy mr-1"></i>คัดลอกข้อมูล
+                        </button>
+                        <button onclick="game.downloadSaveTxt()"
+                            class="btn-gold px-4 py-2 rounded text-xs font-tech min-h-[36px]">
+                            <i class="fas fa-download mr-1"></i>ดาวน์โหลด .txt
+                        </button>
+                    </div>
+                    <p class="text-xs mt-2 leading-relaxed"
+                        style="color:rgba(239,68,68,.65)">
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        ข้อมูลนี้รวมประวัติสนทนากับ NPC ทั้งหมด
+                        ซึ่งอาจถูกส่งให้ครูผู้สอนและใช้ในการวิจัย
+                    </p>
+                </div>
+
+                <!-- Divider -->
+                <div id="save-load-divider"
+                    style="border-top:1px solid var(--gold-dim)"></div>
+
+                <!-- ── IMPORT SECTION ── -->
+                <div>
+                    <div class="font-tech text-sm mb-1" style="color:var(--wisdom)">
+                        <i class="fas fa-file-import mr-1.5"></i>โหลดเกมที่บันทึกไว้ / Import
+                    </div>
+                    <p class="text-xs mb-2 leading-relaxed" style="color:var(--text-muted)">
+                        วางข้อมูลที่คัดลอกไว้ หรือเนื้อหาจากไฟล์ .txt ที่บันทึกก่อนหน้านี้
+                    </p>
+                    <textarea id="save-import-textarea"
+                        class="w-full px-3 py-2 rounded text-xs font-mono focus:outline-none resize-none"
+                        style="background:var(--bg-card2);border:1px solid var(--wisdom-dim);
+                               color:var(--text-main);height:110px;line-height:1.4;"
+                        placeholder="วางข้อมูลที่บันทึกไว้ที่นี่ แล้วระบบจะตรวจสอบและแสดง Preview อัตโนมัติ..."
+                        oninput="game.previewImportData()"></textarea>
+
+                    <!-- Preview area — populated by previewImportData() -->
+                    <div id="save-import-preview"></div>
+
+                    <button id="btn-load-game" onclick="game.confirmLoadGame()"
+                        class="btn-emerald w-full py-2.5 rounded-lg text-sm font-tech mt-3 min-h-[40px]"
+                        disabled>
+                        <i class="fas fa-play mr-1.5"></i>โหลดเกม
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- ACHIEVEMENT TOAST -->
     <div id="achievement-toast">
         <div class="panel p-3 max-w-xs" style="border-color:rgba(201,162,39,.5)">
@@ -1236,6 +2153,46 @@
                     <div class="text-sm font-medium text-white" id="toast-text"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         FIN. COMP. REFERENCE MODAL
+         เข้าถึงจาก Teacher Report — ข้อมูลจาก ธปท. พ.ศ. 2569
+    ========================================== -->
+    <div id="modal-fincomp-ref" class="modal-backdrop"
+        onclick="if(event.target===this)game.closeModal('modal-fincomp-ref')">
+        <div class="panel w-full max-w-2xl max-h-[90vh] flex flex-col scale-in">
+
+            <!-- Header -->
+            <div class="p-4 flex items-center gap-2 flex-shrink-0"
+                style="border-bottom:1px solid var(--gold-dim)">
+                <i class="fas fa-graduation-cap flex-shrink-0" style="color:var(--gold)"></i>
+                <span class="font-tech text-sm" style="color:var(--gold)">
+                    กรอบสมรรถนะทางการเงิน (Fin. Comp.)
+                </span>
+                <span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0 hidden sm:inline-block"
+                    style="background:rgba(201,162,39,.1);border:1px solid var(--gold-dim);color:var(--text-muted)">
+                    ธปท. พ.ศ. 2569
+                </span>
+                <button onclick="game.closeModal('modal-fincomp-ref')"
+                    class="ml-auto text-gray-500 hover:text-white p-1 flex-shrink-0 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Attribution bar -->
+            <div class="px-4 py-2 flex-shrink-0 text-xs leading-relaxed"
+                style="color:var(--text-dim);background:rgba(14,11,7,.6);border-bottom:1px solid var(--gold-dim)">
+                <i class="fas fa-info-circle mr-1"></i>
+                แสดงเฉพาะสมรรถนะย่อยที่ผูกกับ Quest ในเกม ·
+                อ้างอิง: กรอบสมรรถนะทางการเงินเพื่อการศึกษาและการเรียนรู้
+                ธนาคารแห่งประเทศไทย | ISBN 978-616-7220-40-6
+            </div>
+
+            <!-- Body — populated by openFinCompRef() -->
+            <div class="flex-1 overflow-y-auto p-4" id="fincomp-ref-body"></div>
+
         </div>
     </div>
 
@@ -1312,6 +2269,14 @@
                     const res = await fetch('/api/init');
                     if (!res.ok) throw new Error('Server error');
                     data = await res.json();
+
+                    // Defensive: ensure data.items exists (backend should always provide it
+                    // after the item-system migration, but fall back to empty dict if missing)
+                    if (!data.items || typeof data.items !== 'object') {
+                        console.warn('init: data.items missing — item system may not work correctly');
+                        data.items = {};
+                    }
+
                     setTimeout(() => {
                         const ls = document.getElementById('loading-screen');
                         ls.style.transition = 'opacity .5s';
@@ -1334,7 +2299,7 @@
 
                 state = {
                     player_name: name,
-                    wisdom_score: 10,
+                    wisdom_score: 0,
                     rank: 'ผู้แสวงหาปัญญา',
                     current_quest: null,
                     active_npc: null,
@@ -1342,13 +2307,29 @@
                     quest_turn_count: 0,
                     quest_chat_history: [],
                     quest_fragments: {},
+
+                    // ── Pending reward state (Mechanic F) ──
+                    // Set to quest_id after evaluate passes and choice_pool is pending.
+                    // Cleared when /api/quest/reward-choice succeeds.
+                    pending_reward_quest: null,
+
                     completed_quests: [],
                     unlocked_quests: ['entry'],
                     ledger_pages: {},
                     key_insights: {},
                     ksa_evidence: {},
                     fin_comp_coverage: { c1: false, c2: false, c3: false, c4: false, c5: false, c6: false },
+
+                    // ── Item system (Mechanic F/A/B) ──
+                    // items: list of item IDs (lookup data.items for details)
+                    // unchosen_items: IDs rejected during reward choice (shown in Ledger)
+                    // item_choice_history: {quest_id: chosen_item_id} — research data
+                    // item_hint_usage: {item_id: count} — hint request tracking
                     items: [],
+                    unchosen_items: [],
+                    item_choice_history: {},
+                    item_hint_usage: {},
+
                     badges: [],
                     chat_histories: {},
                     total_turns: 0,
@@ -1362,7 +2343,6 @@
 
                 updateHUD();
                 renderQuestMap();
-                renderFinCompBars();
             }
 
             // ============================================================
@@ -1370,14 +2350,18 @@
             // ============================================================
 
             function updateHUD() {
-                document.getElementById('hud-player-name').textContent = state.player_name;
+
+                // Rank display — icon to avatar, name to rank label
                 const rank = calculateRank(state.wisdom_score);
-                document.getElementById('hud-rank').textContent = rank.icon + ' ' + rank.name;
+                document.getElementById('hud-avatar').textContent = rank.icon;
+                document.getElementById('hud-rank').textContent = rank.name;
 
-                animateValue('hud-wisdom', state.wisdom_score);
-                animateValue('hud-wisdom-desktop', state.wisdom_score);
+                // Wisdom as percentage (max = 200)
+                const wisdomPct = Math.max(0, Math.min(100, Math.round(state.wisdom_score / 200 * 100)));
+                animateValue('hud-wisdom-pct', wisdomPct);
+                document.getElementById('hud-wisdom-fill').style.width = wisdomPct + '%';
 
-                // Ledger mini slots
+                // Ledger mini slots (icon-enhanced)
                 renderLedgerMiniSlots('hud-ledger-slots');
                 renderLedgerMiniSlots('hud-ledger-slots-mobile');
                 const filled = Object.values(state.ledger_pages).filter(Boolean).length;
@@ -1397,37 +2381,53 @@
                     aqb.classList.add('hidden');
                 }
 
-                // Items panel
-                const itemsPanel = document.getElementById('items-panel');
+                // Items panel — always visible; toggle between active chips and empty-state ghost cards
+                const itemsContainer = document.getElementById('items-container');
+                const itemsEmptyState = document.getElementById('items-empty-state');
                 if (state.items.length > 0) {
-                    itemsPanel.classList.remove('hidden');
-                    document.getElementById('items-container').innerHTML = state.items.map(item => {
-                        // Items are stored as "{emoji} {name}" — split on first space
-                        const spaceIdx = item.indexOf(' ');
-                        const icon = spaceIdx > -1 ? item.slice(0, spaceIdx) : '📦';
-                        const name = spaceIdx > -1 ? item.slice(spaceIdx + 1) : item;
-                        // Color by taxonomy type
-                        const colorMap = { '🔧': 'rgba(59,130,246,.3)', '📜': 'rgba(139,92,246,.3)', '🗝️': 'rgba(201,162,39,.3)' };
-                        const borderColor = colorMap[icon] || 'rgba(201,162,39,.3)';
-                        return `<span class="text-sm px-2 py-0.5 rounded-full flex items-center gap-1"
-                            style="background:rgba(30,23,16,.9);border:1px solid ${borderColor};color:var(--text-main)">
-                            <span>${icon}</span><span>${name}</span>
-                        </span>`;
+                    itemsContainer.innerHTML = state.items.map(itemId => {
+                        const item = (data.items || {})[itemId];
+                        if (!item) {
+                            // Unknown item — render minimal fallback
+                            return `<span class="item-chip" title="Unknown item: ${itemId}">
+                                <span>❓</span><span>${itemId}</span>
+                            </span>`;
+                        }
+                        return `<button type="button"
+                                        class="item-chip type-${item.type}"
+                                        onclick="game.openItemInspector('${itemId}')"
+                                        title="${item.name} — กดเพื่อดูรายละเอียด"
+                                        aria-label="${item.name}">
+                            <span>${item.icon}</span><span>${item.name}</span>
+                        </button>`;
                     }).join('');
+                    itemsContainer.classList.remove('hidden');
+                    if (itemsEmptyState) itemsEmptyState.classList.add('hidden');
                 } else {
-                    itemsPanel.classList.add('hidden');
+                    itemsContainer.innerHTML = '';
+                    itemsContainer.classList.add('hidden');
+                    if (itemsEmptyState) itemsEmptyState.classList.remove('hidden');
                 }
 
-                renderFinCompBars();
             }
 
             function renderLedgerMiniSlots(containerId) {
                 const container = document.getElementById(containerId);
-                if (!container) return;
-                const pages = (data && data.ledger_pages) ? Object.keys(data.ledger_pages).filter(k => k !== 'final') : [];
-                container.innerHTML = pages.map(pageId => {
+                if (!container || !data) return;
+                const pages = Object.entries(data.ledger_pages || {}).filter(([k]) => k !== 'final');
+
+                container.innerHTML = pages.map(([pageId, pageData]) => {
                     const filled = !!state.ledger_pages[pageId];
-                    return `<div class="ledger-slot-mini ${filled ? 'filled' : ''}"></div>`;
+                    const icon = filled ? (pageData.icon || '📄') : '🔒';
+                    const tooltip = filled
+                        ? `หน้า ${pageData.page_num}: ${pageData.title}`
+                        : `หน้า ${pageData.page_num} (ยังไม่ผ่าน)`;
+                    const lockedClass = filled ? '' : 'locked';
+                    return `<button type="button"
+                                    class="ledger-slot-mini ${filled ? 'filled' : ''} ${lockedClass}"
+                                    title="${tooltip}"
+                                    aria-label="${tooltip}"
+                                    onclick="game.openLedger('${pageId}')">${icon}</button>`;
                 }).join('');
             }
 
@@ -1445,26 +2445,18 @@
                 }, 20);
             }
 
-            function renderFinCompBars() {
-                if (!data) return;
-                ['fincomp-bars', 'fincomp-bars-mobile'].forEach(containerId => {
-                    const container = document.getElementById(containerId);
-                    if (!container) return;
-                    const isMobile = containerId.includes('mobile');
-                    container.innerHTML = Object.entries(data.fin_comp_map).map(([id, comp]) => {
-                        const covered = !!state.fin_comp_coverage[id];
-                        const pct = covered ? 100 : 0;
-                        return `<div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span style="color:${covered ? 'var(--gold)' : 'var(--text-muted)'}">${comp.name}</span>
-                            ${covered ? '<span style="color:var(--emerald)">✓</span>' : ''}
-                        </div>
-                        <div class="fincomp-bar">
-                            <div class="fincomp-bar-fill" style="width:${pct}%"></div>
-                        </div>
-                    </div>`;
-                    }).join('');
-                });
+            function computeCompProgress(compId) {
+                const comp = data.fin_comp_map[compId];
+                if (!comp) return { pct: 0, level: 0, done: 0, total: 0 };
+                const total = (comp.quests || []).length || 0;
+                const done = (comp.quests || []).filter(q => (state.completed_quests || []).includes(q)).length;
+                const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+                let level = 0;
+                if (pct === 0) level = 0;
+                else if (pct < 67) level = 1;
+                else if (pct < 100) level = 2;
+                else level = 3;
+                return { pct, level, done, total };
             }
 
             function calculateRank(wisdom) {
@@ -1490,10 +2482,147 @@
                 'final',
             ];
 
+            // ── Fin. Comp. Reference Data (ธปท. พ.ศ. 2569) ──────────────────
+            // เฉพาะ sub-competencies ที่ผูกกับ Quest ในเกมโดยตรง
+            // อ้างอิง: กรอบสมรรถนะทางการเงินเพื่อการศึกษาและการเรียนรู้ ISBN 978-616-7220-40-6
+            const FINCOMP_REF_DATA = [
+                {
+                    domain_id: 'c1',
+                    domain_name: 'การเข้าใจบทบาทและมูลค่าของเงิน',
+                    domain_en: 'Understanding the Role and Value of Money',
+                    color: '#c9a227',
+                    sub_competencies: [
+                        {
+                            code: 'J1.1',
+                            level_label: 'ม.1–3',
+                            age: '13–15 ปี',
+                            title: 'วิเคราะห์ความเชื่อมโยงของสภาวะทางเศรษฐกิจ (เงินเฟ้อ เงินฝืด) และปรับแผนการเงินได้อย่างเหมาะสม',
+                            statement: 'สามารถวิเคราะห์ความเชื่อมโยงของสภาวะทางเศรษฐกิจ เช่น เงินเฟ้อ เงินฝืด และสภาวะทางการเงินของตนเองได้อย่างมีเหตุผล รวมถึงสามารถปรับแผนการใช้จ่ายหรือการออมเงินให้สอดคล้องกับสถานการณ์เศรษฐกิจในแต่ละช่วงเวลาได้อย่างเหมาะสม',
+                            linked_quests: ['q4'],
+                        },
+                        {
+                            code: 'H1.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'แลกเปลี่ยนเงินตราต่างประเทศได้ พร้อมเข้าใจถึงผลกระทบของความผันผวนของอัตราแลกเปลี่ยน',
+                            statement: 'สามารถแลกเปลี่ยนเงินตราต่างประเทศได้ พร้อมทั้งเข้าใจถึงผลกระทบของความผันผวนของอัตราแลกเปลี่ยนที่อาจส่งผลต่อราคาสินค้า ค่าครองชีพ และค่าใช้จ่ายในการเดินทางหรือทำธุรกรรมระหว่างประเทศ',
+                            linked_quests: ['q8'],
+                        },
+                    ],
+                },
+                {
+                    domain_id: 'c2',
+                    domain_name: 'การจัดการรายได้และภาษี',
+                    domain_en: 'Managing Income and Tax',
+                    color: '#3b82f6',
+                    sub_competencies: [
+                        {
+                            code: 'H2.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'อธิบายความหมายและประเภทของภาษี และความสำคัญของการเสียภาษีต่อการพัฒนาประเทศ',
+                            statement: 'สามารถอธิบายความหมายและประเภทของภาษีในฐานะผู้เสียภาษีตามหน้าที่พลเมืองและการเป็นแหล่งรายได้ของรัฐเพื่อพัฒนาประเทศ รวมถึงการรู้จักประเภทของภาษี เช่น ภาษีเงินได้ ภาษีมูลค่าเพิ่ม',
+                            linked_quests: ['q10'],
+                        },
+                    ],
+                },
+                {
+                    domain_id: 'c3',
+                    domain_name: 'การบริหารการใช้จ่ายและจัดการหนี้',
+                    domain_en: 'Managing Expenditure and Debt',
+                    color: '#f97316',
+                    sub_competencies: [
+                        {
+                            code: 'H3.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'เท่าทันกลยุทธ์ทางการตลาด เช่น การตั้งราคา การใช้โปรโมชัน และการโฆษณา เพื่อไม่ตกเป็นเหยื่อของการชักจูงทางการตลาด',
+                            statement: 'สามารถรู้เท่าทันการตั้งราคา โฆษณา และกลยุทธ์ทางการตลาด โดยแยกแยะข้อเท็จจริงได้ พร้อมทั้งคำนึงถึงคุณภาพ ข้อกำหนดเงื่อนไข ค่าใช้จ่ายที่เกี่ยวข้องก่อนตัดสินใจซื้อ และเลือกแนวทางการบริโภคที่ยั่งยืน',
+                            linked_quests: ['q3'],
+                        },
+                    ],
+                },
+                {
+                    domain_id: 'c4',
+                    domain_name: 'การออมและการลงทุน',
+                    domain_en: 'Saving and Investing',
+                    color: '#10b981',
+                    sub_competencies: [
+                        {
+                            code: 'H4.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'วิเคราะห์ปัจจัยที่มีผลต่อการออมเงิน ทั้งดอกเบี้ยและผลกระทบของอัตราดอกเบี้ย สามารถคำนวณดอกเบี้ยทบต้นเพื่อวางแผนการออมเงิน',
+                            statement: 'สามารถวิเคราะห์ปัจจัยที่มีผลต่อการออมเงิน ทั้งดอกเบี้ยและผลกระทบของอัตราดอกเบี้ย และสามารถคำนวณดอกเบี้ยทบต้นเพื่อวางแผนการออมเงินได้อย่างมีประสิทธิภาพ',
+                            linked_quests: ['q2', 'q4'],
+                        },
+                        {
+                            code: 'H4.2',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'ออมเงินเผื่อฉุกเฉินเพื่อเตรียมพร้อมรับมือกับความไม่แน่นอนในอนาคต',
+                            statement: 'สามารถออมเงินเผื่อฉุกเฉินเพื่อเตรียมพร้อมรับมือกับความไม่แน่นอนในอนาคต โดยวางแผนการออมเงินสำรองฉุกเฉินที่เพียงพอและเหมาะสมกับสถานการณ์ของตนเอง',
+                            linked_quests: ['q1'],
+                        },
+                        {
+                            code: 'H4.3',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'ตั้งเป้าหมายทางการเงินระยะยาว เช่น เพื่อการศึกษา การประกอบอาชีพ หรือการเกษียณ และสามารถออมเงินอย่างมีวินัย',
+                            statement: 'สามารถตั้งเป้าหมายทางการเงินระยะยาวตามหลัก SMART เช่น เพื่อการศึกษา การประกอบอาชีพ หรือการเกษียณ และสามารถออมเงินอย่างมีวินัยเพื่อบรรลุเป้าหมายที่วางไว้',
+                            linked_quests: ['q7'],
+                        },
+                        {
+                            code: 'H4.4',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'ศึกษาข้อมูลและประเมินความเสี่ยงก่อนตัดสินใจลงทุนในผลิตภัณฑ์การลงทุนประเภทต่าง ๆ',
+                            statement: 'สามารถศึกษาข้อมูลและประเมินความเสี่ยงก่อนตัดสินใจลงทุนในผลิตภัณฑ์การลงทุนประเภทต่าง ๆ ตระหนักถึงความผันผวน ข้อจำกัดในการกำกับดูแล และมีเจตคติที่รอบคอบต่อการลงทุนในโลกการเงินยุคใหม่',
+                            linked_quests: ['q5', 'q6', 'q8'],
+                        },
+                    ],
+                },
+                {
+                    domain_id: 'c5',
+                    domain_name: 'การจัดการความเสี่ยง ภัยทางการเงิน และการประกันภัย',
+                    domain_en: 'Managing Risks, Fraud and Insurance',
+                    color: '#7c3aed',
+                    sub_competencies: [
+                        {
+                            code: 'H5.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'ระบุภัยทางการเงินที่อาจเกิดขึ้นกับตนเอง ติดตามข่าวสารจากแหล่งข้อมูลที่เชื่อถือได้ และนำความรู้มาใช้ในการวางแผนและป้องกันตนเองจากภัยทางการเงิน',
+                            statement: 'สามารถระบุความเสี่ยงที่กระทบต่อการเงินของตนเองได้ ติดตามข่าวสารและรู้แหล่งข้อมูลเกี่ยวกับภัยทางการเงิน วิธีป้องกัน ช่องทางการแจ้งเบาะแสหรือการขอความช่วยเหลือ รวมถึงวิธีแก้ไขหากตกเป็นเหยื่อมิจฉาชีพ',
+                            linked_quests: ['q5', 'q6'],
+                        },
+                    ],
+                },
+                {
+                    domain_id: 'c6',
+                    domain_name: 'การรักษาสิทธิและรับผิดชอบต่อหน้าที่ผู้ใช้บริการทางการเงิน',
+                    domain_en: 'Upholding Financial Rights and Responsibilities',
+                    color: '#06b6d4',
+                    sub_competencies: [
+                        {
+                            code: 'H6.1',
+                            level_label: 'ม.4–6',
+                            age: '16–18 ปี',
+                            title: 'ปฏิบัติตนตามสิทธิและหน้าที่ของผู้ใช้บริการทางการเงิน',
+                            statement: 'สามารถเข้าใจสิทธิและหน้าที่ของผู้ใช้บริการทางการเงิน รวมถึงผลกระทบจากการไม่ปฏิบัติตามหน้าที่ รู้แหล่งข้อมูลผลิตภัณฑ์และบริการทางการเงินที่เป็นกลางและทันสมัย และสามารถปฏิบัติตนได้อย่างถูกต้องในฐานะผู้ใช้บริการทางการเงิน',
+                            linked_quests: ['q9'],
+                        },
+                    ],
+                },
+            ];
+
             function getNodeStatus(questId) {
                 if ((state.completed_quests || []).includes(questId)) return 'completed';
                 if (state.current_quest === questId) return 'active';
                 if ((state.unlocked_quests || []).includes(questId)) return 'available';
+                if (questId === 'final' && (state.completed_quests || []).includes('entry')) {
+                    return 'accessible-locked';
+                }
                 return 'locked';
             }
 
@@ -1515,16 +2644,6 @@
                     const status = getNodeStatus(questId);
                     const isFinal = questId === 'final';
 
-                    // Final quest spans full width
-                    if (isFinal) {
-                        const spacer = document.createElement('div');
-                        spacer.style.gridColumn = '1 / -1';
-                        spacer.style.height = '1px';
-                        spacer.style.background = 'var(--gold-dim)';
-                        spacer.style.margin = '4px 0';
-                        map.appendChild(spacer);
-                    }
-
                     let statusClass = `node-${status}`;
                     if (isFinal) statusClass += ' node-final';
 
@@ -1532,9 +2651,10 @@
                     if (status === 'completed') badge = `<span class="node-check">✓</span>`;
                     else if (status === 'active') badge = `<div class="node-active-dot"></div>`;
                     else if (status === 'locked') badge = `<span class="node-lock-icon">🔒</span>`;
+                    else if (status === 'accessible-locked') badge = `<span class="node-lock-icon">⏳</span>`;
 
                     let wisdomBadge = '';
-                    if (isFinal && status === 'locked') {
+                    if (isFinal && (status === 'locked' || status === 'accessible-locked')) {
                         const cond = quest.unlock_condition;
                         if (typeof cond === 'object') {
                             wisdomBadge = `<div class="node-wisdom-badge">⚜️ ${cond.wisdom_min}+</div>`;
@@ -1544,9 +2664,10 @@
                     const node = document.createElement('button');
                     node.className = `quest-node ${statusClass}`;
                     node.setAttribute('data-quest', questId);
-                    if (isFinal) node.style.gridColumn = '1 / -1';
                     node.disabled = status === 'locked';
-                    node.onclick = () => { if (status !== 'locked') openNPCTerminal(quest.npc_id, questId); };
+                    node.onclick = () => {
+                        if (status !== 'locked') openNPCTerminal(quest.npc_id, questId);
+                    };
                     node.innerHTML = `
                         ${wisdomBadge}
                         ${badge}
@@ -1586,13 +2707,15 @@
                 renderQuestTab(npcId);
                 renderDataLogTab(npcId);
 
-                switchTab('comms');
-
-                // Greeting on first visit
+                // Greeting on first visit — add BEFORE switching tab so chat is populated
                 if (state.chat_histories[npcId].length === 0 && npc.greeting) {
                     addToHistory(npcId, 'assistant', npc.greeting);
                 }
                 renderChatHistory(npcId);
+
+                // Compute gate and switch to appropriate default tab
+                const gate = computeInputGate(npcId);
+                switchTab(gate.defaultTab);
             }
 
             function openActiveQuestNPC() {
@@ -1616,21 +2739,181 @@
                 document.getElementById(`tab-btn-${tab}`).classList.add('active');
             }
 
+            // ================================================================
+            // INPUT GATE — determines whether chat input should be locked
+            // ================================================================
+            function computeInputGate(npcId) {
+                const npcsQuests = Object.values(data.quests || {}).filter(q => q.npc_id === npcId);
+
+                // --- STATE B: Active quest with this NPC (main or investigation) ---
+                const activeQuest = state.current_quest ? data.quests[state.current_quest] : null;
+                const isMainQuestNpc = activeQuest?.npc_id === npcId;
+                const isInvestigationNpc = activeQuest?.investigation_npcs?.includes(npcId) || false;
+                if (activeQuest && (isMainQuestNpc || isInvestigationNpc)) {
+                    return {
+                        state: 'B',
+                        locked: false,
+                        defaultTab: 'comms',
+                        overlayText: '',
+                        ctaText: '',
+                        ctaTab: '',
+                        bannerVariant: ''
+                    };
+                }
+
+                // --- STATE C: All quests of this NPC are completed ---
+                const allDone = npcsQuests.length > 0 &&
+                    npcsQuests.every(q => (state.completed_quests || []).includes(q.id));
+                if (allDone) {
+                    return {
+                        state: 'C',
+                        locked: true,
+                        defaultTab: 'datalog',
+                        overlayText: '✅ ภารกิจของ NPC นี้เสร็จสิ้นทั้งหมด',
+                        ctaText: 'ดูบันทึกปัญญา',
+                        ctaTab: 'datalog',
+                        bannerVariant: 'banner-complete'
+                    };
+                }
+
+                // --- STATE A2: Player is busy with another NPC's quest ---
+                if (activeQuest && !isMainQuestNpc && !isInvestigationNpc) {
+                    return {
+                        state: 'A2',
+                        locked: true,
+                        defaultTab: 'quest',
+                        overlayText: '⚠️ คุณกำลังทำภารกิจอื่นอยู่',
+                        ctaText: 'ดูภารกิจ',
+                        ctaTab: 'quest',
+                        bannerVariant: 'banner-warning'
+                    };
+                }
+
+                // --- STATE A1: This NPC has available quests to accept ---
+                const availableQuests = npcsQuests.filter(q =>
+                    (state.unlocked_quests || []).includes(q.id) &&
+                    !(state.completed_quests || []).includes(q.id)
+                );
+                const hasCompletedAny = npcsQuests.some(q => (state.completed_quests || []).includes(q.id));
+                if (availableQuests.length > 0) {
+                    return {
+                        state: 'A1',
+                        locked: true,
+                        defaultTab: 'quest',
+                        overlayText: hasCompletedAny
+                            ? '📜 รับเควสต์ถัดไปเพื่อสนทนาต่อ'
+                            : '📜 รับเควสต์ก่อนจึงจะสนทนาได้',
+                        ctaText: 'ไปที่ภารกิจ',
+                        ctaTab: 'quest',
+                        bannerVariant: ''
+                    };
+                }
+
+                // --- STATE A4: Final Quest NPC — entry done, final prereq not met ---
+                if (npcId === 'phrahorathibodi' &&
+                    (state.completed_quests || []).includes('entry') &&
+                    !(state.completed_quests || []).includes('final') &&
+                    !(state.unlocked_quests || []).includes('final')) {
+
+                    const finalQuest = data.quests['final'] || {};
+                    const cond = finalQuest.unlock_condition || {};
+                    const wisdomMin = cond.wisdom_min || 120;
+                    const pagesMin = cond.pages_min || 8;
+                    const curPages = Object.values(state.ledger_pages || {}).filter(Boolean).length;
+                    const wisdomNeeded = Math.max(0, wisdomMin - state.wisdom_score);
+                    const pagesNeeded = Math.max(0, pagesMin - curPages);
+
+                    const missing = [];
+                    if (wisdomNeeded > 0) missing.push(`Wisdom ${wisdomMin}+ (ขาดอีก ${wisdomNeeded})`);
+                    if (pagesNeeded > 0) missing.push(`หน้า Ledger ${pagesMin}+ (ขาดอีก ${pagesNeeded})`);
+                    const missingText = missing.length > 0
+                        ? missing.join(' · ')
+                        : 'กำลังเตรียมความพร้อม...';
+
+                    return {
+                        state: 'A4',
+                        locked: true,
+                        defaultTab: 'datalog',
+                        overlayText: `🔒 Final Quest ต้องการ: ${missingText}`,
+                        ctaText: 'ดูภารกิจสุดท้าย',
+                        ctaTab: 'quest',
+                        bannerVariant: 'banner-final-locked'
+                    };
+                }
+
+                // --- STATE A3 (edge case): NPC has quests but none unlocked yet ---
+                return {
+                    state: 'A3',
+                    locked: true,
+                    defaultTab: 'quest',
+                    overlayText: '🔒 ยังไม่สามารถรับเควสต์นี้ได้',
+                    ctaText: 'ดูภารกิจ',
+                    ctaTab: 'quest',
+                    bannerVariant: ''
+                };
+            }
+
+            // ================================================================
+            // Apply gate state to DOM: lock/unlock input + show/hide overlay
+            // ================================================================
+            function applyInputGate(gate) {
+                const input = document.getElementById('term-input');
+                const sendBtn = input?.nextElementSibling;
+                const overlay = document.getElementById('comms-lock-overlay');
+                const overlayText = document.getElementById('comms-lock-text');
+                const cta = document.getElementById('comms-lock-cta');
+                const ctaLabel = document.getElementById('comms-lock-cta-label');
+
+                if (!input || !overlay) return;
+
+                if (gate.locked) {
+                    input.disabled = true;
+                    input.placeholder = 'รับเควสต์ก่อนจึงจะพิมพ์ได้';
+                    input.value = '';
+                    if (sendBtn) sendBtn.disabled = true;
+
+                    overlay.classList.remove('hidden', 'banner-complete', 'banner-warning', 'banner-final-locked');
+                    if (gate.bannerVariant) overlay.classList.add(gate.bannerVariant);
+                    overlayText.textContent = gate.overlayText;
+                    ctaLabel.textContent = gate.ctaText;
+                    cta.dataset.targetTab = gate.ctaTab;
+                } else {
+                    input.disabled = false;
+                    input.placeholder = 'พิมพ์ข้อความถึง NPC...';
+                    if (sendBtn) sendBtn.disabled = false;
+
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('banner-complete', 'banner-warning', 'banner-final-locked');
+                }
+            }
+
+            // ================================================================
+            // CTA handler — navigate to target tab from lock overlay
+            // ================================================================
+            function gotoLockedTab() {
+                const cta = document.getElementById('comms-lock-cta');
+                const target = cta?.dataset.targetTab || 'quest';
+                switchTab(target);
+            }
+
             function setupCommsTab(npcId) {
-                const isQuestNpc = state.current_quest && (data.quests[state.current_quest]?.npc_id === npcId);
-                const quest = isQuestNpc ? data.quests[state.current_quest] : null;
+                // isQuestNpc covers BOTH main NPC and investigation NPCs of the active quest
+                const activeQuest = state.current_quest ? data.quests[state.current_quest] : null;
+                const isMainNpc = activeQuest?.npc_id === npcId;
+                const isInvestNpc = (activeQuest?.investigation_npcs || []).includes(npcId);
+                const isQuestNpc = !!activeQuest && (isMainNpc || isInvestNpc);
+                const quest = isQuestNpc ? activeQuest : null;
                 const isFinalQuest = state.current_quest === 'final';
 
-                // Quest bar
+                // Quest bar — main NPC shows full bar + eval; investigation NPC shows compact bar + frag collect
                 const questBar = document.getElementById('term-quest-bar');
-                if (isQuestNpc && quest) {
+                if (isQuestNpc && quest && isMainNpc) {
                     questBar.classList.remove('hidden');
                     document.getElementById('term-quest-label').textContent = `QUEST: ${quest.name}`;
                     const turns = state.quest_turn_count;
                     const minT = quest.min_turns || 3;
                     document.getElementById('term-turns-label').textContent = `${turns}/${minT} turns`;
 
-                    // Eval button: show only after min turns (and if not investigation with missing fragments)
                     const evalBtn = document.getElementById('btn-eval-quest');
                     let canEval = turns >= minT;
                     if (quest.archetype === 'investigation') {
@@ -1638,22 +2921,30 @@
                         const allFrag = (quest.investigation_npcs || []).every(n => frags[n]);
                         canEval = canEval && allFrag;
                     }
-                    // Fix B: Always reset button state before toggling visibility
-                    // to prevent disabled/label bleed-over from a previous quest's evaluation
                     evalBtn.disabled = false;
                     evalBtn.innerHTML = '<i class="fas fa-check-double mr-1"></i>ส่งรายงาน';
                     evalBtn.classList.toggle('hidden', !canEval);
 
-                    // Fragment collect button (only for investigation NPCs)
+                    document.getElementById('btn-collect-frag').classList.add('hidden');
+
+                } else if (isInvestNpc && quest) {
+                    questBar.classList.remove('hidden');
+                    document.getElementById('term-quest-label').textContent = `📋 INVESTIGATION: ${quest.name}`;
+                    document.getElementById('term-turns-label').textContent = '';
+
+                    document.getElementById('btn-eval-quest').classList.add('hidden');
+
                     const fragBtn = document.getElementById('btn-collect-frag');
-                    const isInvestNpc = quest.investigation_npcs?.includes(npcId) && quest.archetype === 'investigation';
-                    fragBtn.classList.toggle('hidden', !isInvestNpc || !!(state.quest_fragments || {})[npcId]);
+                    const alreadyCollected = !!(state.quest_fragments || {})[npcId];
+                    fragBtn.classList.toggle('hidden', alreadyCollected);
 
                 } else {
                     questBar.classList.add('hidden');
+                    document.getElementById('btn-collect-frag').classList.add('hidden');
+                    document.getElementById('btn-eval-quest').classList.add('hidden');
                 }
 
-                // Fragment tracker (Q8)
+                // Fragment tracker (Q10) — visible for both main NPC and investigation NPCs
                 const fragTracker = document.getElementById('term-frag-tracker');
                 if (isQuestNpc && quest?.archetype === 'investigation') {
                     fragTracker.classList.remove('hidden');
@@ -1662,13 +2953,17 @@
                     fragTracker.classList.add('hidden');
                 }
 
-                // Blueprint area (Final quest only)
+                // Blueprint area (Final quest only — main NPC only)
                 const bpArea = document.getElementById('term-blueprint-area');
-                bpArea.classList.toggle('hidden', !(isFinalQuest && isQuestNpc));
+                bpArea.classList.toggle('hidden', !(isFinalQuest && isMainNpc));
 
                 // NPC typing name
                 document.getElementById('term-typing-name').textContent =
                     `${(data.npcs[npcId]?.name || 'NPC')} กำลังตอบ...`;
+
+                // Apply input gate (lock/unlock input + overlay)
+                const gate = computeInputGate(npcId);
+                applyInputGate(gate);
             }
 
             function renderChatHistory(npcId) {
@@ -1677,9 +2972,23 @@
                 container.innerHTML = '';
                 hist.forEach(msg => {
                     const div = document.createElement('div');
-                    div.className = `${msg.role === 'assistant' ? 'chat-npc' : 'chat-user'} markdown-body slide-in`;
-                    div.innerHTML = (typeof marked !== 'undefined' && marked.parse)
-                        ? marked.parse(msg.content) : msg.content;
+
+                    // Hint bubble (Mechanic B — Tool Item Hint)
+                    if (msg.is_hint) {
+                        div.className = 'chat-hint markdown-body slide-in';
+                        const itemLabel = `<div style="font-size:.75rem; color:#93c5fd; margin-bottom:4px; font-family:'Sarabun'">
+                            ${msg.hint_item_icon || '💡'} ${msg.hint_item_name || 'ไอเท็ม'}
+                        </div>`;
+                        const parsed = (typeof marked !== 'undefined' && marked.parse)
+                            ? marked.parse(msg.content) : msg.content;
+                        div.innerHTML = itemLabel + parsed;
+                    } else {
+                        // Regular NPC or user message
+                        div.className = `${msg.role === 'assistant' ? 'chat-npc' : 'chat-user'} markdown-body slide-in`;
+                        div.innerHTML = (typeof marked !== 'undefined' && marked.parse)
+                            ? marked.parse(msg.content) : msg.content;
+                    }
+
                     container.appendChild(div);
                 });
                 container.scrollTop = container.scrollHeight;
@@ -1727,6 +3036,8 @@
 
             async function sendChat() {
                 const input = document.getElementById('term-input');
+                // Defensive guard: do not send if input is locked (gate active)
+                if (input.disabled) return;
                 const msg = input.value.trim();
                 if (!msg || !currentNpcId) return;
                 input.value = '';
@@ -1812,10 +3123,18 @@
                     renderChatHistory(npcId);
                 } finally {
                     document.getElementById('term-typing').classList.add('hidden');
-                    input.disabled = false;
+
+                    // Re-compute gate after turn to honor any state changes
+                    if (currentNpcId) {
+                        const gate = computeInputGate(currentNpcId);
+                        applyInputGate(gate);
+                    } else {
+                        input.disabled = false;
+                    }
+
                     if (!document.getElementById('term-blueprint-area').classList.contains('hidden')) {
                         // Don't focus if blueprint textarea is visible
-                    } else {
+                    } else if (!input.disabled) {
                         setTimeout(() => input.focus(), 100);
                     }
                 }
@@ -1824,7 +3143,10 @@
             function buildGameContext() {
                 const finComp = Object.entries(state.fin_comp_coverage)
                     .filter(([, v]) => v).map(([k]) => k).join(',') || 'none';
-                return `Player:${state.player_name}|Wisdom:${state.wisdom_score}|Rank:${state.rank}|Quest:${state.current_quest || 'none'}|Turn:${state.quest_turn_count}|CompletedQuests:${state.completed_quests.join(',') || 'none'}|Items:${state.items.join(',') || 'none'}|FinComp:${finComp}`;
+                // state.items now contains item IDs (not display strings) —
+                // backend parses these to look up ITEMS_DB for Item Context Injection (Mechanic C).
+                const itemIds = state.items.length > 0 ? state.items.join(',') : 'none';
+                return `Player:${state.player_name}|Wisdom:${state.wisdom_score}|Rank:${state.rank}|Quest:${state.current_quest || 'none'}|Turn:${state.quest_turn_count}|CompletedQuests:${state.completed_quests.join(',') || 'none'}|Items:${itemIds}|FinComp:${finComp}`;
             }
 
             function renderQuestTab(npcId) {
@@ -1889,7 +3211,7 @@
                             <span class="font-tech text-xs" style="color:var(--gold)">${pageData?.title || q.name}</span>
                             <span class="text-xs ml-auto" style="color:var(--text-muted)">${pageData?.fin_comp || ''}</span>
                         </div>
-                        <p class="text-xs leading-relaxed" style="color:var(--text-main)">${state.key_insights[q.id]}</p>
+                        <p class="text-sm leading-relaxed" style="color:var(--text-main)">${state.key_insights[q.id]}</p>
                     </div>`;
                     });
                 } else {
@@ -2005,9 +3327,22 @@
                         renderChatHistory(npcId);
                         state.ksa_evidence[questId] = d.ksa_met || {};
 
-                        // Write ledger then complete
+                        // Write ledger first (background)
                         await writeLedgerPage(questId);
-                        await completeQuestAfterEval(questId);
+
+                        // ── Choice-gated completion (Mechanic F) ──
+                        // If this quest has a choice pool, open Reward Choice Modal
+                        // and DO NOT call /api/quest/complete yet.
+                        // The modal → /api/quest/reward-choice flow will finalize.
+                        if (d.has_choice_pool && d.choice_pool && d.choice_pool.length > 0) {
+                            // Small delay for visual flow (feedback read → choice appears)
+                            setTimeout(() => {
+                                openRewardChoiceModal(questId, d.choice_pool);
+                            }, 800);
+                        } else {
+                            // Final Quest (no choice) or other edge case — go direct
+                            await completeQuestAfterEval(questId);
+                        }
 
                         // Fix A: only set true after BOTH calls above complete without throwing
                         questCompletedSuccessfully = true;
@@ -2053,6 +3388,13 @@
                 }
             }
 
+            /**
+             * Complete a quest that does NOT have an item choice pool
+             * (i.e., Final Quest with auto_access_item).
+             *
+             * For quests with choice pools, use the Reward Choice Modal flow instead
+             * (see openRewardChoiceModal → confirmRewardChoice).
+             */
             async function completeQuestAfterEval(questId) {
                 try {
                     const res = await fetch('/api/quest/complete', {
@@ -2060,69 +3402,18 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ game_state: state, quest_id: questId }),
                     });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || 'ไม่สามารถจบ Quest ได้');
+                    }
+
                     const d = await res.json();
-
-                    // Update state
-                    state.wisdom_score = d.new_wisdom_score;
-                    state.rank = d.new_rank?.name || state.rank;
-                    state.ledger_pages = d.new_ledger_pages;
-                    state.completed_quests = d.new_completed_quests;
-                    state.unlocked_quests = d.new_unlocked_quests;
-                    state.fin_comp_coverage = d.new_fin_comp_coverage;
-                    state.items = d.new_items;
-                    state.badges = d.new_badges;
-                    state.current_quest = null;
-                    state.active_npc = null;
-                    state.quest_turn_count = 0;
-                    state.quest_chat_history = [];
-                    state.quest_fragments = {};
-
-                    updateHUD();
-                    renderQuestMap();
-                    renderQuestTab(currentNpcId);
-                    renderDataLogTab(currentNpcId);
-                    setupCommsTab(currentNpcId);
-                    document.getElementById('btn-eval-quest').classList.add('hidden');
-
-                    // Show reward notifications per Item Taxonomy
-                    const rew = d.rewards || {};
-
-                    // Resource Token (Wisdom)
-                    const wisdomGained = rew.resource_token?.wisdom || 0;
-                    if (wisdomGained > 0) showXP(`+${wisdomGained} Wisdom ⚜️`);
-
-                    if (d.new_rank?.name && d.new_rank.name !== state.rank) {
-                        setTimeout(() => showAchievement(`Rank ใหม่: ${d.new_rank.icon} ${d.new_rank.name}`), 800);
-                    }
-                    if (d.newly_unlocked?.length) {
-                        d.unlock_messages?.forEach((m, i) => {
-                            setTimeout(() => showToast(m, 'success'), (i + 1) * 600);
-                        });
-                    }
-
-                    // Mastery Badge
-                    if (rew.mastery_badge) {
-                        setTimeout(() => showAchievement(`🏅 ปลดล็อกฉายา: ${rew.mastery_badge}`), 1200);
-                    }
-                    // Tool Item
-                    if (rew.tool_item) {
-                        setTimeout(() => showToast(`🔧 ได้รับ Tool Item: ${rew.tool_item}`, 'success'), 2000);
-                    }
-                    // Narrative Fragment
-                    if (rew.narrative_fragment) {
-                        setTimeout(() => showToast(`📜 ได้รับ Narrative: ${rew.narrative_fragment}`, 'success'), 2600);
-                    }
-                    // Access Item
-                    if (rew.access_item) {
-                        setTimeout(() => showToast(`🗝️ ปลดล็อก: ${rew.access_item}`, 'success'), 2600);
-                    }
-
-                    // Ledger flash
-                    setTimeout(() => openLedger(), 1800);
+                    applyQuestCompletionResponse(d);
 
                 } catch (e) {
                     console.error('completeQuestAfterEval:', e);
-                    showToast('เกิดข้อผิดพลาด', 'error');
+                    showToast(e.message || 'เกิดข้อผิดพลาด', 'error');
                 }
             }
 
@@ -2203,10 +3494,22 @@
             // SECTION 6: LEDGER PANEL
             // ============================================================
 
-            function openLedger() {
+            function openLedger(scrollToPageId) {
                 document.getElementById('ledger-overlay').classList.add('open');
                 document.getElementById('ledger-panel').classList.add('open');
                 renderLedger();
+
+                // Scroll to specific page + highlight (when opened via slot click)
+                if (scrollToPageId) {
+                    setTimeout(() => {
+                        const card = document.querySelector(`.ledger-page-card[data-page-id="${scrollToPageId}"]`);
+                        if (card) {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            card.classList.add('ledger-page-card-highlight');
+                            setTimeout(() => card.classList.remove('ledger-page-card-highlight'), 1600);
+                        }
+                    }, 320);
+                }
             }
 
             function closeLedger() {
@@ -2221,12 +3524,12 @@
                 document.getElementById('ledger-count-label').textContent = `${filled}/10`;
 
                 // Wisdom bar
-                const pct = Math.min(100, (state.wisdom_score / 175) * 100);
-                document.getElementById('ledger-wisdom-val').textContent = `${state.wisdom_score}/175`;
+                const pct = Math.min(100, (state.wisdom_score / 200) * 100);
+                document.getElementById('ledger-wisdom-val').textContent = `${state.wisdom_score}/200`;
                 document.getElementById('ledger-wisdom-fill').style.width = pct + '%';
 
                 const pages = Object.entries(data.ledger_pages || {});
-                inner.innerHTML = pages.map(([pageId, pageData]) => {
+                let html = pages.map(([pageId, pageData]) => {
                     const isFinal = pageId === 'final';
                     const isFilled = !!state.ledger_pages[pageId];
                     const insight = state.key_insights[pageId] || '';
@@ -2246,11 +3549,30 @@
                         }
                     }
 
-                    return `<div class="ledger-page-card ${cls}">
+                    // Chosen item for this quest (Mechanic F)
+                    let chosenBadge = '';
+                    if (isFilled && !isFinal) {
+                        const chosenItemId = state.item_choice_history[pageId];
+                        const chosenItem = chosenItemId ? (data.items || {})[chosenItemId] : null;
+                        if (chosenItem) {
+                            chosenBadge = `
+                                <button type="button"
+                                        onclick="event.stopPropagation();game.openItemInspector('${chosenItemId}')"
+                                        class="mt-2 text-xs px-2 py-1 rounded-full inline-flex items-center gap-1"
+                                        style="background:rgba(201,162,39,.1); border:1px solid var(--gold-dim); color:var(--gold); cursor:pointer"
+                                        title="ไอเท็มที่เลือก — กดดูรายละเอียด">
+                                    <span>${chosenItem.icon}</span>
+                                    <span>${chosenItem.name}</span>
+                                </button>
+                            `;
+                        }
+                    }
+
+                    return `<div class="ledger-page-card ${cls}" data-page-id="${pageId}">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-lg">${isFilled ? pageData.icon : '🔒'}</span>
                         <div class="flex-1 min-w-0">
-                            <div class="font-tech text-xs ${isFilled ? '' : ''}" style="color:${isFilled ? (isFinal ? 'var(--wisdom)' : 'var(--gold)') : 'var(--text-dim)'}">
+                            <div class="font-tech text-xs" style="color:${isFilled ? (isFinal ? 'var(--wisdom)' : 'var(--gold)') : 'var(--text-dim)'}">
                                 หน้า ${pageData.page_num}: ${pageData.title}
                             </div>
                             <div class="text-xs" style="color:var(--text-muted)">${pageData.fin_comp}</div>
@@ -2260,8 +3582,558 @@
                     ${isFilled && insight
                             ? `<p class="text-xs leading-relaxed mt-2 pt-2" style="color:var(--text-main);border-top:1px solid var(--gold-dim)">${insight}</p>`
                             : lockInfo}
+                    ${chosenBadge}
                 </div>`;
                 }).join('');
+
+                // ── Unchosen Items Section (Decision Point 5) ──
+                // Show items the player rejected during reward choice, greyed out.
+                if (state.unchosen_items && state.unchosen_items.length > 0) {
+                    html += `
+                        <div class="ledger-unchosen-divider">
+                            <i class="fas fa-times-circle mr-1"></i>
+                            ทางที่ไม่ได้เลือก
+                        </div>
+                        <p class="text-xs mb-2" style="color:var(--text-dim); text-align:center">
+                            ไอเท็มที่ท่านสละสิทธิ์ในการเลือก — กดเพื่อดูรายละเอียด
+                        </p>
+                    `;
+                    html += state.unchosen_items.map(itemId => {
+                        const item = (data.items || {})[itemId];
+                        if (!item) return '';
+                        const fromQuest = data.quests[item.source_quest]?.name || item.source_quest;
+                        return `
+                            <div class="unchosen-card" onclick="game.openItemInspector('${itemId}', true)">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg">${item.icon}</span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs truncate" style="color:var(--text-muted)">
+                                            ${item.name}
+                                        </div>
+                                        <div class="text-xs" style="color:var(--text-dim)">
+                                            จาก ${fromQuest}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-xs" style="color:var(--text-dim)"></i>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                inner.innerHTML = html;
+            }
+
+            // ============================================================
+            // SECTION 7A: ITEM INSPECTOR (Mechanic A)
+            // ============================================================
+
+            /**
+             * Open the Item Inspector modal for a given item ID.
+             * Renders layout conditionally based on item type:
+             *   - tool_item      → description + "ขอคำใบ้" button (Mechanic B)
+             *   - narrative_fragment → description + scrollable narrative content
+             *   - access_item    → description + gates info + relevant quests
+             *
+             * @param {string} itemId - ID of item to inspect
+             * @param {boolean} [isUnchosen=false] - true if shown from Ledger unchosen list
+             */
+            function openItemInspector(itemId, isUnchosen = false) {
+                const item = (data.items || {})[itemId];
+                if (!item) {
+                    showToast('ไม่พบข้อมูลไอเท็มนี้', 'error');
+                    return;
+                }
+
+                // ── Header ──
+                document.getElementById('inspector-icon').textContent = item.icon;
+                document.getElementById('inspector-name').textContent = item.name;
+
+                const typeBadge = document.getElementById('inspector-type-badge');
+                typeBadge.className = `inspector-type-badge type-${item.type}`;
+                typeBadge.textContent = {
+                    tool_item: 'TOOL ITEM',
+                    narrative_fragment: 'NARRATIVE',
+                    access_item: 'ACCESS ITEM',
+                }[item.type] || item.type.toUpperCase();
+
+                const sourceNpc = data.npcs[item.source_npc];
+                const sourceQuest = data.quests[item.source_quest];
+                document.getElementById('inspector-source').textContent =
+                    `${sourceQuest?.name || item.source_quest} · ${sourceNpc?.name || item.source_npc}`;
+
+                // ── Body ──
+                const body = document.getElementById('inspector-body');
+                let bodyHtml = '';
+
+                // Description (all types)
+                bodyHtml += `
+                    <div class="mb-3">
+                        <div class="font-tech text-xs tracking-wider mb-1" style="color:var(--gold)">
+                            <i class="fas fa-info-circle mr-1"></i>รายละเอียด
+                        </div>
+                        <p class="text-sm leading-relaxed" style="color:var(--text-main)">
+                            ${item.description}
+                        </p>
+                    </div>
+                `;
+
+                // Narrative content (narrative_fragment only)
+                if (item.type === 'narrative_fragment' && item.narrative_content) {
+                    const parsed = (typeof marked !== 'undefined' && marked.parse)
+                        ? marked.parse(item.narrative_content)
+                        : item.narrative_content.replace(/\n/g, '<br>');
+                    bodyHtml += `
+                        <div class="inspector-section">
+                            <div class="font-tech text-xs tracking-wider mb-2" style="color:var(--wisdom)">
+                                <i class="fas fa-scroll mr-1"></i>บันทึกเรื่องเล่า
+                            </div>
+                            <div class="inspector-narrative">${parsed}</div>
+                        </div>
+                    `;
+                }
+
+                // Tool item — relevance info
+                if (item.type === 'tool_item' && item.relevant_in_quests?.length > 0) {
+                    const questNames = item.relevant_in_quests
+                        .map(qid => data.quests[qid]?.name || qid)
+                        .join(' · ');
+                    bodyHtml += `
+                        <div class="inspector-section" style="border-color:rgba(59,130,246,.3)">
+                            <div class="font-tech text-xs tracking-wider mb-1" style="color:#93c5fd">
+                                <i class="fas fa-link mr-1"></i>เชื่อมโยงกับเควสต์
+                            </div>
+                            <p class="text-xs" style="color:var(--text-main)">${questNames}</p>
+                            <p class="text-xs mt-1" style="color:var(--text-muted)">
+                                ใช้ไอเท็มนี้ขอคำใบ้จาก NPC ในเควสต์ที่เชื่อมโยง
+                            </p>
+                        </div>
+                    `;
+                }
+
+                // Access item — gates info
+                if (item.type === 'access_item' && item.gates_quests?.length > 0) {
+                    const gatesQuestNames = item.gates_quests
+                        .map(qid => data.quests[qid]?.name || qid)
+                        .join(' · ');
+                    bodyHtml += `
+                        <div class="inspector-section" style="border-color:var(--gold)">
+                            <div class="font-tech text-xs tracking-wider mb-1" style="color:var(--gold)">
+                                <i class="fas fa-bolt mr-1"></i>Ripple Effect
+                            </div>
+                            <p class="text-xs" style="color:var(--text-main)">
+                                ส่งผลต่อพฤติกรรม NPC ใน: <strong>${gatesQuestNames}</strong>
+                            </p>
+                            <p class="text-xs mt-1" style="color:var(--text-muted)">
+                                การมีไอเท็มนี้จะเปลี่ยนวิธีที่ NPC ปฏิสัมพันธ์กับท่าน
+                            </p>
+                        </div>
+                    `;
+                }
+
+                // Unchosen notice
+                if (isUnchosen) {
+                    bodyHtml += `
+                        <div class="mt-3 p-3 rounded-lg text-center text-sm"
+                             style="background:rgba(239,68,68,.06); border:1px solid rgba(239,68,68,.25); color:#fca5a5">
+                            <i class="fas fa-times-circle mr-1"></i>
+                            ทางที่ท่านไม่ได้เลือกในเควสต์ ${sourceQuest?.name || item.source_quest}
+                        </div>
+                    `;
+                }
+
+                body.innerHTML = bodyHtml;
+
+                // ── Footer (action buttons) ──
+                const footer = document.getElementById('inspector-footer');
+                const canRequestHint = (
+                    item.type === 'tool_item' &&
+                    item.has_hint &&
+                    !isUnchosen &&
+                    state.items.includes(itemId)
+                );
+
+                if (canRequestHint) {
+                    const inTerminalWithNpc = Boolean(currentNpcId);
+                    const usageCount = state.item_hint_usage[itemId] || 0;
+                    footer.classList.remove('hidden');
+                    footer.innerHTML = `
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="text-xs" style="color:var(--text-muted)">
+                                ${usageCount > 0 ? `ใช้ไปแล้ว ${usageCount} ครั้ง` : 'ยังไม่เคยใช้'}
+                            </div>
+                            <button
+                                onclick="game.requestItemHint('${itemId}')"
+                                class="btn-action px-4 py-2 rounded-lg text-xs font-tech min-h-[36px] ${inTerminalWithNpc ? '' : 'opacity-50 cursor-not-allowed'}"
+                                ${inTerminalWithNpc ? '' : 'disabled'}
+                                title="${inTerminalWithNpc ? 'ขอคำใบ้จาก NPC' : 'เปิดการสนทนากับ NPC ก่อน'}">
+                                <i class="fas fa-lightbulb mr-1"></i>
+                                ขอคำใบ้จาก NPC
+                            </button>
+                        </div>
+                        ${!inTerminalWithNpc ? `
+                            <p class="text-xs mt-2" style="color:var(--text-muted)">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                เปิดการสนทนากับ NPC ผ่าน Quest Map ก่อนขอคำใบ้
+                            </p>
+                        ` : ''}
+                    `;
+                } else {
+                    footer.classList.add('hidden');
+                    footer.innerHTML = '';
+                }
+
+                document.getElementById('modal-item-inspector').classList.add('open');
+            }
+
+            // ============================================================
+            // SECTION 7B: REWARD CHOICE (Mechanic F)
+            // ============================================================
+
+            // Track the quest that triggered the choice modal + the selected option
+            let _rewardChoiceState = {
+                quest_id: null,
+                choice_pool: [],       // array of item objects from /api/quest/evaluate response
+                selected_item_id: null,
+            };
+
+            /**
+             * Open the Reward Choice Modal with a quest's item pool.
+             * Called from evaluateQuest() after a pass + ledger write.
+             */
+            function openRewardChoiceModal(questId, choicePool) {
+                _rewardChoiceState = {
+                    quest_id: questId,
+                    choice_pool: choicePool || [],
+                    selected_item_id: null,
+                };
+                state.pending_reward_quest = questId;
+
+                const quest = data.quests[questId];
+                document.getElementById('reward-quest-label').textContent =
+                    `Quest: ${quest?.name || questId}`;
+
+                renderRewardChoiceCards();
+
+                // Disable confirm button until user selects
+                const confirmBtn = document.getElementById('btn-confirm-reward');
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-check mr-2"></i>ยืนยันการเลือก';
+
+                const modal = document.getElementById('modal-reward-choice');
+                modal.classList.add('open');
+
+                // Make modal non-dismissible (player must choose)
+                modal.onclick = (e) => {
+                    if (e.target === modal) {
+                        // Do nothing — user must click a card + confirm
+                        const inner = document.getElementById('reward-choice-inner');
+                        inner.style.animation = 'none';
+                        setTimeout(() => { inner.style.animation = 'slide-in .3s ease'; }, 10);
+                    }
+                };
+            }
+
+            function renderRewardChoiceCards() {
+                const inner = document.getElementById('reward-choice-inner');
+                const selectedId = _rewardChoiceState.selected_item_id;
+
+                const typeLabel = {
+                    tool_item: 'TOOL ITEM',
+                    narrative_fragment: 'NARRATIVE',
+                    access_item: 'ACCESS ITEM',
+                };
+
+                const typeEffect = {
+                    tool_item: '🔧 ใช้ขอคำใบ้จาก NPC ได้ในเควสต์ถัดไป',
+                    narrative_fragment: '📜 บันทึกเรื่องเล่าลึก — เสริมบริบทโลกเกม',
+                    access_item: '🗝️ เปลี่ยนพฤติกรรม NPC ในเควสต์ที่เชื่อมโยง',
+                };
+
+                inner.innerHTML = `
+                    <div class="reward-choice-container">
+                        ${_rewardChoiceState.choice_pool.map(item => {
+                            const isSelected = item.id === selectedId;
+                            const relevantQuests = (item.relevant_in_quests || []).concat(item.gates_quests || []);
+                            const relevantNames = relevantQuests
+                                .map(qid => data.quests[qid]?.name || qid)
+                                .filter((v, i, a) => a.indexOf(v) === i)
+                                .slice(0, 2)
+                                .join(' · ');
+
+                            return `
+                                <button type="button"
+                                    class="choice-card type-${item.type} ${isSelected ? 'selected' : ''}"
+                                    onclick="game.selectRewardItem('${item.id}')">
+                                    <div class="choice-card-icon">${item.icon}</div>
+                                    <div class="choice-card-type">${typeLabel[item.type] || item.type}</div>
+                                    <div class="choice-card-name">${item.name}</div>
+                                    <div class="choice-card-desc">${item.description}</div>
+                                    <div class="choice-card-effect">
+                                        ${typeEffect[item.type] || ''}
+                                        ${relevantNames ? `<br><span style="color:var(--text-muted)">↳ ${relevantNames}</span>` : ''}
+                                    </div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            /**
+             * Handle selection of a choice card (not final — user must still confirm).
+             */
+            function selectRewardItem(itemId) {
+                _rewardChoiceState.selected_item_id = itemId;
+                renderRewardChoiceCards();
+
+                // Enable confirm button
+                const confirmBtn = document.getElementById('btn-confirm-reward');
+                confirmBtn.disabled = false;
+
+                // Update button label with chosen item name
+                const chosenItem = _rewardChoiceState.choice_pool.find(i => i.id === itemId);
+                if (chosenItem) {
+                    confirmBtn.innerHTML =
+                        `<i class="fas fa-check mr-2"></i>ยืนยันเลือก: ${chosenItem.icon} ${chosenItem.name}`;
+                }
+            }
+
+            /**
+             * User confirms their reward choice → call backend to finalize quest.
+             */
+            async function confirmRewardChoice() {
+                const { quest_id, selected_item_id } = _rewardChoiceState;
+                if (!quest_id || !selected_item_id) {
+                    showToast('กรุณาเลือกรางวัล 1 ชิ้นก่อนยืนยัน', 'error');
+                    return;
+                }
+
+                const confirmBtn = document.getElementById('btn-confirm-reward');
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>กำลังยืนยัน...';
+
+                try {
+                    const res = await fetch('/api/quest/reward-choice', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            quest_id,
+                            chosen_item_id: selected_item_id,
+                            game_state: state,
+                        }),
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || 'ไม่สามารถยืนยันการเลือกได้');
+                    }
+
+                    const d = await res.json();
+
+                    // Apply state updates (same shape as /api/quest/complete)
+                    applyQuestCompletionResponse(d);
+
+                    // Close modal + release the non-dismissible guard
+                    state.pending_reward_quest = null;
+                    const modal = document.getElementById('modal-reward-choice');
+                    modal.onclick = null;
+                    modal.classList.remove('open');
+
+                    _rewardChoiceState = { quest_id: null, choice_pool: [], selected_item_id: null };
+
+                } catch (e) {
+                    console.error('confirmRewardChoice:', e);
+                    showToast(e.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = '<i class="fas fa-check mr-2"></i>ยืนยันการเลือก';
+                }
+            }
+
+            /**
+             * Shared handler for applying quest completion response to state + UI.
+             * Used by both confirmRewardChoice (Mechanic F) and Final Quest completion path.
+             */
+            function applyQuestCompletionResponse(d) {
+                state.wisdom_score = d.new_wisdom_score;
+                state.rank = d.new_rank?.name || state.rank;
+                state.ledger_pages = d.new_ledger_pages;
+                state.completed_quests = d.new_completed_quests;
+                state.unlocked_quests = d.new_unlocked_quests;
+                state.fin_comp_coverage = d.new_fin_comp_coverage;
+                state.items = d.new_items;
+                state.badges = d.new_badges;
+
+                // Item system updates
+                if (d.new_unchosen_items !== undefined) state.unchosen_items = d.new_unchosen_items;
+                if (d.new_item_choice_history !== undefined) state.item_choice_history = d.new_item_choice_history;
+
+                state.current_quest = null;
+                state.active_npc = null;
+                state.quest_turn_count = 0;
+                state.quest_chat_history = [];
+                state.quest_fragments = {};
+
+                updateHUD();
+                renderQuestMap();
+                if (currentNpcId) {
+                    renderQuestTab(currentNpcId);
+                    renderDataLogTab(currentNpcId);
+                    setupCommsTab(currentNpcId);
+                }
+                const evalBtn = document.getElementById('btn-eval-quest');
+                if (evalBtn) evalBtn.classList.add('hidden');
+
+                // Notifications
+                const rew = d.rewards || {};
+                const wisdomGained = rew.resource_token?.wisdom || 0;
+                if (wisdomGained > 0) showXP(`+${wisdomGained} Wisdom ⚜️`);
+
+                if (d.new_rank?.name && d.new_rank.name !== state.rank) {
+                    setTimeout(() => showAchievement(`Rank ใหม่: ${d.new_rank.icon} ${d.new_rank.name}`), 800);
+                }
+                if (d.newly_unlocked?.length) {
+                    d.unlock_messages?.forEach((m, i) => {
+                        setTimeout(() => showToast(m, 'success'), (i + 1) * 600);
+                    });
+                }
+                if (rew.mastery_badge) {
+                    setTimeout(() => showAchievement(`🏅 ปลดล็อกฉายา: ${rew.mastery_badge}`), 1200);
+                }
+
+                // Chosen item notification (Mechanic F)
+                if (d.chosen_item) {
+                    setTimeout(() => {
+                        showToast(
+                            `${d.chosen_item.icon} ได้รับ: ${d.chosen_item.name}`,
+                            'success'
+                        );
+                    }, 1800);
+                }
+
+                // Auto-awarded item notification (Final Quest)
+                if (d.auto_awarded_item) {
+                    setTimeout(() => {
+                        showAchievement(
+                            `${d.auto_awarded_item.icon} ${d.auto_awarded_item.name}`
+                        );
+                    }, 2000);
+                }
+
+                // Open Ledger as celebratory finish
+                setTimeout(() => openLedger(), 2400);
+            }
+
+            // ============================================================
+            // SECTION 7C: TOOL ITEM HINT (Mechanic B)
+            // ============================================================
+
+            /**
+             * Player uses a Tool Item to request a Socratic hint from the current NPC.
+             * Requires: player in NPC Terminal (currentNpcId set) + item is tool_item.
+             */
+            async function requestItemHint(itemId) {
+                const item = (data.items || {})[itemId];
+                if (!item) {
+                    showToast('ไม่พบข้อมูลไอเท็ม', 'error');
+                    return;
+                }
+                if (!currentNpcId) {
+                    showToast('เปิดการสนทนากับ NPC ก่อน', 'error');
+                    return;
+                }
+                if (!state.items.includes(itemId)) {
+                    showToast('ท่านยังไม่มีไอเท็มนี้', 'error');
+                    return;
+                }
+
+                // Close Inspector, switch to comms
+                closeModal('modal-item-inspector');
+                switchTab('comms');
+
+                // Show typing indicator
+                document.getElementById('term-typing').classList.remove('hidden');
+
+                // Build recent chat history context
+                const hist = state.chat_histories[currentNpcId] || [];
+                const recentHistory = hist.slice(-6).map(m => ({
+                    role: m.role, content: m.content,
+                }));
+
+                try {
+                    const res = await fetch('/api/item/hint', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            item_id: itemId,
+                            npc_id: currentNpcId,
+                            current_quest: state.current_quest,
+                            quest_turn_count: state.quest_turn_count,
+                            recent_chat_history: recentHistory,
+                            game_state: state,
+                        }),
+                    });
+
+                    const d = await res.json();
+                    document.getElementById('term-typing').classList.add('hidden');
+
+                    if (!d.success || !d.hint_text) {
+                        showToast(d.message || 'เกิดข้อผิดพลาดในการสร้างคำใบ้', 'error');
+                        return;
+                    }
+
+                    // Update usage counter
+                    if (d.new_item_hint_usage) {
+                        state.item_hint_usage = d.new_item_hint_usage;
+                    }
+
+                    // Render special hint bubble in chat
+                    renderHintBubble(currentNpcId, itemId, d.hint_text);
+
+                    // Add to chat history as a special 'hint' entry
+                    const hintEntry = {
+                        role: 'assistant',
+                        content: d.hint_text,
+                        timestamp: new Date().toISOString(),
+                        quest_id: state.current_quest || null,
+                        turn: state.total_turns,
+                        is_hint: true,
+                        hint_item_id: itemId,
+                        hint_item_name: item.name,
+                        hint_item_icon: item.icon,
+                    };
+                    if (!state.chat_histories[currentNpcId]) state.chat_histories[currentNpcId] = [];
+                    state.chat_histories[currentNpcId].push(hintEntry);
+
+                    // NOTE: hints do NOT count toward quest_chat_history or quest_turn_count
+
+                    showToast(`💡 ${item.icon} ได้รับคำใบ้จาก ${item.name}`, 'success');
+
+                } catch (e) {
+                    console.error('requestItemHint:', e);
+                    document.getElementById('term-typing').classList.add('hidden');
+                    showToast('เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
+                }
+            }
+
+            /**
+             * Render a Hint bubble (distinct from regular NPC chat bubbles) in the chat area.
+             */
+            function renderHintBubble(npcId, itemId, hintText) {
+                const container = document.getElementById('term-chat');
+                if (!container) return;
+
+                const item = (data.items || {})[itemId] || { name: itemId, icon: '💡' };
+                const div = document.createElement('div');
+                div.className = 'chat-hint markdown-body slide-in';
+                const itemLabel = `<div style="font-size:.75rem; color:#93c5fd; margin-bottom:4px; font-family:'Sarabun'">
+                    ${item.icon} ${item.name}
+                </div>`;
+                const parsed = (typeof marked !== 'undefined' && marked.parse)
+                    ? marked.parse(hintText) : hintText;
+                div.innerHTML = itemLabel + parsed;
+                container.appendChild(div);
+                container.scrollTop = container.scrollHeight;
             }
 
             // ============================================================
@@ -2360,21 +4232,124 @@
                 const sum = reportData.summary || {};
                 const rank = sum.rank || {};
 
+                // ── Items section ──
+                // sum.items is now an array of detailed item objects, not plain strings
+                const itemsHtml = (sum.items && sum.items.length > 0)
+                    ? sum.items.map(it => `${it.icon} ${it.name}`).join(' · ')
+                    : '—';
+
                 let html = `
                 <div class="mb-4 p-3 rounded-lg" style="background:rgba(201,162,39,.06);border:1px solid var(--gold-dim)">
                     <div class="font-tech text-sm mb-2" style="color:var(--gold)">สรุปผลการเรียนรู้</div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
                         <div><span style="color:var(--text-muted)">นักเรียน: </span><strong>${sum.student_name || '-'}</strong></div>
-                        <div><span style="color:var(--text-muted)">Wisdom: </span><strong style="color:var(--wisdom)">${sum.wisdom_score || 0}/175</strong></div>
+                        <div><span style="color:var(--text-muted)">Wisdom: </span><strong style="color:var(--wisdom)">${sum.wisdom_score || 0}/200</strong></div>
                         <div><span style="color:var(--text-muted)">Rank: </span><strong>${rank.icon || ''} ${rank.name || '-'}</strong></div>
                         <div><span style="color:var(--text-muted)">Quest สำเร็จ: </span><strong>${sum.completed_quests || 0}</strong></div>
                         <div><span style="color:var(--text-muted)">หน้า Ledger: </span><strong>${sum.ledger_pages_filled || 0}/10</strong></div>
                         <div><span style="color:var(--text-muted)">สมรรถนะ: </span><strong style="color:var(--emerald)">${sum.competencies_covered || '0/6'}</strong></div>
                     </div>
-                    ${sum.badges?.length ? `<div class="mt-2 text-xs" style="color:var(--text-muted)">Badges: ${sum.badges.join(', ')}</div>` : ''}
+                    ${sum.badges?.length ? `<div class="mt-2 text-xs" style="color:var(--text-muted)">🏅 Badges: ${sum.badges.join(', ')}</div>` : ''}
+                    <div class="mt-1 text-xs" style="color:var(--text-muted)">📦 Items: ${itemsHtml}</div>
                     <div class="text-xs mt-1" style="color:var(--text-dim)">สร้างเมื่อ: ${reportData.generated_at || ''}</div>
                 </div>
-                <div class="font-tech text-xs tracking-wider mb-3" style="color:var(--gold)">สมรรถนะทางการเงินที่ประเมิน</div>`;
+                `;
+
+                // ── Choice Pattern Card (Mechanic F research data) ──
+                const choice = sum.choice_pattern || {};
+                if (choice.total_choices && choice.total_choices > 0) {
+                    const counts = choice.type_counts || {};
+                    const total = choice.total_choices;
+                    const toolPct = Math.round((counts.tool_item || 0) / total * 100);
+                    const narrativePct = Math.round((counts.narrative_fragment || 0) / total * 100);
+                    const accessPct = Math.round((counts.access_item || 0) / total * 100);
+
+                    html += `
+                        <div class="choice-pattern-card">
+                            <div class="font-tech text-xs tracking-wider mb-1" style="color:var(--wisdom)">
+                                <i class="fas fa-chart-pie mr-1"></i>รูปแบบการเลือกรางวัล
+                            </div>
+                            <p class="text-xs" style="color:var(--text-main)">
+                                ${choice.pattern_label || ''}
+                            </p>
+                            <div class="choice-type-bar">
+                                <div class="choice-type-segment tool_item" style="width:${toolPct}%"></div>
+                                <div class="choice-type-segment narrative_fragment" style="width:${narrativePct}%"></div>
+                                <div class="choice-type-segment access_item" style="width:${accessPct}%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-2" style="color:var(--text-muted)">
+                                <span>🔧 Tool: ${counts.tool_item || 0} (${toolPct}%)</span>
+                                <span>📜 Narr: ${counts.narrative_fragment || 0} (${narrativePct}%)</span>
+                                <span>🗝️ Access: ${counts.access_item || 0} (${accessPct}%)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ── Hint Usage Card (Mechanic B research data) ──
+                const hu = sum.hint_usage || {};
+                if (hu.total_hints_requested && hu.total_hints_requested > 0) {
+                    html += `
+                        <div class="choice-pattern-card" style="background:rgba(59,130,246,.06); border-color:rgba(59,130,246,.3)">
+                            <div class="font-tech text-xs tracking-wider mb-1" style="color:#93c5fd">
+                                <i class="fas fa-lightbulb mr-1"></i>การใช้คำใบ้จาก Tool Items
+                            </div>
+                            <p class="text-xs" style="color:var(--text-main)">
+                                ใช้คำใบ้รวม <strong>${hu.total_hints_requested}</strong> ครั้ง
+                            </p>
+                            ${(hu.items || []).map(ent => `
+                                <div class="hint-usage-row">
+                                    <span>${ent.icon} ${ent.item_name}</span>
+                                    <span class="font-tech" style="color:#93c5fd">${ent.usage_count} ครั้ง</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                // ── Fin. Comp. Visual Summary (Progress Bars) ──
+                if (data && data.fin_comp_map) {
+                    html += `
+                    <div class="mt-4 mb-2 p-3 rounded-lg" style="background:rgba(201,162,39,.04);border:1px solid var(--gold-dim)">
+                        <div class="font-tech text-xs tracking-wider mb-3" style="color:var(--gold)">
+                            <i class="fas fa-chart-bar mr-1"></i>ภาพรวมสมรรถนะทางการเงิน
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2.5">
+                    `;
+                    Object.entries(data.fin_comp_map).forEach(([id, comp]) => {
+                        const total = (comp.quests || []).length || 0;
+                        const done  = (comp.quests || []).filter(q =>
+                            (state.completed_quests || []).includes(q)
+                        ).length;
+                        const pct   = total === 0 ? 0 : Math.round((done / total) * 100);
+                        let level   = 0;
+                        if (pct > 0 && pct < 67)  level = 1;
+                        else if (pct < 100)        level = 2;
+                        else if (pct === 100)       level = 3;
+                        const nameColor = level === 0 ? 'var(--text-dim)'
+                                        : level === 3 ? 'var(--emerald)'
+                                        : 'var(--gold)';
+                        html += `
+                            <div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs" style="color:${nameColor}">${comp.name}</span>
+                                    <span class="font-tech text-xs flex-shrink-0 ml-1" style="color:${nameColor}">
+                                        ${pct}%${level === 3 ? ' ✓' : ''}
+                                    </span>
+                                </div>
+                                <div class="report-fincomp-bar">
+                                    <div class="report-fincomp-bar-fill level-${level}" style="width:${pct}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div></div>`;
+                }
+
+                // ── Fin. Comp. Sections (Detailed Evidence) ──
+                html += `<div class="font-tech text-sm tracking-wider mt-4 mb-3" style="color:var(--gold)">
+                    สมรรถนะทางการเงินที่ประเมิน
+                </div>`;
 
                 (reportData.report_sections || []).forEach(sec => {
                     const covered = sec.is_covered;
@@ -2388,12 +4363,21 @@
                             <span class="text-xs" style="color:${covered ? 'var(--emerald)' : 'var(--text-dim)'}">${sec.coverage_note}</span>
                         </div>
                     </div>
-                    ${sec.evidence?.map(ev => `
-                        <div class="mt-1 pl-3 text-xs" style="border-left:2px solid ${covered ? 'rgba(16,185,129,.3)' : 'var(--gold-dim)'}">
-                            <span style="color:var(--gold)">${ev.quest_name}</span>
-                            ${ev.key_insight ? `<br><span style="color:var(--text-main)">${ev.key_insight}</span>` : ''}
-                            <div style="color:var(--text-dim)">K:${ev.ksa_met?.K ? '✓' : '✗'} S:${ev.ksa_met?.S ? '✓' : '✗'} A:${ev.ksa_met?.A ? '✓' : '✗'} · ${ev.bloom_level || ''}</div>
-                        </div>`).join('') || ''}
+                    ${sec.evidence?.map(ev => {
+                        // Include chosen item in evidence display (Mechanic F)
+                        const chosenHtml = ev.chosen_item
+                            ? `<span class="text-xs" style="color:var(--gold)">
+                                · เลือก: ${ev.chosen_item.icon} ${ev.chosen_item.name}
+                              </span>`
+                            : '';
+                        return `
+                            <div class="mt-1 pl-3 text-xs" style="border-left:2px solid ${covered ? 'rgba(16,185,129,.3)' : 'var(--gold-dim)'}">
+                                <span class="font-tech mb-1" style="color:var(--gold)">${ev.quest_name}</span>
+                                ${chosenHtml}
+                                ${ev.key_insight ? `<br><span class="leading-relaxed" style="color:var(--text-main)">${ev.key_insight}</span>` : ''}
+                                <div style="color:var(--text-dim)">K:${ev.ksa_met?.K ? '✓' : '✗'} S:${ev.ksa_met?.S ? '✓' : '✗'} A:${ev.ksa_met?.A ? '✓' : '✗'} · ${ev.bloom_level || ''}</div>
+                            </div>`;
+                    }).join('') || ''}
                 </div>`;
                 });
 
@@ -2437,6 +4421,88 @@
                 }
             }
 
+            function openFinCompRef() {
+                function hexToRgba(hex, alpha) {
+                    const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                    if (!r) return `rgba(201,162,39,${alpha})`;
+                    return `rgba(${parseInt(r[1],16)},${parseInt(r[2],16)},${parseInt(r[3],16)},${alpha})`;
+                }
+
+                const LEVEL_BADGE = {
+                    J: 'background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.4);color:#67e8f9;',
+                    H: 'background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.5);color:var(--gold);',
+                };
+
+                let html = '';
+                FINCOMP_REF_DATA.forEach((domain, idx) => {
+                    const bgColor   = hexToRgba(domain.color, .07);
+                    const borderClr = hexToRgba(domain.color, .28);
+                    const dividerMt = idx > 0 ? 'margin-top:20px;' : '';
+
+                    html += `
+                        <div style="${dividerMt}">
+                            <div class="fincomp-ref-domain-divider" style="border-color:${borderClr};">
+                                <div class="font-tech text-sm" style="color:${domain.color}">${domain.domain_name}</div>
+                                <div class="text-xs mt-0.5" style="color:var(--text-dim)">${domain.domain_en}</div>
+                            </div>
+                    `;
+
+                    domain.sub_competencies.forEach(sc => {
+                        const level      = sc.code[0];
+                        const badgeStyle = LEVEL_BADGE[level] || LEVEL_BADGE['H'];
+
+                        const questChips = sc.linked_quests.map(qid => {
+                            const questName = data?.quests?.[qid]?.name || qid;
+                            return `<span class="fincomp-ref-quest-chip"
+                                        style="background:${hexToRgba(domain.color,.08)};border-color:${hexToRgba(domain.color,.3)}"
+                                    >${questName}</span>`;
+                        }).join('');
+
+                        html += `
+                            <div class="fincomp-ref-card" style="background:${bgColor};border-color:${borderClr}">
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span class="fincomp-ref-code-badge"
+                                        style="color:${domain.color};border-color:${borderClr}">
+                                        ${sc.code}
+                                    </span>
+                                    <span class="fincomp-ref-level-badge" style="${badgeStyle}">
+                                        ${sc.level_label} · ${sc.age}
+                                    </span>
+                                </div>
+                                <p class="text-sm font-medium mb-1.5 leading-relaxed"
+                                    style="color:var(--text-main)">${sc.title}</p>
+                                <p class="fincomp-ref-statement">${sc.statement}</p>
+                                <div class="mt-2 pt-2 flex flex-wrap gap-1.5 items-center"
+                                    style="border-top:1px solid ${hexToRgba(domain.color,.2)}">
+                                    <span class="text-xs flex-shrink-0" style="color:var(--text-dim)">
+                                        Quest ในเกม:
+                                    </span>
+                                    ${questChips}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div>`;
+                });
+
+                html += `
+                    <div class="mt-4 pt-3 text-xs leading-relaxed"
+                        style="color:var(--text-dim);border-top:1px solid var(--gold-dim)">
+                        <i class="fas fa-book mr-1"></i>
+                        <strong style="color:var(--text-muted)">แหล่งอ้างอิง:</strong>
+                        กรอบสมรรถนะทางการเงินเพื่อการศึกษาและการเรียนรู้ (Fin. Comp.)
+                        จัดทำโดย ธนาคารแห่งประเทศไทย ร่วมกับ สศค. ก.ล.ต. คปภ. ตลท. กรมสรรพากร
+                        และสถาบันคุ้มครองเงินฝาก | จัดพิมพ์ครั้งที่ 1 พ.ศ. 2569 |
+                        ISBN 978-616-7220-40-6
+                    </div>
+                `;
+
+                const body = document.getElementById('fincomp-ref-body');
+                if (body) body.innerHTML = html;
+                document.getElementById('modal-fincomp-ref').classList.add('open');
+            }
+
             // ============================================================
             // SECTION 9: UTILITIES
             // ============================================================
@@ -2474,6 +4540,251 @@
             }
 
             // ============================================================
+            // SECTION 11: SAVE / LOAD GAME + RESEARCH EXPORT
+            // ============================================================
+
+            function exportGameState() {
+                const exportData = {
+                    meta: {
+                        export_timestamp: new Date().toISOString(),
+                        game_version: '3.0.0',
+                        export_type: 'full_save',
+                        player_name: state.player_name,
+                    },
+                    game_state: JSON.parse(JSON.stringify(state)), // deep clone
+                };
+                return JSON.stringify(exportData); // minified — no whitespace
+            }
+
+            function openSaveLoadModal() {
+                const modal = document.getElementById('modal-save-load');
+                if (!modal) return;
+
+                const exportSection = document.getElementById('save-export-section');
+                const divider = document.getElementById('save-load-divider');
+                const hasActiveGame = !!state;
+
+                // Show/hide export section based on whether a game is active
+                if (exportSection) exportSection.style.display = hasActiveGame ? '' : 'none';
+                if (divider) divider.style.display = hasActiveGame ? '' : 'none';
+
+                // Populate export textarea if game is active
+                if (hasActiveGame) {
+                    const exportArea = document.getElementById('save-export-textarea');
+                    if (exportArea) exportArea.value = exportGameState();
+                }
+
+                // Reset import section state on every open
+                const importArea = document.getElementById('save-import-textarea');
+                if (importArea) importArea.value = '';
+                const preview = document.getElementById('save-import-preview');
+                if (preview) preview.innerHTML = '';
+                const loadBtn = document.getElementById('btn-load-game');
+                if (loadBtn) {
+                    loadBtn.disabled = true;
+                    delete loadBtn.dataset.importJson;
+                }
+
+                modal.classList.add('open');
+            }
+
+            function closeSaveLoadModal() {
+                document.getElementById('modal-save-load')?.classList.remove('open');
+            }
+
+            function copyExportJson() {
+                const exportArea = document.getElementById('save-export-textarea');
+                if (!exportArea || !exportArea.value) {
+                    showToast('ไม่พบข้อมูลสำหรับคัดลอก', 'error');
+                    return;
+                }
+                const text = exportArea.value;
+
+                function iosFallbackCopy(t) {
+                    const ta = document.createElement('textarea');
+                    ta.value = t;
+                    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:none;outline:none;opacity:0;';
+                    ta.readOnly = false;
+                    document.body.appendChild(ta);
+                    ta.focus();
+                    ta.setSelectionRange(0, t.length);
+                    let ok = false;
+                    try { ok = document.execCommand('copy'); } catch (_) {}
+                    document.body.removeChild(ta);
+                    return ok;
+                }
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('คัดลอกข้อมูลบันทึกเกมแล้ว ✓', 'success');
+                    }).catch(() => {
+                        const ok = iosFallbackCopy(text);
+                        showToast(ok ? 'คัดลอกแล้ว ✓' : 'กรุณา Long-press แล้วเลือก "คัดลอก"', ok ? 'success' : 'error');
+                    });
+                } else {
+                    const ok = iosFallbackCopy(text);
+                    showToast(ok ? 'คัดลอกข้อมูลบันทึกเกมแล้ว ✓' : 'กรุณา Long-press แล้วเลือก "คัดลอก"', ok ? 'success' : 'error');
+                }
+            }
+
+            function downloadSaveTxt() {
+                const exportArea = document.getElementById('save-export-textarea');
+                if (!exportArea || !exportArea.value) {
+                    showToast('ไม่พบข้อมูลสำหรับดาวน์โหลด', 'error');
+                    return;
+                }
+                const text = exportArea.value;
+                const dateStr = new Date().toISOString().split('T')[0];
+                const playerSlug = (state?.player_name || 'player')
+                    .replace(/[^a-zA-Z0-9ก-๙]/g, '-').slice(0, 20);
+                const filename = `eternal-ledger-save-${playerSlug}-${dateStr}.txt`;
+
+                try {
+                    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast(`ดาวน์โหลด ${filename} แล้ว ✓`, 'success');
+                } catch (e) {
+                    showToast('ดาวน์โหลดไม่สำเร็จ กรุณาใช้ปุ่มคัดลอกแทน', 'error');
+                }
+            }
+
+            function previewImportData() {
+                const importArea = document.getElementById('save-import-textarea');
+                const preview = document.getElementById('save-import-preview');
+                const loadBtn = document.getElementById('btn-load-game');
+                if (!importArea || !preview || !loadBtn) return;
+
+                const text = importArea.value.trim();
+                if (!text) {
+                    preview.innerHTML = '';
+                    loadBtn.disabled = true;
+                    delete loadBtn.dataset.importJson;
+                    return;
+                }
+
+                try {
+                    const parsed = JSON.parse(text);
+
+                    // Structural validation — must have both top-level keys
+                    if (!parsed.game_state || !parsed.meta) {
+                        throw new Error('โครงสร้างข้อมูลไม่ถูกต้อง — ขาด game_state หรือ meta');
+                    }
+                    if (!parsed.meta.game_version || !parsed.meta.export_timestamp) {
+                        throw new Error('ข้อมูล meta ไม่สมบูรณ์');
+                    }
+
+                    // Build summary stats for the preview card
+                    const gs = parsed.game_state;
+                    const pagesCount = Object.values(gs.ledger_pages || {}).filter(Boolean).length;
+                    const questCount = (gs.completed_quests || []).length;
+                    const itemCount = (gs.items || []).length;
+                    const badgeCount = (gs.badges || []).length;
+                    const npcConvCount = Object.keys(gs.chat_histories || {}).length;
+                    const exportDate = new Date(parsed.meta.export_timestamp)
+                        .toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+
+                    preview.innerHTML = `
+                        <div class="mt-3 p-3 rounded-lg"
+                            style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3)">
+                            <div class="font-tech text-xs mb-2" style="color:var(--emerald)">
+                                ✓ ข้อมูลถูกต้อง — พบข้อมูลของ:
+                            </div>
+                            <div class="text-sm font-semibold" style="color:var(--text-main)">
+                                ${gs.player_name || '—'}
+                            </div>
+                            <div class="text-xs mt-1.5 space-y-0.5" style="color:var(--text-muted)">
+                                <div>⚜️ Wisdom: ${gs.wisdom_score || 0} | Quest สำเร็จ: ${questCount} | หน้า Ledger: ${pagesCount}/10</div>
+                                <div>📦 Items: ${itemCount} | Badges: ${badgeCount} | บทสนทนา NPC: ${npcConvCount} ตัวละคร</div>
+                                <div>🕐 บันทึกเมื่อ: ${exportDate}</div>
+                            </div>
+                            <p class="text-xs mt-2" style="color:rgba(239,68,68,.8)">
+                                ⚠️ การโหลดจะแทนที่ข้อมูลเกมปัจจุบันทั้งหมด
+                            </p>
+                        </div>`;
+
+                    loadBtn.disabled = false;
+                    loadBtn.dataset.importJson = text;
+
+                } catch (e) {
+                    preview.innerHTML = `
+                        <div class="mt-3 p-3 rounded-lg"
+                            style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+                            <div class="font-tech text-xs" style="color:var(--red)">
+                                ✗ ข้อมูลไม่ถูกต้อง: ${e.message}
+                            </div>
+                        </div>`;
+                    loadBtn.disabled = true;
+                    delete loadBtn.dataset.importJson;
+                }
+            }
+
+            function confirmLoadGame() {
+                const loadBtn = document.getElementById('btn-load-game');
+                if (!loadBtn || loadBtn.disabled || !loadBtn.dataset.importJson) return;
+
+                try {
+                    const parsed = JSON.parse(loadBtn.dataset.importJson);
+                    const gs = parsed.game_state;
+
+                    // Restore state — every field has a safe default
+                    state = {
+                        player_name:         gs.player_name         || 'ผู้แสวงหาปัญญา',
+                        wisdom_score:        gs.wisdom_score        || 0,
+                        rank:                gs.rank                || 'ผู้แสวงหาปัญญา',
+                        current_quest:       gs.current_quest       || null,
+                        active_npc:          gs.active_npc          || null,
+                        quest_phase:         gs.quest_phase         || 'hook',
+                        quest_turn_count:    gs.quest_turn_count    || 0,
+                        quest_chat_history:  gs.quest_chat_history  || [],
+                        quest_fragments:     gs.quest_fragments     || {},
+                        pending_reward_quest: null, // always clear — do not restore transient choice state
+                        completed_quests:    gs.completed_quests    || [],
+                        unlocked_quests:     gs.unlocked_quests     || ['entry'],
+                        ledger_pages:        gs.ledger_pages        || {},
+                        key_insights:        gs.key_insights        || {},
+                        ksa_evidence:        gs.ksa_evidence        || {},
+                        fin_comp_coverage:   gs.fin_comp_coverage   || { c1:false,c2:false,c3:false,c4:false,c5:false,c6:false },
+                        items:               gs.items               || [],
+                        unchosen_items:      gs.unchosen_items      || [],
+                        item_choice_history: gs.item_choice_history || {},
+                        item_hint_usage:     gs.item_hint_usage     || {},
+                        badges:              gs.badges              || [],
+                        chat_histories:      gs.chat_histories      || {},
+                        total_turns:         gs.total_turns         || 0,
+                        retry_counts:        gs.retry_counts        || {},
+                        session_start:       gs.session_start       || new Date().toISOString(),
+                    };
+
+                    // Clear NPC terminal transient state
+                    currentNpcId = null;
+
+                    // Ensure game screen is shown (handles loading from name screen)
+                    document.getElementById('screen-intro').style.display = 'none';
+                    document.getElementById('screen-name').style.display = 'none';
+                    const gameScreen = document.getElementById('screen-game');
+                    if (gameScreen) gameScreen.style.display = 'flex';
+
+                    closeSaveLoadModal();
+                    updateHUD();
+                    renderQuestMap();
+
+                    showToast(`โหลดข้อมูลของ "${state.player_name}" สำเร็จ ✓`, 'success');
+                    setTimeout(() => showAchievement(`🔄 โหลดเกมสำเร็จ | Wisdom ${state.wisdom_score}`), 600);
+
+                } catch (e) {
+                    console.error('confirmLoadGame:', e);
+                    showToast('เกิดข้อผิดพลาดในการโหลด กรุณาตรวจสอบข้อมูล', 'error');
+                }
+            }
+
+            // ============================================================
             // SECTION 10: PUBLIC API
             // ============================================================
 
@@ -2482,10 +4793,28 @@
                 openNPCTerminal, closeNPCTerminal, openActiveQuestNPC,
                 switchTab, sendChat,
                 acceptQuest, evaluateQuest, collectFragment, submitBlueprint,
+                gotoLockedTab,
                 openLedger, closeLedger,
                 openQuestLog,
                 openTeacherReport, copyTeacherReport,
                 closeModal,
+
+                // ── Item system (Mechanic F + A + B + C) ──
+                openItemInspector,      // Mechanic A — open Inspector for an item
+                selectRewardItem,       // Mechanic F — select card in Reward Choice Modal
+                confirmRewardChoice,    // Mechanic F — confirm + call backend
+                requestItemHint,        // Mechanic B — invoke Tool Item for hint
+
+                // ── Academic Reference ──
+                openFinCompRef,         // Teacher Report — ธปท. Fin. Comp. reference modal
+
+                // ── Save / Load Game + Research Export ──
+                openSaveLoadModal,      // เปิด modal บันทึก/โหลดเกม
+                closeSaveLoadModal,     // ปิด modal
+                copyExportJson,         // คัดลอก JSON ใน export textarea ไปยัง clipboard
+                downloadSaveTxt,        // ดาวน์โหลด JSON เป็นไฟล์ .txt
+                previewImportData,      // Parse + Preview JSON ที่วางใน import textarea (oninput)
+                confirmLoadGame,        // ยืนยัน restore state จาก import JSON แล้วเข้าหน้าเกม
             };
         })();
 
